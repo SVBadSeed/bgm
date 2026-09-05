@@ -1,0 +1,14 @@
+{
+  "name": "@bogema/directus",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Схема и сиды Directus для лендинга БогемаТур (schema-as-code)",
+  "scripts": {
+    "seed": "node scripts/seed-schema.mjs",
+    "seed:content": "node scripts/seed-content.mjs"
+  },
+  "dependencies": {
+    "@directus/sdk": "^25.0.1"
+  }
+}

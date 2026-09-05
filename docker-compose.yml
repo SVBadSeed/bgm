@@ -1,0 +1,71 @@
+# Локальный стек лендинга: Directus 11 + Postgres 16.
+#   pnpm directus:up      → http://localhost:8055 (админка)
+#   pnpm directus:seed    → коллекции + права публичной роли
+# Directus намеренно пришпилен к 11.x (BUSL, полный функционал бесплатно).
+# В 12.x сменилась лицензия и часть функций (кастомные правила прав) ушла
+# в платные тиры — переезжать только осознанно.
+name: bogema-landing
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-bogema_landing}
+      POSTGRES_USER: ${DB_USER:-directus}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-directus}
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+      - '${DB_PORT:-5433}:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-directus} -d ${DB_DATABASE:-bogema_landing}']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  directus:
+    image: directus/directus:11
+    ports:
+      - '${DIRECTUS_PORT:-8055}:8055'
+    environment:
+      KEY: ${DIRECTUS_KEY:-dev-key-change-me}
+      SECRET: ${DIRECTUS_SECRET:-dev-secret-change-me}
+      PUBLIC_URL: ${DIRECTUS_PUBLIC_URL:-http://localhost:8055}
+
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@bogematur.ru}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-admin12345}
+
+      DB_CLIENT: pg
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-bogema_landing}
+      DB_USER: ${DB_USER:-directus}
+      DB_PASSWORD: ${DB_PASSWORD:-directus}
+
+      # Nuxt dev + любой localhost-порт
+      CORS_ENABLED: 'true'
+      CORS_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+
+      WEBSOCKETS_ENABLED: 'false'
+      TELEMETRY: 'false'
+      # Русская локаль админки по умолчанию
+      DEFAULT_LANGUAGE: ru-RU
+      # Превью Live Preview из админки бьёт в Nuxt
+      CONTENT_SECURITY_POLICY_DIRECTIVES__FRAME_SRC: "'self' http://localhost:3000"
+    volumes:
+      - ./directus/uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions
+      - ./directus/schema:/directus/schema
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:8055/server/ping']
+      interval: 5s
+      timeout: 3s
+      retries: 40
+
+volumes:
+  pgdata:

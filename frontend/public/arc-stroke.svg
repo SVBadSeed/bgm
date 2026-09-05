@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 760" role="img" aria-label="Фирменный мазок">
+  <defs>
+    <linearGradient id="ink" x1="86" y1="666" x2="476" y2="89" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#cbf76e"/>
+      <stop offset="0.52" stop-color="#b9f24d"/>
+      <stop offset="1" stop-color="#a3dd2f"/>
+    </linearGradient>
+  </defs>
+  <!-- Мазок повёрнут на 90° по часовой: арка встаёт вдоль правого края полотна -->
+  <g transform="translate(560,0) rotate(90)">
+    <path fill="url(#ink)" d="M75 429C105 376 135 321 168 269C207 207 250 149 307 111C361 75 421 60 474 78C531 97 563 146 588 196C613 246 636 295 680 334C700 352 711 373 702 394C693 417 669 426 644 420C590 406 550 369 516 328C480 284 459 231 414 212C382 198 348 209 316 235C267 274 230 337 192 397C169 434 145 471 114 492C91 508 65 503 53 483C42 463 57 446 75 429Z"/>
+  </g>
+</svg>

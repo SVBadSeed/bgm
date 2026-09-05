@@ -1,0 +1,878 @@
+/* ============================================================
+   БогемаТур — моушен-слой лендинга
+   Токены → ревилы → hero → карточки → полка с маскотом → формы
+   Всё, что двигается, отключается в prefers-reduced-motion (в конце файла).
+   ============================================================ */
+
+:root {
+  /* Кривые: только затухающие, без пружин и отскоков */
+  --e-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --e-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --e-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --t-tap: 120ms; /* отклик на нажатие */
+  --t-ui: 220ms; /* смена состояния */
+  --t-move: 420ms; /* перемещение блока */
+  --t-enter: 420ms; /* появление */
+
+  --z-sticky: 60;
+  --z-header: 50;
+}
+
+/* Плавные переходы по якорям + запас под липкую панель */
+html {
+  scroll-behavior: smooth;
+}
+[id] {
+  scroll-margin-top: 96px;
+}
+
+/* ------------------------------------------------------------------
+   1. Появление при скролле
+   Контент видим ПО УМОЛЧАНИЮ. Класс rv-play навешивает директива и только
+   пока элемент ещё под кромкой экрана — он лишь проигрывает анимацию
+   появления. Ничего не прячется в ожидании наблюдателя, поэтому пустая
+   секция и резкий скачок из ниоткуда невозможны в принципе.
+   ------------------------------------------------------------------ */
+.rv-play:not([data-reveal='stagger']) {
+  animation: rv-up 460ms var(--e-quart) both;
+  animation-delay: calc(var(--rv-i, 0) * 45ms);
+}
+.rv-play[data-reveal='pop'] {
+  animation-name: rv-pop;
+}
+.rv-play[data-reveal='side'] {
+  animation-name: rv-side;
+}
+/* Ленты, которые прокручиваются вбок: анимируются дети, не сама лента */
+.rv-play[data-reveal='stagger'] > * {
+  animation: rv-up 460ms var(--e-quart) both;
+  animation-delay: calc(var(--rv-i, 0) * 45ms);
+}
+
+/* «Почему выбирают нас»: автобус подъезжает слева. Колёса при этом крутятся
+   сами — их угол привязан к прокрутке (см. ниже), а пользователь как раз
+   докручивает до блока. Отдельная анимация колёс дала бы скачок угла в конце.
+   Едет вся панель целиком — каркас вместе с колонками, иначе текст остался бы
+   стоять, а окна уехали. Ниже 1081px каркаса нет, там обычное появление. */
+.rv-play[data-reveal='bus'] {
+  animation: bus-in 900ms var(--e-quint) both;
+}
+@media (max-width: 1080px) {
+  .rv-play[data-reveal='bus'] {
+    animation: rv-up 460ms var(--e-quart) both;
+  }
+}
+@keyframes bus-in {
+  from {
+    opacity: 0;
+    transform: translateX(-96px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Дальше колёса докручиваются от прокрутки: угол приходит из BusFrame.vue
+   переменной --roll. Пока играет подъезд, у его анимации приоритет над ней. */
+.bus-wheel {
+  transform: rotate(var(--roll, 0deg));
+}
+
+@keyframes rv-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rv-pop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rv-side {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   2. Hero
+   ------------------------------------------------------------------ */
+
+/* Медленный наезд на активный кадр — кадр «дышит», пока висит */
+.hero-shot.on img.slot {
+  animation: kenburns 7.4s var(--e-quart) both;
+}
+.hero-card.is-paused .hero-shot.on img.slot {
+  animation-play-state: paused;
+}
+@keyframes kenburns {
+  from {
+    transform: scale(1.015);
+  }
+  to {
+    transform: scale(1.085);
+  }
+}
+
+/* Заголовок: строки выезжают из-под маски. Один раз, на загрузке. */
+.hero-title .hl {
+  display: block;
+  overflow: hidden;
+  padding: 0.1em 0 0.18em;
+  margin: -0.1em 0 -0.18em;
+}
+.hero-title .hl > i {
+  display: block;
+  font-style: inherit;
+  /* backwards, а не both: после проигрыша элемент возвращается к обычным
+     стилям, и hover/focus-состояния ниже не оказываются перебиты анимацией */
+  animation: line-rise 0.86s var(--e-expo) backwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+}
+@keyframes line-rise {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Капля у заголовка приходит последней */
+.hero-title .glyph {
+  animation-delay: 0.62s;
+}
+@keyframes glyph-in {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Поисковая строка: всплывает и реагирует на фокус */
+.hero-search {
+  animation: search-in 0.7s var(--e-quart) backwards;
+  animation-delay: 0.5s;
+  transition:
+    box-shadow var(--t-ui) var(--e-quart),
+    transform var(--t-ui) var(--e-quart);
+}
+.hero-search:focus-within {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 44px rgba(10, 10, 10, 0.26),
+    0 0 0 4px rgba(184, 242, 78, 0.55);
+}
+@keyframes search-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Точки-переключатели = индикатор времени до смены кадра */
+.shot-dots button {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.shot-dots button:hover {
+  background: rgba(255, 255, 255, 0.72);
+}
+.shot-dots button.on {
+  background: rgba(255, 255, 255, 0.42);
+}
+.shot-dots button.on::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #fff;
+  transform-origin: left center;
+  animation: dot-fill 6s linear both;
+}
+.hero-card.is-paused .shot-dots button.on::after {
+  animation-play-state: paused;
+}
+@keyframes dot-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+/* Светлый вариант hero (фото ещё не загружено) */
+.hero-card:has(.hero-shot.on .slot-empty) .shot-dots button {
+  background: rgba(10, 10, 10, 0.2);
+}
+.hero-card:has(.hero-shot.on .slot-empty) .shot-dots button.on::after {
+  background: var(--ink);
+}
+
+/* Строка «На фото» — стрелка тянется за курсором */
+.shot-where svg {
+  transition: transform var(--t-ui) var(--e-quart);
+}
+.shot-where:hover svg {
+  transform: translateX(3px);
+}
+
+/* ------------------------------------------------------------------
+   3. Шапка и меню
+   ------------------------------------------------------------------ */
+.lp-nav a,
+.hd-ico {
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart),
+    transform var(--t-tap) var(--e-quart);
+}
+.lp-nav a:active,
+.hd-ico:active {
+  transform: scale(0.95);
+}
+
+/* Бургер превращается в крестик */
+.burger span {
+  transition:
+    transform var(--t-ui) var(--e-quart),
+    opacity 140ms var(--e-quart);
+}
+.burger[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(6.3px) rotate(45deg);
+}
+.burger[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.4);
+}
+.burger[aria-expanded='true'] span:nth-child(3) {
+  transform: translateY(-6.3px) rotate(-45deg);
+}
+
+/* Мобильное меню: раскрывается и раскладывает пункты */
+.mnav {
+  transform-origin: top right;
+  animation: mnav-in var(--t-move) var(--e-quint) both;
+}
+.mnav a {
+  animation: mnav-item 0.34s var(--e-quart) backwards;
+  animation-delay: calc(var(--i, 0) * 45ms + 60ms);
+  transition: background var(--t-ui) var(--e-quart);
+}
+@keyframes mnav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes mnav-item {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Липкая панель: приезжает, когда hero уехал наверх */
+.stickybar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  padding: 10px 0;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transform: translateY(-100%);
+  transition: transform var(--t-move) var(--e-quint);
+}
+.stickybar.on {
+  transform: none;
+}
+.stickybar .wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stickybar .logo-word {
+  color: var(--ink);
+  font-size: 19px;
+}
+/* Поисковая строка прилетает в панель снизу — оттуда, где она осталась
+   в hero. Задержка в 120 мс даёт панели сначала доехать, иначе поле
+   появляется в воздухе раньше, чем под ним есть фон. */
+.stickybar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: clamp(200px, 22vw, 280px);
+  height: 38px;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  transition:
+    opacity var(--t-ui) var(--e-quart),
+    transform var(--t-move) var(--e-quint),
+    background var(--t-ui) var(--e-quart);
+}
+.stickybar.on .stickybar-search {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+.stickybar-search:focus-within {
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+.stickybar-search svg {
+  flex: 0 0 auto;
+}
+.stickybar-search input {
+  width: 100%;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.stickybar-search input:focus {
+  outline: none;
+}
+/* Строка поиска уходит первой: она полезна, но не критична, а навигация
+   и кнопки должны остаться. */
+@media (max-width: 1140px) {
+  .stickybar-search {
+    display: none;
+  }
+}
+
+.stickybar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+}
+/* Кабинет в панели тёмный: панель светлая, и белая пилюля из шапки
+   на ней бы потерялась. */
+.stickybar-lk {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.stickybar-lk:hover {
+  background: #2b2b2b;
+  color: #fff;
+}
+.stickybar .hd-fav {
+  width: 38px;
+  height: 38px;
+}
+@media (max-width: 900px) {
+  .stickybar-lk {
+    display: none;
+  }
+}
+.stickybar-nav a {
+  height: 36px;
+  /* Иначе длинные подписи ломались на две строки и панель раздувалась */
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 15px;
+  border-radius: var(--r-pill);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.stickybar-nav a:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.stickybar-nav a.on {
+  background: var(--lime);
+  color: var(--ink);
+}
+.stickybar-tel {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+@media (max-width: 1080px) {
+  .stickybar-nav {
+    display: none;
+  }
+  .stickybar-tel {
+    margin-left: auto;
+  }
+}
+
+/* ------------------------------------------------------------------
+   4. Карточки: наведение и отклик
+   ------------------------------------------------------------------ */
+.pcard-media img.slot,
+.dcard img.slot {
+  transition: transform 0.62s var(--e-quart);
+}
+/* Промо не увеличиваем: полоса низкая, кадр в ней и так обрезан по высоте,
+   а наезд делал его совсем крупным. */
+.pcard:hover .pcard-media img.slot,
+.dcard:hover img.slot {
+  transform: scale(1.055);
+}
+.pcard-media {
+  transition:
+    transform var(--t-ui) var(--e-quart),
+    box-shadow var(--t-ui) var(--e-quart);
+}
+.pcard:hover .pcard-media {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-lg);
+}
+.pcard-title {
+  transition: color var(--t-ui) var(--e-quart);
+}
+.pcard:active .pcard-media {
+  transform: translateY(-1px);
+}
+
+/* Длительность отдельными пилюлями */
+.pcard-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: -2px;
+  /* Отбивка от строки с ценой */
+  margin-bottom: 4px;
+}
+.dpill {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 4px 11px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.dpill.d1 {
+  background: var(--lime-tint);
+  color: #3f6b0a;
+}
+.dpill.d2 {
+  background: var(--blue-tint);
+  color: #0a5e9c;
+}
+
+/* Кнопка «в избранное» на карточке */
+.fav {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 4;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--sh-sm);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.9);
+  transition:
+    opacity var(--t-ui) var(--e-quart),
+    transform var(--t-ui) var(--e-quart),
+    background var(--t-ui) var(--e-quart);
+}
+.pcard:hover .fav,
+.fav:focus-visible,
+.fav.on {
+  opacity: 1;
+  transform: none;
+}
+.fav:hover {
+  background: #fff;
+}
+.fav svg {
+  transition:
+    fill var(--t-ui) var(--e-quart),
+    stroke var(--t-ui) var(--e-quart);
+  fill: none;
+  stroke: var(--ink);
+}
+.fav.on svg {
+  fill: var(--danger);
+  stroke: var(--danger);
+  animation: fav-pop 0.42s var(--e-quart);
+}
+@keyframes fav-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.32);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* На тач-устройствах наведения нет — показываем всегда */
+@media (hover: none) {
+  .fav {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Направления: название и цена чуть подаются вверх, фото наезжает */
+.dcard-kicker,
+.dcard-name,
+.dcard-row {
+  transition: transform var(--t-move) var(--e-quart);
+}
+.dcard:hover .dcard-kicker,
+.dcard:hover .dcard-name,
+.dcard:hover .dcard-row {
+  transform: translateY(-4px);
+}
+
+/* Отзывы и «почему мы» — мягкий подъём */
+.rev,
+.why {
+  transition:
+    transform var(--t-ui) var(--e-quart),
+    box-shadow var(--t-ui) var(--e-quart);
+}
+.rev:hover,
+.why:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-md);
+}
+.why .blob {
+  transition: transform var(--t-move) var(--e-quint);
+}
+.why:hover .blob {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+/* Кнопки и пилюли */
+.btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(148, 209, 31, 0.38);
+}
+.all-link,
+.arw {
+  transition:
+    background var(--t-ui) var(--e-quart),
+    transform var(--t-tap) var(--e-quart),
+    opacity var(--t-ui) var(--e-quart);
+}
+.all-link:active,
+.arw:not(:disabled):active {
+  transform: scale(0.94);
+}
+.arw svg {
+  transition: transform var(--t-ui) var(--e-quart);
+}
+.arw:not(:disabled):hover svg {
+  transform: translateX(2px);
+}
+.arw:not(:disabled):first-child:hover svg {
+  transform: translateX(-2px);
+}
+
+/* Ссылки футера подчёркиваются растущей линией */
+.f-links a,
+.f-legal a {
+  position: relative;
+}
+.f-links a::after,
+.f-legal a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-ui) var(--e-quart);
+}
+.f-links a:hover::after,
+.f-legal a:hover::after {
+  transform: scaleX(1);
+}
+.socials a {
+  transition:
+    background var(--t-ui) var(--e-quart),
+    transform var(--t-ui) var(--e-quart);
+}
+.socials a:hover {
+  transform: translateY(-2px);
+}
+
+/* ------------------------------------------------------------------
+   5. Лента карточек: ровно N целых карточек в видимой части
+   Ширина карточки считается от ширины ленты, поэтому последняя в кадре
+   не обрезается краем, а «дальше есть ещё» показывают стрелки.
+   ------------------------------------------------------------------ */
+.rail-track,
+.revs {
+  /* Лента строго по колонке контента. В прототипе она вылезала за неё на
+     величину поля, и справа торчал обрезанный край следующей карточки. */
+  padding-inline: 0;
+  margin-inline: 0;
+  scroll-padding-inline: 0;
+  /* overflow-x: auto режет и по вертикали, поэтому под подъём карточки
+     и её тень при наведении нужен запас, иначе верх срезается. */
+  padding-block: 14px 22px;
+  margin-block: -14px -16px;
+}
+.rail-track {
+  --cards: 4;
+  --rail-gap: 18px;
+}
+.revs {
+  --cards: 3;
+  --rail-gap: 18px;
+}
+.rail-track > *,
+.revs > * {
+  flex: 0 0 calc((100% - (var(--cards) - 1) * var(--rail-gap)) / var(--cards));
+}
+
+@media (max-width: 1160px) {
+  .rail-track {
+    --cards: 3;
+  }
+  .revs {
+    --cards: 2;
+  }
+}
+@media (max-width: 900px) {
+  .rail-track {
+    --cards: 2;
+  }
+}
+@media (max-width: 640px) {
+  .rail-track {
+    --cards: 1;
+  }
+  .revs {
+    --cards: 1;
+  }
+}
+
+/* ------------------------------------------------------------------
+   6. Полка с маскотом (приём как у карточных «шелфов»)
+   ------------------------------------------------------------------ */
+/* Отступ сверху держит место под маскота: он висит над плашкой
+   и не должен наезжать на предыдущую секцию. Больше его роста плюс воздух
+   держать незачем — иначе между лентой и полкой зияет дыра. */
+.sec.shelf-sec {
+  padding-top: 116px;
+}
+.shelf {
+  position: relative;
+  background: var(--lime);
+  border-radius: 34px;
+  padding: 30px 0 34px;
+}
+.shelf > .wrap {
+  position: relative;
+  z-index: 2;
+}
+.shelf .all-link,
+.shelf .arw {
+  background: rgba(255, 255, 255, 0.7);
+}
+.shelf .all-link:hover,
+.shelf .arw:not(:disabled):hover {
+  background: #fff;
+}
+/* Карточки внутри полки становятся белыми плашками */
+.shelf .pcard {
+  background: var(--surface);
+  border-radius: 26px;
+  /* Фото прижато к верху и бокам: белая рамка вокруг него только мешала */
+  padding: 0 0 16px;
+  overflow: hidden;
+  box-shadow: var(--sh-sm);
+  transition:
+    transform var(--t-ui) var(--e-quart),
+    box-shadow var(--t-ui) var(--e-quart);
+}
+.shelf .pcard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-lg);
+}
+.shelf .pcard:hover .pcard-media {
+  transform: none;
+  box-shadow: none;
+}
+.shelf .pcard-media {
+  /* Верхние углы точно по карточке, нижние — свои */
+  border-radius: 26px 26px 22px 22px;
+}
+.shelf .pcard-title,
+.shelf .pcard-meta,
+.shelf .pcard-pills,
+.shelf .pcard-price {
+  padding-inline: 14px;
+}
+
+/* Маскот выглядывает из-за верхнего края полки */
+.mascot {
+  position: absolute;
+  left: 44px;
+  bottom: 100%;
+  width: 98px;
+  /* Барс лежит НА краю плашки: за неё уходит только самый низ лап,
+     всё остальное остаётся видимым. */
+  margin-bottom: -10px;
+  z-index: 3;
+  pointer-events: none;
+}
+.mascot img,
+.mascot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 780px) {
+  .sec.shelf-sec {
+    padding-top: 88px;
+  }
+  .shelf {
+    border-radius: 26px;
+  }
+  .mascot {
+    left: 16px;
+    width: 74px;
+    margin-bottom: -7px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   7. Форма подписки
+   ------------------------------------------------------------------ */
+.sub-form button[disabled] {
+  opacity: 0.75;
+}
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.sub-ok {
+  animation: ok-in 0.5s var(--e-quart) both;
+}
+@keyframes ok-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.sub-form.is-error input {
+  animation: shake 0.36s var(--e-quart);
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+/* ------------------------------------------------------------------
+   8. Меньше движения — меньше движения
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .shot-dots button.on {
+    background: #fff;
+  }
+  .hero-card:has(.hero-shot.on .slot-empty) .shot-dots button.on {
+    background: var(--ink);
+  }
+}

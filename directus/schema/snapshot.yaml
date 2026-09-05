@@ -1,0 +1,5629 @@
+version: 1
+directus: 11.17.4
+vendor: postgres
+collections:
+  - collection: advantages
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: advantages
+      color: null
+      display_template: '{{title}}'
+      group: null
+      hidden: false
+      icon: verified
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations:
+        - language: ru-RU
+          translation: Почему мы
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: advantages
+  - collection: destinations
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: destinations
+      color: null
+      display_template: '{{name}}'
+      group: null
+      hidden: false
+      icon: map
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations:
+        - language: ru-RU
+          translation: Направления
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: destinations
+  - collection: hero_slides
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: hero_slides
+      color: null
+      display_template: '{{title}}'
+      group: null
+      hidden: false
+      icon: photo_library
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations:
+        - language: ru-RU
+          translation: Слайды hero
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: hero_slides
+  - collection: landing
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: landing
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: web
+      item_duplication_fields: null
+      note: Тексты и заголовки главной страницы
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      translations:
+        - language: ru-RU
+          translation: Лендинг
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: landing
+  - collection: leads
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: leads
+      color: null
+      display_template: '{{name}} {{phone}}'
+      group: null
+      hidden: false
+      icon: contact_phone
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations:
+        - language: ru-RU
+          translation: Заявки
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: leads
+  - collection: menu_items
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: menu_items
+      color: null
+      display_template: '{{label}}'
+      group: null
+      hidden: false
+      icon: menu
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations:
+        - language: ru-RU
+          translation: Пункты меню
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: menu_items
+  - collection: reviews
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: reviews
+      color: null
+      display_template: '{{author}}'
+      group: null
+      hidden: false
+      icon: reviews
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations:
+        - language: ru-RU
+          translation: Отзывы
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: reviews
+  - collection: site_settings
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: site_settings
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: settings
+      item_duplication_fields: null
+      note: Контакты, соцсети, юр. строка футера
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      translations:
+        - language: ru-RU
+          translation: Настройки сайта
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: site_settings
+  - collection: subscribers
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: subscribers
+      color: null
+      display_template: '{{email}}'
+      group: null
+      hidden: false
+      icon: mail
+      item_duplication_fields: null
+      note: Форма «Пришлём ближайшие выезды»
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations:
+        - language: ru-RU
+          translation: Подписчики
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: subscribers
+  - collection: tours
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: tours
+      color: null
+      display_template: '{{title}}'
+      group: null
+      hidden: false
+      icon: directions_bus
+      item_duplication_fields: null
+      note: >-
+        Витрина на лендинге. Источник правды по продукту — bogema-backend; здесь
+        только карточки.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations:
+        - language: ru-RU
+          translation: Туры и экскурсии
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: tours
+fields:
+  - collection: advantages
+    field: id
+    type: uuid
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: advantages
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: status
+    type: string
+    meta:
+      collection: advantages
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: advantages
+      data_type: character varying
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: sort
+    type: integer
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sort
+      table: advantages
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: icon
+    type: string
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: icon
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Автобус
+            value: bus
+          - text: Место в салоне
+            value: seat
+          - text: Геометка
+            value: pin
+          - text: Щит
+            value: shield
+          - text: Звезда
+            value: star
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Иконка
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: icon
+      table: advantages
+      data_type: character varying
+      default_value: bus
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: title
+    type: string
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: title
+      table: advantages
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: text
+    type: string
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: text
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Строка под заголовком
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: text
+      table: advantages
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: link_label
+    type: string
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: link_label
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Текст ссылки
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: link_label
+      table: advantages
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: advantages
+    field: link_url
+    type: string
+    meta:
+      collection: advantages
+      conditions: null
+      display: null
+      display_options: null
+      field: link_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 8
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: link_url
+      table: advantages
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: id
+    type: uuid
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: destinations
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: status
+    type: string
+    meta:
+      collection: destinations
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: destinations
+      data_type: character varying
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: sort
+    type: integer
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sort
+      table: destinations
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: name
+    type: string
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Название
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: name
+      table: destinations
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: slug
+    type: string
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: slug
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        slug: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Слаг
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: slug
+      table: destinations
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: kicker
+    type: string
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: kicker
+      group: null
+      hidden: false
+      interface: input
+      note: Горы и море
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Подзаголовок
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: kicker
+      table: destinations
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: programs_label
+    type: string
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: programs_label
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Подпись «N программ»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: programs_label
+      table: destinations
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: price_from
+    type: integer
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: price_from
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        min: 0
+      readonly: false
+      required: false
+      searchable: true
+      sort: 8
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Цена от, ₽
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: price_from
+      table: destinations
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: url
+    type: string
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 9
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: url
+      table: destinations
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: image
+    type: uuid
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 10
+      special:
+        - file
+      translations:
+        - language: ru-RU
+          translation: Фото
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: destinations
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: destinations
+    field: featured
+    type: boolean
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: featured
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 11
+      special:
+        - cast-boolean
+      translations:
+        - language: ru-RU
+          translation: Показывать на главной
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: featured
+      table: destinations
+      data_type: boolean
+      default_value: true
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: date_created
+    type: timestamp
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 12
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: destinations
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: destinations
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: destinations
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 13
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: destinations
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: id
+    type: uuid
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: hero_slides
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: status
+    type: string
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: hero_slides
+      data_type: character varying
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: sort
+    type: integer
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sort
+      table: hero_slides
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: image
+    type: uuid
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: Горизонтальное, не меньше 1600px по ширине
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special:
+        - file
+      translations:
+        - language: ru-RU
+          translation: Фото
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: hero_slides
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: hero_slides
+    field: title
+    type: string
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: title
+      group: null
+      hidden: false
+      interface: input
+      note: Дагестан
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Регион
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: title
+      table: hero_slides
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: subtitle
+    type: string
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: subtitle
+      group: null
+      hidden: false
+      interface: input
+      note: 12 программ
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Подпись
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: subtitle
+      table: hero_slides
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: url
+    type: string
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Куда ведёт
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: url
+      table: hero_slides
+      data_type: character varying
+      default_value: '#dests'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: date_created
+    type: timestamp
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 8
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: hero_slides
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: hero_slides
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: hero_slides
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 9
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: hero_slides
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: id
+    type: uuid
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: landing
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: seo_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: seo_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: SEO title
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: seo_title
+      table: landing
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: seo_description
+    type: text
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: seo_description
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations:
+        - language: ru-RU
+          translation: SEO description
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: seo_description
+      table: landing
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: seo_image
+    type: uuid
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: seo_image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special:
+        - file
+      translations:
+        - language: ru-RU
+          translation: OG-картинка
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: seo_image
+      table: landing
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: landing
+    field: hero_title
+    type: text
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: hero_title
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: Перенос строки = новая строка; лаймовая капля добавляется автоматически
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок hero
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: hero_title
+      table: landing
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: hero_search_placeholder
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: hero_search_placeholder
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Плейсхолдер поиска
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: hero_search_placeholder
+      table: landing
+      data_type: character varying
+      default_value: Куда поедем$1
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: promo_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: promo_title
+      group: null
+      hidden: false
+      interface: input
+      note: 'Например: Раннее бронирование на весну —'
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: 'Промо: заголовок'
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: promo_title
+      table: landing
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: promo_accent
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: promo_accent
+      group: null
+      hidden: false
+      interface: input
+      note: 'Например: минус 15%'
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 8
+      special: null
+      translations:
+        - language: ru-RU
+          translation: 'Промо: акцент лаймом'
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: promo_accent
+      table: landing
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: promo_button_label
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: promo_button_label
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 9
+      special: null
+      translations:
+        - language: ru-RU
+          translation: 'Промо: кнопка'
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: promo_button_label
+      table: landing
+      data_type: character varying
+      default_value: Подробнее
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: promo_button_url
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: promo_button_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 10
+      special: null
+      translations:
+        - language: ru-RU
+          translation: 'Промо: ссылка'
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: promo_button_url
+      table: landing
+      data_type: character varying
+      default_value: '#tours'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: promo_image
+    type: uuid
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: promo_image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 11
+      special:
+        - file
+      translations:
+        - language: ru-RU
+          translation: 'Промо: картинка'
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: promo_image
+      table: landing
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: landing
+    field: excursions_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: excursions_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 12
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок «Экскурсии»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: excursions_title
+      table: landing
+      data_type: character varying
+      default_value: Сейчас в Краснодаре
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: excursions_all_url
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: excursions_all_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 13
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка «Все» (экскурсии)
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: excursions_all_url
+      table: landing
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: tours_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: tours_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 14
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок «Туры»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: tours_title
+      table: landing
+      data_type: character varying
+      default_value: Популярные туры
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: tours_all_url
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: tours_all_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 15
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка «Все» (туры)
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: tours_all_url
+      table: landing
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: destinations_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: destinations_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 16
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок «Направления»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: destinations_title
+      table: landing
+      data_type: character varying
+      default_value: Популярные направления
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: destinations_all_url
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: destinations_all_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 17
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка «Все» (направления)
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: destinations_all_url
+      table: landing
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: reviews_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: reviews_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 18
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок «Отзывы»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: reviews_title
+      table: landing
+      data_type: character varying
+      default_value: Путешественники о нас
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: reviews_all_url
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: reviews_all_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 19
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка «Все отзывы»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: reviews_all_url
+      table: landing
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: why_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: why_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 20
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок «Почему мы»
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: why_title
+      table: landing
+      data_type: character varying
+      default_value: Почему выбирают нас
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: subscribe_title
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: subscribe_title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 21
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Заголовок подписки
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: subscribe_title
+      table: landing
+      data_type: character varying
+      default_value: Пришлём ближайшие выезды и свободные места
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: subscribe_success
+    type: string
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: subscribe_success
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 22
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Текст после подписки
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: subscribe_success
+      table: landing
+      data_type: character varying
+      default_value: Готово — подборка придёт на почту в ближайшую рассылку.
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: date_created
+    type: timestamp
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 23
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: landing
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 24
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: landing
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: landing
+    field: mascot_image
+    type: uuid
+    meta:
+      collection: landing
+      conditions: null
+      display: null
+      display_options: null
+      field: mascot_image
+      group: null
+      hidden: false
+      interface: file-image
+      note: PNG с прозрачным фоном. Пустое поле — рисуется встроенный вектор.
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 25
+      special:
+        - file
+      translations:
+        - language: ru-RU
+          translation: Маскот над полкой «Популярные туры»
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: mascot_image
+      table: landing
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: leads
+    field: id
+    type: uuid
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: leads
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: status
+    type: string
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Новая
+            value: new
+          - text: В работе
+            value: in_progress
+          - text: Закрыта
+            value: done
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: leads
+      data_type: character varying
+      default_value: new
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: name
+    type: string
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Имя
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: name
+      table: leads
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: phone
+    type: string
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: phone
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Телефон
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: phone
+      table: leads
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: email
+    type: string
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: email
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: E-mail
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: email
+      table: leads
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: source
+    type: string
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: source
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Источник
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: source
+      table: leads
+      data_type: character varying
+      default_value: landing
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: message
+    type: text
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: message
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Сообщение
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: message
+      table: leads
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: date_created
+    type: timestamp
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 8
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: leads
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: leads
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: leads
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 9
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: leads
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: id
+    type: uuid
+    meta:
+      collection: menu_items
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: menu_items
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: status
+    type: string
+    meta:
+      collection: menu_items
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: menu_items
+      data_type: character varying
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: sort
+    type: integer
+    meta:
+      collection: menu_items
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sort
+      table: menu_items
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: label
+    type: string
+    meta:
+      collection: menu_items
+      conditions: null
+      display: null
+      display_options: null
+      field: label
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Текст
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: label
+      table: menu_items
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: url
+    type: string
+    meta:
+      collection: menu_items
+      conditions: null
+      display: null
+      display_options: null
+      field: url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: url
+      table: menu_items
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: placement
+    type: string
+    meta:
+      collection: menu_items
+      conditions: null
+      display: null
+      display_options: null
+      field: placement
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Шапка
+            value: header
+          - text: 'Футер: путешественникам'
+            value: footer_travel
+          - text: 'Футер: компания'
+            value: footer_company
+          - text: 'Футер: документы'
+            value: footer_legal
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Где показывать
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: placement
+      table: menu_items
+      data_type: character varying
+      default_value: header
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: menu_items
+    field: active
+    type: boolean
+    meta:
+      collection: menu_items
+      conditions: null
+      display: null
+      display_options: null
+      field: active
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special:
+        - cast-boolean
+      translations:
+        - language: ru-RU
+          translation: Подсветить как активный
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: active
+      table: menu_items
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: id
+    type: uuid
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: reviews
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: status
+    type: string
+    meta:
+      collection: reviews
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: reviews
+      data_type: character varying
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: sort
+    type: integer
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sort
+      table: reviews
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: author
+    type: string
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: author
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Автор
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: author
+      table: reviews
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: meta
+    type: string
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: meta
+      group: null
+      hidden: false
+      interface: input
+      note: Краснодар · август 2026
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Город · дата
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: meta
+      table: reviews
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: rating
+    type: integer
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: rating
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        min: 1
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Оценка (1–5)
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: rating
+      table: reviews
+      data_type: integer
+      default_value: 5
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: text
+    type: text
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: text
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Текст отзыва
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: text
+      table: reviews
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: tour
+    type: uuid
+    meta:
+      collection: reviews
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{title}}'
+      field: tour
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{title}}'
+      readonly: false
+      required: false
+      searchable: true
+      sort: 8
+      special:
+        - m2o
+      translations:
+        - language: ru-RU
+          translation: Тур
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: tour
+      table: reviews
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: tours
+      foreign_key_column: id
+  - collection: reviews
+    field: date_created
+    type: timestamp
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 9
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: reviews
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: reviews
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: reviews
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 10
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: reviews
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: id
+    type: uuid
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: site_settings
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: brand_name
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: brand_name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Название бренда
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: brand_name
+      table: site_settings
+      data_type: character varying
+      default_value: богематур
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: phone
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: phone
+      group: null
+      hidden: false
+      interface: input
+      note: 'Как показывать: +7 861 205-40-40'
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Телефон
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: phone
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: phone_href
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: phone_href
+      group: null
+      hidden: false
+      interface: input
+      note: '+78612054040'
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: 'Телефон для ссылки tel:'
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: phone_href
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: email
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: email
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: E-mail
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: email
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: address
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: address
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Адрес
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: address
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: about
+    type: text
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: about
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: О компании (футер)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: about
+      table: site_settings
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: copyright
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: copyright
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 8
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Копирайт
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: copyright
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: vk_url
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: vk_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 9
+      special: null
+      translations:
+        - language: ru-RU
+          translation: ВКонтакте
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: vk_url
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: telegram_url
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: telegram_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 10
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Telegram
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: telegram_url
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: whatsapp_url
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: whatsapp_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 11
+      special: null
+      translations:
+        - language: ru-RU
+          translation: WhatsApp
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: whatsapp_url
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: lk_url
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: lk_url
+      group: null
+      hidden: false
+      interface: input
+      note: Иконка пользователя в шапке
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 12
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка на личный кабинет
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: lk_url
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: favorites_url
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: favorites_url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 13
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка «Избранное»
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: favorites_url
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: date_created
+    type: timestamp
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 14
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: site_settings
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 15
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: site_settings
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: site_settings
+    field: departure_cities
+    type: string
+    meta:
+      collection: site_settings
+      conditions: null
+      display: null
+      display_options: null
+      field: departure_cities
+      group: null
+      hidden: false
+      interface: input
+      note: Через запятую. Едут бегущей строкой на лендинге.
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 16
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Города посадки
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: departure_cities
+      table: site_settings
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: subscribers
+    field: id
+    type: uuid
+    meta:
+      collection: subscribers
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: subscribers
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: subscribers
+    field: email
+    type: string
+    meta:
+      collection: subscribers
+      conditions: null
+      display: null
+      display_options: null
+      field: email
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: E-mail
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: email
+      table: subscribers
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: subscribers
+    field: source
+    type: string
+    meta:
+      collection: subscribers
+      conditions: null
+      display: null
+      display_options: null
+      field: source
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Источник
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: source
+      table: subscribers
+      data_type: character varying
+      default_value: landing
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: subscribers
+    field: date_created
+    type: timestamp
+    meta:
+      collection: subscribers
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 4
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: subscribers
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: subscribers
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: subscribers
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 5
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: subscribers
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: id
+    type: uuid
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: tours
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: status
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - color: '#3FA855'
+            text: Опубликовано
+            value: published
+          - color: '#9A9AA4'
+            text: Черновик
+            value: draft
+          - color: '#E0322B'
+            text: Архив
+            value: archived
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Статус
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: tours
+      data_type: character varying
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: sort
+    type: integer
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sort
+      table: tours
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: kind
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: kind
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Экскурсия (один день)
+            value: excursion
+          - text: Многодневный тур
+            value: tour
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Формат
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: kind
+      table: tours
+      data_type: character varying
+      default_value: excursion
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: title
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: title
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Название
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: title
+      table: tours
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: slug
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: slug
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        slug: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Слаг
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: slug
+      table: tours
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: tag
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: tag
+      group: null
+      hidden: false
+      interface: input
+      note: Хит сезона
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Бейдж на фото
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: tag
+      table: tours
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: destination
+    type: uuid
+    meta:
+      collection: tours
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: destination
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: false
+      searchable: true
+      sort: 8
+      special:
+        - m2o
+      translations:
+        - language: ru-RU
+          translation: Направление
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: destination
+      table: tours
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: destinations
+      foreign_key_column: id
+  - collection: tours
+    field: place_label
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: place_label
+      group: null
+      hidden: false
+      interface: input
+      note: Краснодар / Дагестан
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 9
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Место (мета)
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: place_label
+      table: tours
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: duration_label
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: duration_label
+      group: null
+      hidden: false
+      interface: input
+      note: 9 часов / 3 дня / 2 ночи
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 10
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Длительность
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: duration_label
+      table: tours
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: price_from
+    type: integer
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: price_from
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        min: 0
+      readonly: false
+      required: false
+      searchable: true
+      sort: 11
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Цена, ₽
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: price_from
+      table: tours
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: price_prefix
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: price_prefix
+      group: null
+      hidden: false
+      interface: input
+      note: «от» для туров, пусто для экскурсий
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 12
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Префикс цены
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: price_prefix
+      table: tours
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: price_note
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: price_note
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 13
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Подпись к цене
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: price_note
+      table: tours
+      data_type: character varying
+      default_value: за человека
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: url
+    type: string
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: url
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 14
+      special: null
+      translations:
+        - language: ru-RU
+          translation: Ссылка
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: url
+      table: tours
+      data_type: character varying
+      default_value: '#'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: image
+    type: uuid
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 15
+      special:
+        - file
+      translations:
+        - language: ru-RU
+          translation: Фото
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: tours
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: tours
+    field: featured
+    type: boolean
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: featured
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 16
+      special:
+        - cast-boolean
+      translations:
+        - language: ru-RU
+          translation: Показывать на главной
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: featured
+      table: tours
+      data_type: boolean
+      default_value: true
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: date_created
+    type: timestamp
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 17
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: tours
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tours
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: tours
+      conditions: null
+      display: null
+      display_options: null
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 18
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: tours
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+systemFields:
+  - collection: directus_activity
+    field: timestamp
+    schema:
+      is_indexed: true
+  - collection: directus_revisions
+    field: activity
+    schema:
+      is_indexed: true
+  - collection: directus_revisions
+    field: parent
+    schema:
+      is_indexed: true
+relations:
+  - collection: destinations
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: destinations
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: destinations
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: destinations_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: hero_slides
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: hero_slides
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: hero_slides
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: hero_slides_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: landing
+    field: seo_image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: landing
+      many_field: seo_image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: landing
+      column: seo_image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: landing_seo_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: landing
+    field: promo_image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: landing
+      many_field: promo_image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: landing
+      column: promo_image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: landing_promo_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: landing
+    field: mascot_image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: landing
+      many_field: mascot_image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: landing
+      column: mascot_image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: landing_mascot_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: reviews
+    field: tour
+    related_collection: tours
+    meta:
+      junction_field: null
+      many_collection: reviews
+      many_field: tour
+      one_allowed_collections: null
+      one_collection: tours
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: reviews
+      column: tour
+      foreign_key_table: tours
+      foreign_key_column: id
+      constraint_name: reviews_tour_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: tours
+    field: destination
+    related_collection: destinations
+    meta:
+      junction_field: null
+      many_collection: tours
+      many_field: destination
+      one_allowed_collections: null
+      one_collection: destinations
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: tours
+      column: destination
+      foreign_key_table: destinations
+      foreign_key_column: id
+      constraint_name: tours_destination_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: tours
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: tours
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: tours
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: tours_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL

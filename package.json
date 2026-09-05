@@ -1,0 +1,24 @@
+{
+  "name": "bogema-landing",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev": "pnpm --filter @bogema/landing dev",
+    "build": "pnpm --filter @bogema/landing build",
+    "preview": "pnpm --filter @bogema/landing preview",
+    "typecheck": "pnpm --filter @bogema/landing typecheck",
+    "lint": "pnpm --filter @bogema/landing lint",
+    "format": "prettier --write \"frontend/**/*.{js,mjs,ts,vue,json,css,md}\" \"directus/scripts/**/*.mjs\"",
+    "directus:up": "docker compose up -d",
+    "directus:down": "docker compose down",
+    "directus:logs": "docker compose logs -f directus",
+    "directus:seed": "pnpm --filter @bogema/directus seed",
+    "directus:seed:content": "pnpm --filter @bogema/directus seed:content",
+    "directus:snapshot": "docker compose exec directus npx directus schema snapshot --yes /directus/schema/snapshot.yaml",
+    "directus:apply": "docker compose exec directus npx directus schema apply --yes /directus/schema/snapshot.yaml"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
+  }
+}

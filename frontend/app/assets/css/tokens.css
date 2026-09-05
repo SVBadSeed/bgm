@@ -1,0 +1,237 @@
+/* ============================================================
+   БогемаТур — design system tokens
+   ============================================================ */
+
+:root {
+  /* Brand */
+  --lime: #b8f24e;
+  --lime-600: #a6e536; /* hover */
+  --lime-700: #94d11f; /* active */
+  --lime-tint: #eefbd2; /* soft fill / selected card */
+  --lime-tint-2: #f4fce3;
+
+  --ink: #0a0a0a;
+  --ink-soft: #1a1a1e;
+
+  /* Neutrals */
+  --bg: #f5f4f9; /* app background */
+  --surface: #ffffff; /* cards */
+  --surface-2: #fafafc; /* zebra / subtle */
+  --border: #ececf1;
+  --border-2: #e0e0e8;
+  --text-2: #6b6b75; /* secondary text */
+  --text-3: #9a9aa4; /* tertiary / placeholder */
+
+  /* Status */
+  --blue: #0c76c2;
+  --blue-tint: #e3f0fb;
+  --amber: #b97a12;
+  --amber-tint: #fbefd2;
+  --danger: #e0322b;
+  --danger-soft: #f4837e;
+  --ok: #3fa855;
+
+  /* Radii */
+  --r-pill: 999px;
+  --r-card: 20px;
+  --r-md: 14px;
+  --r-sm: 10px;
+  --r-input: 12px;
+
+  /* Shadow */
+  --sh-sm: 0 1px 2px rgba(16, 16, 28, 0.05);
+  --sh-md: 0 4px 16px rgba(16, 16, 28, 0.06);
+  --sh-lg: 0 12px 40px rgba(16, 16, 28, 0.1);
+  --sh-pop: 0 24px 70px rgba(16, 16, 28, 0.22);
+
+  /* Type */
+  --font:
+    'Golos Text', 'Inter', -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  --font-display: 'Onest', 'Golos Text', system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  padding: 12px 22px;
+  white-space: nowrap;
+  transition:
+    background 0.16s var(--ease),
+    transform 0.12s var(--ease),
+    box-shadow 0.16s var(--ease),
+    color 0.16s var(--ease);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--lime);
+  color: var(--ink);
+}
+.btn-primary:hover {
+  background: var(--lime-600);
+}
+.btn-primary:active {
+  background: var(--lime-700);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--border-2);
+}
+.btn-ghost:hover {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--text-3);
+}
+
+.btn-secondary {
+  background: #ededf2;
+  color: var(--ink);
+}
+.btn-secondary:hover {
+  background: #e3e3ea;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-sm {
+  padding: 9px 16px;
+  font-size: 14px;
+}
+.btn-lg {
+  padding: 16px 30px;
+  font-size: 17px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  padding: 4px 11px 4px 10px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  color: var(--text-2);
+}
+.badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  flex: none;
+}
+.badge-group::before {
+  background: var(--blue);
+}
+.badge-indiv::before {
+  background: var(--amber);
+}
+
+/* ---------- Inputs ---------- */
+.field {
+  width: 100%;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-input);
+  padding: 12px 14px;
+  font-size: 15px;
+  outline: none;
+  transition:
+    border-color 0.14s var(--ease),
+    box-shadow 0.14s var(--ease);
+}
+.field::placeholder {
+  color: var(--text-3);
+}
+.field:hover {
+  border-color: var(--text-3);
+}
+.field:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(184, 242, 78, 0.35);
+}
+.field.error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px rgba(224, 50, 43, 0.14);
+}
+
+select.field {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M4 6l4 4 4-4' fill='none' stroke='%236B6B75' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+
+/* scrollbar */
+*::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d6d6df;
+  border-radius: 99px;
+  border: 3px solid var(--bg);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #c2c2cf;
+}

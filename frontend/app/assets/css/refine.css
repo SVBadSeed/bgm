@@ -1,0 +1,1232 @@
+/* ============================================================
+   БогемаТур — доводка вёрстки поверх прототипа
+   Отдельным файлом, чтобы landing.css оставался тем, что отдал дизайн,
+   а правки были видны одним куском и их можно было откатить.
+   ============================================================ */
+
+/* ------------------------------------------------------------------
+   1. Заголовки секций
+   На бренд-лендинге они были мельче, чем просят крупные карточки под
+   ними, и почти прилипали к контенту.
+   ------------------------------------------------------------------ */
+.sec-h2 {
+  font-size: clamp(28px, 2.9vw, 42px);
+}
+.sec-head {
+  margin-bottom: 34px;
+}
+
+/* ------------------------------------------------------------------
+   2. Направления
+   Плитки 4:5 в два ряда занимали больше экрана, чем весь блок туров, хотя
+   направление — это навигация, а не витрина. Квадрат вдвое компактнее,
+   ровно ложится в 4 колонки без дыр и лучше держит фото.
+   ------------------------------------------------------------------ */
+.dgrid {
+  gap: 20px;
+}
+.dcard {
+  aspect-ratio: 1 / 1;
+}
+.dcard-name {
+  font-size: 21px;
+}
+@media (max-width: 780px) {
+  .dcard {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* ------------------------------------------------------------------
+   3. Отзывы — цветное полотно
+   Было: белые карточки на белой секции, то есть невидимые. Стало: полотно
+   внутри колонки со скруглением, как у промо и подписки, заголовок по центру,
+   карточки белые. Тон взят заметно плотнее lime-tint: тот почти сливался
+   с белым и выглядел как грязь, а не как цвет.
+   ------------------------------------------------------------------ */
+.sec.band {
+  position: relative;
+  /* Мазок сбоку выходит за полотно — обрезаем его скруглением полотна */
+  overflow: hidden;
+  background: #d8f58f;
+  /* Во всю ширину, но со скруглением того же радиуса, что у .lp-main —
+     чтобы лента была частью той же системы форм, а не чужой плашкой */
+  border-radius: var(--main-r);
+  padding-block: 66px 58px;
+}
+/* Кисть у правого края. Тон-в-тон с полотном: насыщенный лайм по светлому,
+   поэтому читается как фактура полотна, а не как приклеенная картинка.
+   Уезжает за правый край — мазок должен выглядеть длиннее блока. */
+.sec.band::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: -16%;
+  right: -52px;
+  height: 152%;
+  aspect-ratio: 560 / 760;
+  background: url('/arc-stroke.svg') no-repeat center / contain;
+  pointer-events: none;
+}
+.sec.band > .wrap {
+  position: relative;
+  z-index: 1;
+}
+.sec-head.is-center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+.band-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+.band-foot .all-link {
+  height: 46px;
+  padding: 0 24px;
+  background: var(--surface);
+  font-size: 15px;
+}
+.band-foot .all-link:hover {
+  background: var(--ink);
+  color: #fff;
+}
+.sec.band .rev,
+.sec.band .rev:hover {
+  background: var(--surface);
+}
+.rev-ref .rr-media {
+  background: var(--bg);
+}
+@media (max-width: 780px) {
+  .sec.band {
+    padding-block: 44px 38px;
+  }
+  /* На узком экране карточки идут почти во всю ширину, поэтому мазок
+     уводим дальше за край: он должен читаться краем, а не фоном под текстом */
+  .sec.band::after {
+    top: -10%;
+    right: -90px;
+    height: 132%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   4. «Почему выбирают нас»
+   Было три одинаковые карточки — самый шаблонный приём на странице.
+   Стало одно полотно с тремя колонками через волосяную линию: блок
+   читается как единое утверждение, а не как повторяющийся элемент.
+   ------------------------------------------------------------------ */
+.why-panel {
+  /* Тёмное: белое полотно на светло-серой секции не читалось совсем */
+  background: var(--ink);
+  border-radius: var(--r-card);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+}
+.why-panel .why {
+  background: none;
+  border-radius: 0;
+  padding: 36px 34px;
+}
+.why-panel .why + .why {
+  border-left: 1px solid rgba(255, 255, 255, 0.13);
+}
+.why-panel .why h3 {
+  color: #fff;
+}
+.why-panel .why p {
+  color: rgba(255, 255, 255, 0.64);
+}
+.why-panel .why a {
+  background: rgba(255, 255, 255, 0.11);
+  color: #fff;
+}
+.why-panel .why a:hover {
+  background: var(--lime);
+  color: var(--ink);
+}
+/* Колонка внутри полотна не должна подпрыгивать: поднимается только иконка */
+.why-panel .why:hover {
+  transform: none;
+  box-shadow: none;
+}
+.why-panel .why .blob {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 22px;
+}
+.why-panel .why h3 {
+  font-size: 20px;
+}
+.why-panel .why p {
+  font-size: 14.5px;
+  line-height: 1.5;
+  max-width: 30ch;
+}
+
+@media (max-width: 1080px) {
+  .why-panel {
+    grid-template-columns: 1fr;
+  }
+  .why-panel .why + .why {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+  }
+  .why-panel .why {
+    padding: 28px 26px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   5. Промо
+   Скругление подтянуто к остальным крупным блокам страницы (полка,
+   подписка), иначе он выбивался как единственный со своим радиусом.
+   ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------
+   6. Логотип
+   Один вектор вместо квадрата со знаком и текста рядом. Цвет букв
+   наследуется через currentColor от .logo-word, поэтому старые правила
+   «белый над фото, тёмный в панели» продолжают работать.
+   ------------------------------------------------------------------ */
+.logo svg.logo-word {
+  display: block;
+  height: 30px;
+  width: auto;
+}
+.stickybar .logo svg.logo-word {
+  height: 26px;
+}
+@media (max-width: 780px) {
+  .logo svg.logo-word {
+    height: 26px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   7. Скругления — три уровня
+   В прототипе радиусов было девять штук вразнобой (20, 22, 26, 28, 32,
+   34, 40, 44). Осознанно глаз это не считывает, но именно из таких
+   мелочей складывается ощущение собранности макета.
+
+   --main-r   полотна во всю ширину: hero, лента отзывов, само полотно страницы
+   --r-block  блоки внутри колонки: промо, полка, подписка, панель преимуществ
+   --r-card   карточки и их фотографии
+   ------------------------------------------------------------------ */
+:root {
+  --r-block: 28px;
+}
+@media (max-width: 780px) {
+  :root {
+    --r-block: 22px;
+  }
+}
+
+.hero-band,
+.hero-card {
+  border-radius: 0 0 var(--main-r) var(--main-r);
+}
+
+.promo,
+.shelf,
+.why-panel {
+  border-radius: var(--r-block);
+}
+
+.dcard,
+.rev,
+.pcard-media,
+.shelf .pcard {
+  border-radius: var(--r-card);
+}
+/* У фото в карточке полки верх совпадает с углами карточки, низ мельче */
+.shelf .pcard-media {
+  border-radius: var(--r-card) var(--r-card) 14px 14px;
+}
+.rev-ref .rr-media {
+  border-radius: 10px;
+}
+
+/* ------------------------------------------------------------------
+   8. Заявка — завершение страницы
+   Лаймовое полотно во всю колонку: слева обращение и контакты, справа
+   белая карточка с формой. Та же система, что у отзывов и полки, поэтому
+   финал страницы читается как её часть, а не как приклеенный виджет.
+   ------------------------------------------------------------------ */
+/* Полотно во всю ширину со скруглением только сверху: блок вкладывается под
+   белую страницу, а снизу его срезает скругление самой .lp-main — под ним уже
+   футер. Получается та же ступенька, что у hero наверху, только в обратную
+   сторону, и низ страницы читается как один спуск: белое → лайм → тёмное. */
+.lead-sec {
+  position: relative;
+  margin-top: 24px;
+  padding-block: 76px;
+  background-color: var(--lime);
+  /* Клякса освободилась от блока подписки — теперь фактура здесь */
+  background-image: url('/ink-splash.svg');
+  background-repeat: no-repeat;
+  /* Кадрируем так, чтобы левая половина осталась ровной: там заголовок и
+     контакты, а фактура уходит вправо-вниз, под белую карточку. */
+  background-position: right -260px bottom -180px;
+  background-size: auto 210%;
+}
+/* Обратная ступенька: не лайм подныривает под страницу, а белое полотно
+   стекает в него — по краям лайм поднимается, в середине белое опускается
+   и заканчивается тем же радиусом, что низ hero. Полоса кладётся поверх
+   фона секции, поэтому клякса под неё не лезет. */
+.lead-sec::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--main-r);
+  background: var(--surface);
+  border-radius: 0 0 var(--main-r) var(--main-r);
+}
+.lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+  gap: 48px;
+  /* По верхней линии, а не по центру: обращение должно начинаться на одном
+     уровне с первым полем формы, иначе оно висит посреди полотна. */
+  align-items: start;
+}
+.lead-h2 {
+  margin: 0;
+  font-size: 37px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.lead-sub {
+  margin: 14px 0 0;
+  max-width: 24em;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #2a3a10;
+}
+.lead-contacts {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lead-tel {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.lead-tel:hover {
+  text-decoration: underline;
+}
+.lead-mail {
+  font-size: 16px;
+  color: #2a3a10;
+}
+.lead-addr {
+  margin: 6px 0 0;
+  max-width: 22em;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #40551d;
+}
+
+.lead-card {
+  padding: 26px;
+  border-radius: var(--r-block);
+  background: var(--surface);
+}
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* Имя и телефон в строку: без этого карточка вытягивается в столбик
+   из шести полей и перестаёт помещаться рядом с обращением. */
+.lead-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+.lead-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lead-field > span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.lead-field input,
+.lead-field textarea {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  transition: border-color var(--t-ui) var(--e-quart);
+}
+.lead-field textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+.lead-field input:focus,
+.lead-field textarea:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+.lead-ch-cap {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.lead-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* Радиокнопка настоящая, просто спрятана: так работают стрелки и подписи */
+.lead-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.lead-chip span {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.lead-chip input:checked + span {
+  background: var(--ink);
+  color: #fff;
+}
+.lead-chip input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* Кнопка тёмная, а не лаймовая: карточка стоит на лайме, и лаймовая кнопка
+   на ней потерялась бы. Тёмная — единственное пятно контраста в блоке. */
+.lead-send {
+  /* Отбивка от последнего поля: кнопка — другой шаг разговора, вплотную
+     к вводу она читается как ещё одна строка формы. */
+  margin-top: 16px;
+  height: 52px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 16px;
+}
+.lead-send:hover {
+  background: #2b2b2b;
+}
+.lead-send:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.lead-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+.lead-note a {
+  color: var(--text-2);
+  text-decoration: underline;
+}
+.lead-err {
+  margin: 0;
+  font-size: 14px;
+  color: #c0392b;
+}
+.lead-ok {
+  margin: 0;
+  padding: 22px 4px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .lead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+  .lead-h2 {
+    font-size: 28px;
+  }
+  .lead-tel {
+    font-size: 23px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   8b. Барс на границе полотна и футера
+   Сидит на скруглённом крае лаймового полотна, свесив хвост на тёмное.
+   Тот же приём, что и маскот на полке, поэтому персонаж читается как
+   один и тот же герой, а страница получает финальную точку.
+   ------------------------------------------------------------------ */
+.lp-footer {
+  position: relative;
+}
+.footer-mascot {
+  position: absolute;
+  /* Слева, но не у самого края: привязка к колонке контента, а не к экрану,
+     иначе на широком мониторе барс уезжал бы в угол. */
+  left: max(2%, calc(50% - 680px));
+  /* var(--main-r) — визуальная граница полотна и футера: футер заезжает
+     под полотно ровно на этот радиус. */
+  top: var(--main-r);
+  width: clamp(340px, 52vw, 680px);
+  height: auto;
+  /* Барс стоит НА линии, а не разрезан ею пополам: чемодан опирается на
+     границу, вниз уходят только колёса. */
+  transform: translateY(-96%);
+  pointer-events: none;
+  z-index: 2;
+}
+/* Отдельный отступ футеру больше не нужен: барс стоит над границей,
+   в тёмное уходят только колёса чемодана. */
+/* Хвост полотна держит место под барса: он поднимается над границей футера
+   почти на весь свой рост и иначе накрывает адрес в левой колонке. */
+.lead-sec {
+  padding-bottom: 148px;
+}
+@media (max-width: 780px) {
+  /* На узком экране карточка занимает всю ширину, поэтому полотну нужен
+     хвост под барса: иначе он ложится на текст согласия. */
+  .footer-mascot {
+    left: 2%;
+    width: min(240px, 58%);
+  }
+  .lead-sec {
+    padding-bottom: 150px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   9. Клякса на лаймовых плашках
+   Белым с низкой непрозрачностью: поверх лайма читается как более светлый
+   оттенок того же цвета. Именно фоном, а не элементом — так она сама
+   обрезается скруглением блока и не мешает маскоту вылезать за край.
+   ------------------------------------------------------------------ */
+
+/* Та же клякса на полке: видно её в основном в полосе над карточками,
+   поэтому кадрируем крупно и уводим вправо, к стрелкам. */
+.shelf {
+  background-image: url('/ink-splash.svg');
+  background-repeat: no-repeat;
+  background-position: right -120px top -150px;
+  background-size: auto 230%;
+}
+@media (max-width: 780px) {
+  .shelf {
+    background-position: right -70px top -60px;
+    background-size: auto 90%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   10. Фирменный бейдж-билет
+   Полукруглые вырезы по бокам: та же выемка, что в знаке логотипа, и прямая
+   отсылка к билету — у автобусного оператора это читается без объяснений.
+   Вырезы сделаны маской, а не накладками цвета фона: бейдж лежит и на белом,
+   и на фото, и на лайме, подложку под него подобрать было бы нечем.
+   ------------------------------------------------------------------ */
+.ticket,
+.ticket-pair .dpill {
+  /* Выемка мелкая относительно высоты: когда она была вполовину, бок
+     съедался целиком и билет читался «косточкой». Над выемкой и под ней
+     должна оставаться прямая грань, поэтому радиус углов держим скромным. */
+  --notch: 3.5px;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  border-radius: 7px;
+  -webkit-mask-image:
+    radial-gradient(
+      circle at left center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    ),
+    radial-gradient(
+      circle at right center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(
+      circle at left center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    ),
+    radial-gradient(
+      circle at right center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    );
+  mask-composite: intersect;
+  /* Вырезы съедают края, поэтому текст отодвигаем от них */
+  padding-block: 0;
+  padding-inline: 15px;
+  /* Высота фиксированная, поэтому перенос строки билет бы разорвал */
+  white-space: nowrap;
+}
+
+/* Бейдж на фотографии карточки и подпись «На фото» под hero */
+.pcard-tag {
+  font-size: 12.5px;
+}
+.shot-pill.ticket {
+  height: 26px;
+  padding-inline: 15px;
+  border-radius: 7px;
+}
+
+/* Пара билетов: половинки складываются как пазл, но не срастаются — между
+   пазом и шипом остаётся просвет. Так видно, что фактов два (дни и ночи),
+   и при этом они читаются как одна пара, а не как два случайных тега. */
+.pcard-pills.ticket-pair {
+  --tab: 5.5px; /* шип на левом боку правой половинки */
+  /* Паз — тот же шип плюс просвет, поэтому дуги совпадают по форме
+     и зазор между ними одинаков по всему контуру. */
+  --gap: 1.5px;
+  --slot: calc(var(--tab) + var(--gap));
+  display: flex;
+  align-self: flex-start;
+  width: max-content;
+  max-width: 100%;
+  margin-bottom: 4px;
+}
+.ticket-pair .dpill {
+  text-align: center;
+  white-space: nowrap;
+}
+/* Левая: снаружи обычная выемка, изнутри паз побольше — в него и войдёт шип */
+.ticket-pair .dpill:first-child {
+  padding-right: calc(15px + var(--slot) / 2);
+  -webkit-mask-image:
+    radial-gradient(
+      circle at left center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    ),
+    radial-gradient(
+      circle at right center,
+      transparent var(--slot),
+      #000 calc(var(--slot) + 0.5px)
+    );
+  mask-image:
+    radial-gradient(
+      circle at left center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    ),
+    radial-gradient(
+      circle at right center,
+      transparent var(--slot),
+      #000 calc(var(--slot) + 0.5px)
+    );
+}
+/* Правая: слева шип. Он не может выйти за границы элемента, поэтому место под
+   него заложено в padding, а сама половинка наезжает отрицательным полем —
+   шип оказывается внутри паза, но не касается его. */
+.ticket-pair .dpill:last-child {
+  /* Наезжает ровно на ширину шипа: тело половинки начинается там, где
+     кончается соседняя, а шип оказывается внутри паза. Зазор между ними
+     равен разнице радиусов паза и шипа. */
+  margin-left: calc(-1 * var(--tab));
+  padding-left: calc(15px + var(--tab));
+  /* Только стандартный синтаксис: -webkit-mask-composite оперирует другими
+     значениями, и вместе со стандартным маска у Chrome разъезжается. */
+  mask-image:
+    radial-gradient(
+      circle at right center,
+      transparent var(--notch),
+      #000 calc(var(--notch) + 0.5px)
+    ),
+    radial-gradient(
+      circle at var(--tab) center,
+      #000 var(--tab),
+      transparent calc(var(--tab) + 0.5px)
+    ),
+    linear-gradient(#000, #000);
+  mask-size:
+    100% 100%,
+    100% 100%,
+    calc(100% - var(--tab)) 100%;
+  mask-position:
+    center,
+    center,
+    right center;
+  mask-repeat: no-repeat;
+  mask-composite: intersect, add;
+}
+
+/* Внутри полки у текстовых строк карточки есть внутренний отступ. Билету он
+   не подходит: выемки маски считаются от краёв элемента и ушли бы в пустоту. */
+.shelf .pcard-pills.ticket-pair {
+  padding-inline: 0;
+  margin-inline: 14px;
+}
+
+/* ------------------------------------------------------------------
+   11. «Почему выбирают нас» — каркас автобуса
+   Блок про собственный автопарк сам нарисован автобусом, а три колонки
+   ложатся в его окна. Каркас — вектор: он перерисован примитивами по обмеру
+   присланного PNG (кузов и окна — скруглённые прямоугольники, колёса —
+   концентрические окружности с восемью спицами), поэтому линии остаются
+   чистыми на любом экране. Проценты ниже — проёмы окон в координатах
+   viewBox «34 112 1308 428»: по x 65-482, 488-904, 910-1305, по y 148-417.
+   Меняются только парой с картинкой.
+   Приём только на широком экране: на узком колонки встают в столбик,
+   и в окна их уже не разложить.
+   ------------------------------------------------------------------ */
+/* У каркаса автобуса нет фона, и колёса стоят у самой кромки панели:
+   обычные 76px под ней складывались с отступом следующей секции в дыру
+   на треть экрана. Воздух даёт сам рисунок. */
+@media (min-width: 1081px) {
+  .why-sec {
+    padding-bottom: 24px;
+  }
+  .why-panel {
+    position: relative;
+    display: block;
+    /* Тёмная заливка нужна только узкому экрану, где колонки идут списком.
+       Здесь фон рисует каркас автобуса, полотно должно быть пустым. */
+    background: none;
+    border-radius: 0;
+    overflow: visible;
+    aspect-ratio: 1308 / 428;
+  }
+  /* Каркас рисуется только на широком экране: ниже колонки встают
+     в столбик и в окна их уже не разложить. */
+  .why-panel > .bus-frame {
+    display: block;
+  }
+  .why-panel .why {
+    position: absolute;
+    /* Каркас лежит в разметке последним, поэтому колонки поднимаем над ним */
+    z-index: 1;
+    top: 8.41%;
+    height: 62.85%;
+    padding: 28px 26px 26px;
+    overflow: hidden;
+    /* Жёсткая сетка вместо центрирования: иконка, заголовок и кнопка встают
+       на одни линии во всех трёх окнах. При центрировании окно с подписью
+       в две строки съезжало относительно соседних. */
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    align-content: stretch;
+    justify-items: start;
+  }
+  .why-panel .why:nth-child(1) {
+    left: 2.37%;
+    width: 31.88%;
+  }
+  .why-panel .why:nth-child(2) {
+    left: 34.71%;
+    width: 31.8%;
+  }
+  .why-panel .why:nth-child(3) {
+    left: 66.97%;
+    width: 30.2%;
+  }
+  /* Внутри окон фон белый, поэтому текст тёмный, а разделители не нужны */
+  .why-panel .why + .why {
+    border-left: none;
+  }
+  .why-panel .why h3 {
+    color: var(--ink);
+  }
+  .why-panel .why p {
+    color: var(--text-2);
+  }
+  .why-panel .why a {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .why-panel .why a:hover {
+    background: var(--lime);
+  }
+  .why-panel .why .blob {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+  }
+  /* Ряды сетки уже расставили всё по местам, собственные отступы элементов
+     только ломали бы выравнивание между окнами. */
+  .why-panel .why a {
+    margin-top: 0;
+    align-self: end;
+  }
+  .why-panel .why p {
+    margin: 0;
+  }
+  .why-panel .why h3 {
+    margin: 0 0 6px;
+  }
+}
+
+/* Каркас автобуса: подложка панели «Почему выбирают нас».
+   Вне широкого экрана не рисуется (правило включается в медиазапросе выше). */
+.bus-frame {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.bus-frame .bus-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ------------------------------------------------------------------
+   12. Знаки внутри заголовка
+   Горы и карта маршрута стоят между словами: заголовок перестаёт быть
+   сплошной простынёй текста, а знаки читаются как часть фразы, а не как
+   приклеенные картинки. Размер и цвет берутся от строки, поэтому они
+   работают в любом кегле и на любом фоне.
+   ------------------------------------------------------------------ */
+.ticon {
+  display: inline-block;
+  width: 0.84em;
+  height: 0.84em;
+  /* Пробелы вокруг знака уже есть в тексте заголовка, поэтому свой отступ
+     почти нулевой: иначе зазор получается шире межсловного. */
+  margin-inline: 0.01em;
+  vertical-align: -0.1em;
+  color: var(--lime);
+}
+.ticon-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Карта лежит с наклоном — так она не выглядит вставленной по линейке */
+.ticon--route {
+  transform: rotate(-9deg);
+}
+@media (max-width: 640px) {
+  .ticon {
+    width: 0.78em;
+    height: 0.78em;
+  
+  }
+}
+
+/* Сердце избранного: тот же круглый фон, что у остальных кнопок шапки,
+   но само сердце крупнее — оно единственное цветное пятно в ряду. */
+.hd-fav {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(12, 12, 16, 0.34);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    background var(--t-ui) var(--e-quart),
+    transform var(--t-ui) var(--e-quart);
+}
+.hd-fav:hover {
+  background: rgba(12, 12, 16, 0.52);
+  transform: scale(1.06);
+}
+/* В липкой панели кружка нет: там ряд плоских ссылок, и подложка под одним
+   только сердцем выбивалась бы из строки. */
+.stickybar .hd-fav {
+  background: none;
+  backdrop-filter: none;
+}
+.stickybar .hd-fav:hover {
+  background: none;
+  transform: scale(1.12);
+}
+
+/* Кнопка кабинета в шапке: та же светлая пилюля, что была у иконки,
+   только с подписью. Ниже 900px остаётся бургер, и она не нужна. */
+.hd-lk {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.hd-lk:hover {
+  background: #fff;
+}
+@media (max-width: 900px) {
+  .hd-lk {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   13. Текст hero должен выделяться
+   В прототипе весь слой с заголовком был прозрачным для мыши ради кликов
+   по кадру, но кликать там не по чему, а заголовок при этом нельзя было
+   ни выделить, ни скопировать. Пауза ротации живёт на .hero-card и ловит
+   наведение всплытием, поэтому ничего не ломается.
+   ------------------------------------------------------------------ */
+.hero-in,
+.hero-title {
+  pointer-events: auto;
+}
+
+/* ------------------------------------------------------------------
+   14. Направления: выпадающий список в шапке и касса под витриной
+   Направлений заметно больше, чем плиток на экране, поэтому у пункта меню
+   есть раскрытие, а под витриной лежит строка билетов с остальными:
+   так каждая страница направления доступна и человеку, и поисковику.
+   ------------------------------------------------------------------ */
+.nav-drop {
+  position: relative;
+}
+.nav-drop > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.nav-drop > a svg {
+  transition: transform var(--t-ui) var(--e-quart);
+}
+.nav-drop.on > a svg {
+  transform: rotate(180deg);
+}
+.nav-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 20;
+  display: grid;
+  /* Колонки по содержимому: у длинных названий вроде «Чеченская Республика»
+     фиксированная ширина обрезала хвост. */
+  grid-template-columns: max-content;
+  gap: 2px 6px;
+  padding: 10px;
+  /* Отступ даёт мышке дойти до списка, не теряя наведение */
+  margin-top: 10px;
+  border-radius: var(--r-block);
+  background: var(--surface);
+  box-shadow: var(--sh-lg, 0 18px 44px rgba(10, 10, 10, 0.16));
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -8px);
+  transition:
+    opacity var(--t-ui) var(--e-quart),
+    transform var(--t-ui) var(--e-quart),
+    visibility var(--t-ui);
+}
+/* Мост между пунктом и списком: без него меню закрывается в зазоре */
+.nav-menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
+.nav-drop.on .nav-menu,
+.nav-drop:focus-within .nav-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+/* Селектор с .lp-nav: у ссылок шапки своя тёмная пилюля, и внутри списка
+   она превращала пункты в серые плашки. */
+.lp-nav .nav-menu a,
+.stickybar-nav .nav-menu a {
+  height: auto;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.lp-nav .nav-menu a:hover,
+.stickybar-nav .nav-menu a:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.lp-nav .nav-menu-all,
+.stickybar-nav .nav-menu-all {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  font-weight: 600;
+  color: #4c7a10;
+}
+
+/* Касса направлений под витриной */
+.dest-more {
+  margin-top: 26px;
+}
+.dest-more-cap {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.dest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dest-tag {
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.dest-tag:hover {
+  background: var(--lime);
+}
+.dest-tag.is-all {
+  background: var(--ink);
+  color: #fff;
+}
+.dest-tag.is-all:hover {
+  background: #2b2b2b;
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .nav-menu {
+    display: none;
+  }
+}
+
+/* Направлений полтора десятка — их список идёт в две колонки, иначе занимает
+   половину экрана и упирается в нижнюю кромку. Остальным разделам, где
+   четыре-пять пунктов, хватает одной. */
+.nav-drop.wide .nav-menu {
+  grid-template-columns: repeat(2, max-content);
+}
+/* Подпункты в мобильном меню — со сдвигом и потише, чтобы читалась вложенность */
+.mnav .mnav-sub {
+  padding-left: 26px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* Пунктов четыре, строка дышит — поджимаем только у самой кромки бургера. */
+@media (max-width: 1160px) {
+  .lp-nav a {
+    padding: 0 12px;
+    font-size: 14px;
+  }
+  .hd-lk {
+    padding: 0 15px;
+    font-size: 14px;
+  }
+}
+
+
+/* Шапка ленты отзывов: билет с оценкой, заголовок, короткое описание.
+   Описание держим узким — строка во всю ширину полотна читается тяжело. */
+.band-badge {
+  margin-bottom: 14px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.band-sub {
+  max-width: 34em;
+  margin: 12px auto 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #2a3a10;
+}
+@media (max-width: 780px) {
+  .band-sub {
+    font-size: 15px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   15. Промо-баннер
+   Полоса, а не блок. Границы между плашкой и кадром нет вовсе: чёрное
+   растворяется в фотографии градиентной маской. Любая фигура на этом стыке —
+   капсула, волна, дуга — читалась как вырезанная ножницами заплатка.
+   ------------------------------------------------------------------ */
+.promo {
+  position: relative;
+  display: block;
+  min-height: 188px;
+  background: var(--ink);
+}
+/* Кадр занимает правую зону, а не всю полосу: растянутый на всю ширину,
+   он обрезался по высоте почти до четверти. */
+.promo .promo-media {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 56%;
+  background: none;
+}
+.promo .promo-media .slot,
+.promo .promo-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.promo .promo-txt {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  /* Плашка держит две строки заголовка и обрывается сразу за ними: раньше
+     она отъедала у кадра почти всю полосу. */
+  width: 51%;
+  min-height: 188px;
+  padding: 20px 34px 20px 34px;
+  background: var(--ink);
+  border-radius: var(--r-block) 0 0 var(--r-block);
+  /* Правый край — кривая: сверху уходит вправо, в середине выпуклость,
+     снизу возвращается влево. Форма лежит в маске отдельным слоем шириной
+     130px, а остальное закрывает сплошной прямоугольник, поэтому кривая
+     не растягивается вместе с плашкой. */
+  mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 188' preserveAspectRatio='none'><path fill='%23000' d='M0 0H54c34 12 18 44 40 74 20 28 4 74-42 114H0Z'/></svg>"),
+    linear-gradient(#000, #000);
+  mask-size:
+    130px 100%,
+    calc(100% - 129px) 100%;
+  mask-position:
+    right center,
+    left center;
+  mask-repeat: no-repeat, no-repeat;
+}
+.promo .promo-txt h2 {
+  max-width: 22ch;
+  margin: 0;
+  font-size: clamp(25px, 2.75vw, 38px);
+  /* Строки дышат: при таком кегле плотный интерлиньяж слипался */
+  line-height: 1.3;
+}
+/* Знаки стоят между словами, поэтому кегль у них почти как у строки */
+.promo .ticon {
+  width: 1.02em;
+  height: 1.02em;
+  margin-inline: 0.06em;
+  vertical-align: -0.16em;
+}
+.promo-cta {
+  position: absolute;
+  right: 34px;
+  top: 50%;
+  z-index: 3;
+  height: 54px;
+  padding: 0 30px;
+  font-size: 16px;
+  transform: translateY(-50%);
+  /* Кнопка лежит на фотографии и попадает то на небо, то на зелёный склон —
+     тень отделяет её от кадра в любом случае. */
+  box-shadow: 0 8px 22px rgba(10, 20, 10, 0.32);
+}
+/* На наведение меняется ровно один параметр — фон становится чуть светлее.
+   Всё остальное прибито гвоздями: у лаймовых кнопок в моушен-слое есть
+   зелёное свечение на hover, и на фотографии оно читалось как ореол вокруг
+   кнопки, а не как отклик. */
+.promo-cta,
+.promo-cta:hover,
+.promo-cta:focus,
+.promo-cta:focus-visible,
+.promo-cta:active {
+  transform: translateY(-50%);
+  box-shadow: 0 8px 22px rgba(10, 20, 10, 0.32);
+  color: var(--ink);
+}
+.promo-cta:hover {
+  background: #cdf96a;
+}
+.promo-cta:active {
+  background: #c2f455;
+}
+@media (max-width: 900px) {
+  .promo {
+    min-height: 0;
+  }
+  /* Кадр снова на всю ширину: в своей правой зоне он на телефоне выглядел
+     обрезком, приклеенным к углу. */
+  .promo .promo-media {
+    inset: 0;
+    width: 100%;
+  }
+  .promo .promo-txt {
+    width: 100%;
+    min-height: 0;
+    padding: 22px 22px 18px;
+    border-radius: var(--r-block) var(--r-block) 0 0;
+    /* Плашка лежит сверху, поэтому кривая не нужна — растворяем её вниз.
+       Размер и позицию маски тоже сбрасываем: от десктопной формы остаётся
+       слой шириной 130px у правого края, и плашка схлопывается в угол. */
+    mask-image: linear-gradient(180deg, #000 0%, #000 74%, transparent 100%);
+    mask-size: 100% 100%;
+    mask-position: center;
+  }
+  .promo .promo-txt h2 {
+    font-size: 23px;
+  }
+  .promo-cta {
+    /* relative, а не static: кадр лежит абсолютом на всей плашке и без
+       своего слоя кнопка оказывалась под ним. */
+    position: relative;
+    z-index: 3;
+    height: 50px;
+    transform: none;
+    margin: 0 22px 22px;
+  }
+  .promo-cta:hover,
+  .promo-cta:active {
+    transform: none;
+  }
+}
+
+/* Выпадающие списки в липкой панели: сама панель ничего не обрезает,
+   но список должен лежать выше соседних секций страницы. */
+.stickybar .nav-menu {
+  z-index: 40;
+}
+.stickybar-nav .nav-drop > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}

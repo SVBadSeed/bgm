@@ -1,0 +1,14 @@
+packages:
+  - 'frontend'
+  - 'directus'
+
+# pnpm 11: какие зависимости могут гонять postinstall (иначе install/run падают)
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+
+# Один esbuild на весь воркспейс: vite/nuxt тянут optional-peer 0.28.x, для которого
+# pnpm 11 не резолвит платформенные бинарники (postinstall падает «Expected 0.28.2»).
+# fontless (@nuxt/fonts) хочет 0.27.x, vite допускает ^0.27 — берём его.
+overrides:
+  esbuild: 0.27.7
