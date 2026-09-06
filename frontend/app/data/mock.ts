@@ -3,6 +3,8 @@
  * недоступен или NUXT_PUBLIC_USE_MOCK=true. Картинки — из public/demo.
  */
 import type {
+  Departure,
+  DepartureCity,
   Advantage,
   Destination,
   HeroSlide,
@@ -43,21 +45,24 @@ const landing: Landing = {
     'Открывайте {loop} новые места собирайте впечатления {paw}',
   promo_accent: null,
   promo_button_label: 'Подробнее',
-  promo_button_url: '#tours',
+  promo_button_url: '/tury',
   promo_image: '/demo/promo.webp',
   mascot_image: '/demo/mascot.webp',
   mascot_full_image: '/demo/mascot-full.webp',
-  excursions_title: 'Сейчас в Краснодаре',
-  excursions_all_url: '#',
+  excursions_title: 'Ближайшие туры',
+  excursions_all_url: '/tury',
   tours_title: 'Популярные туры',
-  tours_all_url: '#',
+  tours_all_url: '/tury',
   destinations_title: 'Популярные направления',
-  destinations_all_url: '#',
+  destinations_all_url: '/tury',
   reviews_title: 'Путешественники о нас',
   reviews_badge: 'Нам доверяют',
   reviews_subtitle:
     'Ваш комфорт — наша работа: стараемся, чтобы каждая поездка была незабываемой!',
   reviews_all_url: '#',
+  hot_title: 'Горящие туры',
+  hot_all_url: '/tury?tip=hot',
+  catalog_facts: 'Свои автобусы|Место в салоне на выбор|Работаем с 2011 года',
   why_title: 'Почему выбирают нас',
   lead_title: 'Не нашли, что искали?',
   lead_subtitle: 'Мы перезвоним и ответим на ваши вопросы',
@@ -72,6 +77,13 @@ const item = () => ({
   status: 'published' as const,
   sort: n,
 })
+
+/* Дата создания «N дней назад» — чтобы фильтр «Новые» было чем проверить */
+const createdAgo = (days: number) => {
+  const d = new Date()
+  d.setDate(d.getDate() - days)
+  return d.toISOString()
+}
 
 /* Временные болванки из прототипа: без картинок вёрстку не оценить.
    Где регион совпадает с кадром — ставим совпадающий, иначе по кругу. */
@@ -136,17 +148,18 @@ const branch = (
 const menu: MenuItem[] = [
   /* Четыре пункта верхнего уровня: виды туров и заграница — это тоже туры,
      и в строке они читались как свалка. Разделы живут в выпадающих списках. */
-  ...branch('Туры', '#tours', [
-    ['Экскурсионные туры', '#excursions'],
-    ['Туры за границу', '#'],
-    ['Однодневные', '#'],
-    ['Многодневные', '#'],
-    ['Автобусные', '#'],
-    ['Для школьников', '#'],
-    ['Корпоративные', '#'],
+  ...branch('Туры', '/tury', [
+    ['Все туры и экскурсии', '/tury'],
+    ['Однодневные', '/tury?dlitelnost=1'],
+    ['На выходные', '/tury?dlitelnost=2'],
+    ['От 4 дней', '/tury?dlitelnost=ot4'],
+    ['Горящие', '/tury?tip=hot'],
+    ['Туры за границу', '/zarubezhnye-tury'],
+    ['Корпоративные', '/tury'],
   ]),
-  /* У «Направлений» своих детей нет: список берётся из коллекции
-     destinations, чтобы не вести одни и те же регионы в двух местах. */
+  /* У «Городов выезда» и «Направлений» своих детей нет: списки берутся из
+     коллекций, чтобы не вести одни и те же города и регионы в двух местах. */
+  ...menuOf('header', [['Города выезда', '/tury']]),
   ...menuOf('header', [['Направления', '#dests']]),
   ...branch('Туристам', '#why', [
     ['О компании', '#'],
@@ -157,10 +170,10 @@ const menu: MenuItem[] = [
   ]),
   ...menuOf('header', [['🔥 Акции', '#']]),
   ...menuOf('footer_travel', [
-    ['Туры', '#tours'],
-    ['Экскурсии', '#excursions'],
+    ['Туры', '/tury'],
+    ['Экскурсии', '/tury?dlitelnost=1'],
     ['Направления', '#dests'],
-    ['Города посадки', '#'],
+    ['Города посадки', '#dests'],
     ['Оплата и возврат', '#'],
   ]),
   ...menuOf('footer_company', [
@@ -191,6 +204,21 @@ const heroSlides: HeroSlide[] = (
   subtitle,
   image,
   url: '#dests',
+}))
+
+const departureCities: DepartureCity[] = (
+  [
+    ['Краснодар', 'krasnodar', 'ул. Красная, 176 · подача за 20 минут'],
+    ['Армавир', 'armavir', 'ул. Кирова, 45 · подача за 15 минут'],
+    ['Кропоткин', 'kropotkin', 'привокзальная площадь'],
+    ['Тихорецк', 'tihoreck', 'ул. Меньшикова, 12'],
+  ] as [string, string, string][]
+).map(([name, slug, pickup_note]) => ({
+  ...item(),
+  name,
+  slug,
+  case_genitive: null,
+  pickup_note,
 }))
 
 const destinations: Destination[] = (
@@ -232,10 +260,11 @@ const destinations: Destination[] = (
   ...item(),
   name,
   slug,
+  case_accusative: null,
   kicker,
   programs_label,
   price_from,
-  url: '#',
+  url: `/napravleniya/${slug}`,
   image: photoFor(name),
   featured: true,
 }))
@@ -281,7 +310,7 @@ const excursions: Tour[] = (
       1900,
     ],
   ] as [string, string, string, string, number][]
-).map(([title, d, place_label, duration_label, price_from]) => ({
+).map(([title, d, place_label, duration_label, price_from], i) => ({
   ...item(),
   kind: 'excursion' as const,
   title,
@@ -291,6 +320,16 @@ const excursions: Tour[] = (
   place_label,
   duration_label,
   price_from,
+  /* Скидка у части позиций — иначе блок «Горящие» нечем наполнить */
+  old_price: i % 3 === 1 ? Math.round((price_from * 1.25) / 100) * 100 : null,
+  date_created: createdAgo(i * 17),
+  /* Признаки перебираем по кругу: моки нужны, чтобы в фильтрах было что
+     выбирать, а не чтобы описать реальные программы. */
+  rest_type: ['ekskursionnyy', 'aktivnyy', 'gastronomicheskiy'][i % 3] ?? null,
+  stay_type: 'bez',
+  difficulty: i % 4 === 3 ? 'sredniy' : 'legkiy',
+  tour_type: i % 3 === 2 ? 'avtorskiy' : 'sbornyy',
+  transport: i % 5 === 4 ? 'mikroavtobus' : 'avtobus',
   price_prefix: '',
   price_note: 'за человека',
   url: '#',
@@ -305,7 +344,7 @@ const tours: Tour[] = (
       'Дагестан',
       '3 дня / 2 ночи',
       24900,
-      'Хит сезона',
+      null,
     ],
     [
       'Цветение лаванды и розы в Крыму: Ай-Петри, Ялта, Форос',
@@ -336,7 +375,7 @@ const tours: Tour[] = (
       null,
     ],
   ] as [string, string, string, number, string | null][]
-).map(([title, d, duration_label, price_from, tag]) => ({
+).map(([title, d, duration_label, price_from, tag], i) => ({
   ...item(),
   kind: 'tour' as const,
   title,
@@ -346,6 +385,14 @@ const tours: Tour[] = (
   place_label: d,
   duration_label,
   price_from,
+  old_price: i % 2 === 0 ? Math.round((price_from * 1.18) / 100) * 100 : null,
+  date_created: createdAgo(i * 23),
+  rest_type:
+    ['aktivnyy', 'ekskursionnyy', 'plyazhnyy', 'gornolyzhnyy'][i % 4] ?? null,
+  stay_type: ['gostinica', 'baza', 'gostevoy-dom'][i % 3] ?? null,
+  difficulty: ['legkiy', 'sredniy', 'slozhnyy'][i % 3] ?? null,
+  tour_type: i % 2 === 0 ? 'gruppovoy' : 'avtorskiy',
+  transport: i % 4 === 3 ? 'dzhip' : 'avtobus',
   price_prefix: 'от',
   price_note: 'за туриста',
   url: '#',
@@ -416,6 +463,51 @@ const reviews: Review[] = [
   },
 ]
 
+/*
+ * Демо-расписание: у каждого тура несколько дат вперёд от сегодняшнего дня,
+ * с шагом в неделю-полторы и разными городами выезда. Даты считаются
+ * относительно «сейчас», иначе моки протухают через месяц и карточки
+ * остаются без ближайшего выезда.
+ */
+const departures: Departure[] = (() => {
+  const rows: Departure[] = []
+  const base = new Date()
+  base.setHours(0, 0, 0, 0)
+
+  const iso = (d: Date) => d.toISOString().slice(0, 10)
+  const plus = (days: number) => {
+    const d = new Date(base)
+    d.setDate(d.getDate() + days)
+    return d
+  }
+  /* Сколько дней длится тур — вытаскиваем из «3 дня / 2 ночи» */
+  const daysOf = (tour: Tour) => {
+    const m = /(\d+)\s*дн/.exec(tour.duration_label ?? '')
+    return m ? Math.max(0, Number(m[1]) - 1) : 0
+  }
+
+  const all: Tour[] = [...excursions, ...tours]
+  all.forEach((tour, ti) => {
+    const span = daysOf(tour)
+    const step = tour.kind === 'excursion' ? 4 : 11
+    const count = tour.kind === 'excursion' ? 6 : 5
+    for (let i = 0; i < count; i++) {
+      const start = plus(3 + ti * 2 + i * step)
+      const end = span ? plus(3 + ti * 2 + i * step + span) : null
+      rows.push({
+        ...item(),
+        tour: tour.id,
+        date_start: iso(start),
+        date_end: end ? iso(end) : null,
+        city: departureCities[(ti + i) % departureCities.length]!.id,
+        seats_left: i === 0 ? 4 + ((ti * 3 + i) % 12) : null,
+        price: null,
+      })
+    }
+  })
+  return rows
+})()
+
 export const mockLanding: LandingData = {
   source: 'mock',
   settings,
@@ -425,6 +517,8 @@ export const mockLanding: LandingData = {
   excursions,
   tours,
   destinations,
+  departures,
+  departureCities,
   advantages,
   reviews,
 }

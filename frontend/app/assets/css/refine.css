@@ -320,7 +320,7 @@
   color: var(--ink);
 }
 .lead-tel:hover {
-  text-decoration: underline;
+  color: #3f6b12;
 }
 .lead-mail {
   font-size: 16px;
@@ -683,7 +683,7 @@
    не подходит: выемки маски считаются от краёв элемента и ушли бы в пустоту. */
 .shelf .pcard-pills.ticket-pair {
   padding-inline: 0;
-  margin-inline: 14px;
+  margin-inline: 0;
 }
 
 /* ------------------------------------------------------------------
@@ -1013,8 +1013,11 @@
     background var(--t-ui) var(--e-quart),
     color var(--t-ui) var(--e-quart);
 }
+/* Цвет текста держим тёмным: глобальный ховер ссылок красит их в зелёный,
+   и на лаймовой плашке подпись пропадала. */
 .dest-tag:hover {
   background: var(--lime);
+  color: var(--ink);
 }
 .dest-tag.is-all {
   background: var(--ink);
@@ -1229,4 +1232,1253 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+}
+
+/* ------------------------------------------------------------------
+   16. Даты выездов на карточке
+   Ближайшая дата плюс намёк, что есть другие. Для автобусного тура это
+   первый вопрос после «куда»: карточка без даты заставляет открывать
+   страницу, чтобы понять, идёт ли тур вообще.
+   ------------------------------------------------------------------ */
+/* Ряд фактов: билеты длительности и ближайшая дата рядом. Раздельными
+   строками карточка распадалась на шесть уровней, и глазу не за что было
+   зацепиться — теперь их четыре: название, место, факты, цена. */
+.pcard-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 4px;
+}
+.pcard-facts .pcard-pills {
+  margin: 0;
+}
+.pcard-dates {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 0;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+.pcard-dates-cap {
+  color: var(--text-2);
+}
+.pcard-date {
+  font-weight: 600;
+  color: var(--ink);
+}
+.pcard-alldates {
+  color: var(--text-2);
+  transition: color var(--t-ui) var(--e-quart);
+}
+.pcard:hover .pcard-alldates {
+  color: #4c7a10;
+}
+
+/* ------------------------------------------------------------------
+   17. Внутренние страницы: каркас
+   Крошки, заголовок, подзаголовок — одна шапка на каталог, направления,
+   отзывы и документы, чтобы страницы не расходились по мелочам.
+   ------------------------------------------------------------------ */
+.page {
+  padding: 34px 0 96px;
+}
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.crumbs a {
+  color: var(--text-2);
+  transition: color var(--t-ui) var(--e-quart);
+}
+.crumbs a:hover {
+  color: var(--ink);
+}
+/* Разделитель рисуем сами: у ссылок в крошках он должен быть неактивным */
+.crumbs > * + *::before {
+  content: '/';
+  margin-right: 8px;
+  color: var(--line);
+}
+.page-head {
+  margin-bottom: 26px;
+}
+.page-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.6vw, 46px);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+.page-sub {
+  max-width: 52ch;
+  margin: 14px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* ------------------------------------------------------------------
+   18. Каталог: фильтры колонкой слева
+   Горизонтальная панель поверх сетки отжимала карточки вниз, и на первом
+   экране их почти не оставалось. Колонка занимает поле, которое всё равно
+   пустует, едет вместе со списком и всегда показывает выбранное целиком.
+   ------------------------------------------------------------------ */
+.catalog {
+  display: grid;
+  grid-template-columns: 288px minmax(0, 1fr);
+  align-items: start;
+  gap: 26px;
+}
+/* Колонка липнет: при длинной выдаче фильтры не должны уезжать вверх */
+.catalog-side {
+  position: sticky;
+  top: 20px;
+}
+.cfilters {
+  padding: 20px;
+  border-radius: var(--r-block);
+  background: var(--bg);
+}
+.cfilters-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cchip {
+  height: 34px;
+  padding: 0 15px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.cchip:hover {
+  background: var(--lime);
+}
+.cchip.on {
+  background: var(--ink);
+  color: #fff;
+}
+.cfilters-reset {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 0 0;
+  border: none;
+  border-top: 1px solid var(--border-2);
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color var(--t-ui) var(--e-quart);
+}
+.cfilters-reset:hover {
+  color: var(--ink);
+}
+
+/* Выпадающий список фильтра */
+.selm {
+  position: relative;
+}
+.selm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow var(--t-ui) var(--e-quart);
+}
+.selm-btn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.selm-btn.chosen {
+  color: var(--ink);
+  font-weight: 600;
+}
+.selm-btn svg {
+  flex: none;
+  transition: transform var(--t-ui) var(--e-quart);
+}
+.selm.open .selm-btn {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+.selm.open .selm-btn svg {
+  transform: rotate(180deg);
+}
+.selm-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  max-height: 264px;
+  overflow-y: auto;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--sh-lg);
+}
+.selm-opt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.selm-opt:hover {
+  background: var(--bg);
+}
+.selm-opt.on {
+  background: var(--lime);
+  font-weight: 600;
+}
+/* В режиме нескольких значений строку красит не заливка, а галочка:
+   лаймовых полос на полсписка было бы больше, чем текста. */
+.selm.multi .selm-opt.on {
+  background: none;
+}
+.selm.multi .selm-opt:hover {
+  background: var(--bg);
+}
+.selm-box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1.5px var(--border-2);
+  color: var(--ink);
+}
+.selm-box svg {
+  opacity: 0;
+}
+.selm-opt.on .selm-box {
+  background: var(--lime);
+  box-shadow: inset 0 0 0 1.5px var(--lime-700);
+}
+.selm-opt.on .selm-box svg {
+  opacity: 1;
+}
+
+/* Шапка выдачи: счётчик и сортировка */
+.catalog-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.catalog-found {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.catalog-sort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.catalog-sort .selm {
+  min-width: 208px;
+}
+.catalog-more {
+  display: block;
+  height: 52px;
+  margin: 26px auto 0;
+  padding: 0 34px;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    border-color var(--t-ui) var(--e-quart);
+}
+.catalog-more:hover {
+  background: var(--bg);
+  border-color: var(--bg);
+}
+
+/* Сетка каталога: те же карточки, что на главной, но в три колонки —
+   четвёртую забрала колонка фильтров */
+.catalog-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px 18px;
+}
+.catalog-empty {
+  max-width: 46ch;
+  margin: 40px auto;
+  font-size: 17px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text-2);
+}
+@media (max-width: 1180px) {
+  .catalog {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  .catalog {
+    display: block;
+  }
+  .catalog-side {
+    position: static;
+  }
+}
+@media (max-width: 640px) {
+  .catalog-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Кнопка шторки и сортировка не влезают в строку со счётчиком — уводим их
+     на свою строку целиком, иначе выпадашку сплющивает до одной стрелки. */
+  .catalog-tools {
+    flex: 1 0 100%;
+    justify-content: space-between;
+  }
+  .catalog-sort {
+    flex: 0 1 auto;
+  }
+  /* Прячем подпись «Сортировка», но только её: без > правило добиралось и до
+     текста внутри выпадашки, и от кнопки оставалась одна стрелка. */
+  .catalog-sort > span {
+    display: none;
+  }
+  /* Ширину задаём числом: у выпадашки подпись обрезается многоточием, и с
+     min-width:0 она схлопывается до одной стрелки. */
+  .catalog-sort .selm {
+    min-width: 190px;
+  }
+  .catalog-sort .selm-btn {
+    height: 52px;
+    padding: 0 16px;
+    border-radius: var(--r-pill);
+    background: var(--bg);
+  }
+}
+
+/* ------------------------------------------------------------------
+   19. Шапка внутренних страниц
+   На главной она висит над фотографией и потому светлая. Здесь фона нет,
+   поэтому те же элементы переворачиваются в тёмные, а сама шапка встаёт
+   в поток — накладывать её не на что.
+   ------------------------------------------------------------------ */
+.lp-header.is-solid {
+  position: static;
+  padding: 16px 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.lp-header.is-solid .logo-word {
+  color: var(--ink);
+}
+.lp-header.is-solid .lp-nav a {
+  background: none;
+  color: var(--text-2);
+}
+.lp-header.is-solid .lp-nav a:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+.lp-header.is-solid .hd-fav {
+  background: var(--bg);
+  backdrop-filter: none;
+}
+.lp-header.is-solid .hd-fav:hover {
+  background: #ececf0;
+}
+.lp-header.is-solid .hd-lk {
+  background: var(--ink);
+  color: #fff;
+}
+.lp-header.is-solid .hd-lk:hover {
+  background: #2b2b2b;
+}
+.lp-header.is-solid .burger span {
+  background: var(--ink);
+}
+/* Полотно внутренних страниц не скруглено сверху: над ним нет кадра */
+.page-shell .lp-main {
+  border-radius: 0 0 var(--main-r) var(--main-r);
+}
+
+/* ------------------------------------------------------------------
+   20. Горящие туры
+   Скидка — единственное, ради чего человек смотрит этот блок, поэтому она
+   стоит и на фото, и в цене. Бейдж красный: лаймовый на лаймовой полке
+   потерялся бы, а красный читается как «сейчас дешевле».
+   ------------------------------------------------------------------ */
+.pcard-sale {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  /* Огонь и градиент: «горящий» должен читаться раньше, чем цифра скидки */
+  background: linear-gradient(96deg, #ff7a18 0%, #e4322f 100%);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+}
+.pcard-sale svg {
+  flex: none;
+}
+/* Когда есть и обычный бейдж, и скидка — обычный уходит под неё */
+.pcard-tag + .pcard-sale {
+  top: 44px;
+}
+
+/* Горящие туры — та же полка, что и «Популярные»: одна разметка, одни
+   отступы в карточках. Отличаются только цвета, поэтому здесь ровно два
+   переопределения — фон и тлеющая полоса по верхнему краю. */
+.shelf.is-hot {
+  background:
+    radial-gradient(
+      70% 120% at 4% 0%,
+      rgba(255, 157, 46, 0.5) 0%,
+      rgba(255, 157, 46, 0) 62%
+    ),
+    radial-gradient(
+      60% 130% at 97% 104%,
+      rgba(228, 50, 47, 0.42) 0%,
+      rgba(228, 50, 47, 0) 60%
+    ),
+    #fff4e8;
+}
+.shelf.is-hot::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  border-radius: var(--r-block) var(--r-block) 0 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 209, 102, 0) 0%,
+    #ffd166 18%,
+    #ff7a18 48%,
+    #e4322f 74%,
+    rgba(228, 50, 47, 0) 100%
+  );
+}
+.hot-sec .sec-h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+/* Размер лучшей скидки прямо у заголовка: объясняет, зачем сюда смотреть */
+.hot-best {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: linear-gradient(96deg, #ff7a18 0%, #e4322f 100%);
+  color: #fff;
+  font-family: var(--font-ui, inherit);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.hot-flame {
+  flex: none;
+  color: #ff7a18;
+  /* Едва заметное дыхание: огонь без движения выглядит наклейкой,
+     а с сильным — новогодней гирляндой. */
+  animation: flame 2.8s var(--e-quart) infinite;
+  transform-origin: 50% 85%;
+}
+@keyframes flame {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  35% {
+    transform: scale(1.07) rotate(-3deg);
+  }
+  70% {
+    transform: scale(0.97) rotate(2deg);
+  }
+}
+
+/* ------------------------------------------------------------------
+   21. Поиск и мобильная шторка фильтров
+   На телефоне развёрнутая панель занимала пол-экрана, и до карточек надо
+   было доскроллить. Теперь наверху только поиск и кнопка со счётчиком,
+   а сами фильтры приезжают снизу и закрываются по «Показать N».
+   ------------------------------------------------------------------ */
+.cfilters-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.csearch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  transition: box-shadow var(--t-ui) var(--e-quart);
+}
+.csearch:focus-within {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+.csearch svg {
+  flex: none;
+}
+.csearch input {
+  width: 100%;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+}
+.csearch input:focus {
+  outline: none;
+}
+.cfilters-toggle {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 20px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.cfilters-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: var(--lime);
+  font-size: 13px;
+  color: var(--ink);
+}
+.cfilters-head,
+.cfilters-apply,
+.cfilters-veil {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .cfilters-toggle {
+    display: inline-flex;
+  }
+  .cfilters {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 80;
+    max-height: 86vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0 16px 16px;
+    box-shadow: var(--sh-lg);
+    border-radius: var(--r-block) var(--r-block) 0 0;
+    background: var(--surface);
+    transform: translateY(101%);
+    transition: transform var(--t-move) var(--e-quint);
+  }
+  .cfilters.open {
+    transform: none;
+  }
+  /* В шторке фон белый, а в колонке — серый: элементы управления, которые
+     на сером были белыми, здесь сливались с подложкой. */
+  .cfilters .cchip,
+  .cfilters .selm-btn,
+  .cfilters .ffield,
+  .cfilters .fcheck .selm-box {
+    background: var(--bg);
+  }
+  .cfilters .cchip.on {
+    background: var(--ink);
+  }
+  .cfilters .fcheck input:checked + .selm-box {
+    background: var(--lime);
+  }
+  .cfilters-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 12px;
+    background: var(--surface);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .cfilters-head button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--bg);
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .cfilters-foot {
+    display: flex;
+    position: sticky;
+    bottom: 0;
+    padding: 12px 0 8px;
+    background: var(--surface);
+  }
+  .cfilters-apply {
+    display: inline-flex;
+    flex: 1 0 100%;
+    height: 50px;
+    background: var(--ink);
+    color: #fff;
+  }
+  .cfilters-veil {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(10, 10, 10, 0.42);
+  }
+}
+
+/* ------------------------------------------------------------------
+   22. Шапка каталога
+   «Туры из Краснодара» и «Туры в Дагестан» — тот же каталог с заранее
+   заполненным полем. Поэтому шапка одна: фото места, заголовок, крупный
+   поиск и быстрые срезы. Она же объясняет страницу поисковику.
+   ------------------------------------------------------------------ */
+.page.is-catalog {
+  padding-top: 0;
+}
+/* Шапка каталога висит над кадром, поэтому у страницы своя точка отсчёта,
+   а у самого кадра — отступ под шапку. */
+.page-shell.is-over {
+  position: relative;
+}
+.chero {
+  position: relative;
+  padding: 116px 0 52px;
+  margin-bottom: 30px;
+  color: #fff;
+  isolation: isolate;
+}
+/* Скругление вешаем на фото и затемнение, а не на секцию: с overflow:hidden
+   раскрытый список городов обрезался нижним краем шапки. */
+.chero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 var(--main-r) var(--main-r);
+  object-fit: cover;
+}
+/* Фото под текстом всегда разное, поэтому затемнение не декоративное:
+   без него заголовок читается через раз. */
+.chero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0 0 var(--main-r) var(--main-r);
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 12, 0.62) 0%,
+    rgba(10, 10, 12, 0.44) 42%,
+    rgba(10, 10, 12, 0.72) 100%
+  );
+}
+.chero-in {
+  position: relative;
+}
+.chero-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(32px, 4.4vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-align: center;
+  text-wrap: balance;
+}
+.chero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 40px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.chero-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.chero-facts svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+/* Поиск: белая панель поверх фото, как строка брони */
+.csearch-panel {
+  /* Позиционируем и поднимаем: раскрытый список — потомок панели, и без
+     своего слоя он оказывался под чипами «Популярного», которые идут ниже
+     по разметке, — сквозь него просвечивал фон. */
+  position: relative;
+  z-index: 3;
+  /* Полей два или три — зависит от страницы, поэтому не сетка с жёстким
+     числом колонок: поля тянутся, кнопка остаётся своей ширины. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 34px;
+  padding: 10px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+.csearch-field {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 14px 6px;
+  border-radius: 16px;
+  background: var(--surface);
+}
+.csearch-field > span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+/* Внутри панели выпадашка — уже часть поля, своя подложка ей не нужна */
+.csearch-field .selm-btn {
+  height: 26px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 16px;
+}
+.csearch-field .selm.open .selm-btn {
+  box-shadow: none;
+}
+.csearch-field .selm-list {
+  top: calc(100% + 12px);
+  color: var(--ink);
+}
+.csearch-go {
+  padding: 0 34px;
+  border: none;
+  border-radius: 16px;
+  background: var(--lime);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.csearch-go:hover {
+  background: #c8f76a;
+}
+
+/* Быстрые срезы: тип тура слитной группой, длительность — отдельными */
+.chero-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+.chero-types {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--r-pill);
+  background: rgba(10, 10, 12, 0.5);
+  backdrop-filter: blur(8px);
+}
+.qchip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--r-pill);
+  /* Тёмная подложка, а не светлая: под кнопками то снег, то небо, и на
+     полупрозрачном белом подпись пропадала через раз. */
+  background: rgba(10, 10, 12, 0.5);
+  backdrop-filter: blur(8px);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.chero-types .qchip {
+  height: 34px;
+  background: none;
+  backdrop-filter: none;
+}
+.qchip:hover {
+  background: rgba(10, 10, 12, 0.72);
+}
+.chero-types .qchip:hover:not(.on) {
+  background: rgba(255, 255, 255, 0.16);
+}
+.qchip.on {
+  background: #fff;
+  color: var(--ink);
+}
+.qchip.hot {
+  color: #ffa04d;
+}
+.qchip.hot.on {
+  background: linear-gradient(96deg, #ff7a18 0%, #e4322f 100%);
+  color: #fff;
+}
+
+/* «Популярное» — соседние страницы каталога, а не фильтры */
+.chero-pop {
+  margin-top: 28px;
+}
+.chero-pop-cap {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+.chero-pop-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.pchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  background: rgba(10, 10, 12, 0.52);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.pchip b {
+  font-weight: 600;
+  opacity: 0.72;
+}
+.pchip:hover {
+  background: #fff;
+  color: var(--ink);
+}
+.pchip:hover b {
+  opacity: 0.5;
+}
+
+/* Кнопки над выдачей: сортировка и — на телефоне — вызов шторки */
+.catalog-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 1080px) {
+  .csearch-go {
+    flex: 1 0 100%;
+    height: 52px;
+  }
+}
+@media (max-width: 640px) {
+  .chero {
+    padding: 86px 0 30px;
+  }
+  .csearch-panel {
+    padding: 8px;
+  }
+  .csearch-field {
+    flex-basis: 100%;
+  }
+  .chero-facts {
+    gap: 8px 18px;
+  }
+  .chero-facts li {
+    font-size: 15px;
+    gap: 8px;
+  }
+  .chero-facts svg {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   23. Колонка фильтров: группы, галочки, ползунки
+   Разложено по образцу ЯркоТревел: выбранное строкой сверху, ниже
+   сворачиваемые группы. Длительность и цена задаются двумя способами —
+   готовыми отрезками и своими числами, — потому что «на выходные» и
+   «ровно 3 дня» спрашивают одинаково часто.
+   ------------------------------------------------------------------ */
+.fchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.fchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 11px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.fchip:hover {
+  background: #2b2b2b;
+}
+.fchip svg {
+  flex: none;
+  opacity: 0.65;
+}
+
+.fgroup + .fgroup {
+  border-top: 1px solid var(--border-2);
+}
+.fgroup-h {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 0 11px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.fgroup-h svg {
+  flex: none;
+  color: var(--text-2);
+  transition: transform var(--t-ui) var(--e-quart);
+}
+.fgroup.closed .fgroup-h svg {
+  transform: rotate(-90deg);
+}
+.fgroup-body {
+  padding-bottom: 16px;
+}
+
+/* Строка с галочкой: настоящий input спрятан, но остаётся для клавиатуры */
+.fcheck {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 15px;
+  cursor: pointer;
+}
+.fcheck input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.fcheck .selm-box {
+  background: var(--surface);
+}
+.fcheck input:checked + .selm-box {
+  background: var(--lime);
+  box-shadow: inset 0 0 0 1.5px var(--lime-700);
+}
+.fcheck input:checked + .selm-box svg {
+  opacity: 1;
+}
+.fcheck input:focus-visible + .selm-box {
+  box-shadow:
+    inset 0 0 0 1.5px var(--ink),
+    0 0 0 3px rgba(10, 10, 10, 0.12);
+}
+
+.fhint {
+  margin: 12px 0 8px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+.fpair {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fdash {
+  flex: none;
+  color: var(--text-2);
+}
+.ffield {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 42px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 14px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+}
+.ffield.is-money > span {
+  flex: none;
+  color: var(--text-2);
+}
+.ffield input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+}
+.ffield:focus-within,
+input.ffield:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--lime-700);
+}
+.ffield input:focus {
+  outline: none;
+}
+/* Стрелки счётчика съедают половину узкого поля и промахиваются пальцем */
+.ffield input::-webkit-outer-spin-button,
+.ffield input::-webkit-inner-spin-button,
+input.ffield::-webkit-outer-spin-button,
+input.ffield::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+.ffield input[type='number'],
+input.ffield[type='number'] {
+  appearance: textfield;
+}
+
+/* Двойной ползунок: два input[type=range] поверх общей дорожки */
+.rng {
+  position: relative;
+  height: 30px;
+  margin-top: 14px;
+}
+.rng-track,
+.rng-fill {
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+}
+.rng-track {
+  left: 0;
+  right: 0;
+  background: var(--border-2);
+}
+/* Выбранный отрезок — фирменным лаймом: это единственное место в колонке,
+   где цвет что-то значит, и он же связывает фильтры с остальным сайтом. */
+.rng-fill {
+  left: var(--a);
+  right: calc(100% - var(--b));
+  background: linear-gradient(90deg, var(--lime) 0%, var(--lime-700) 100%);
+}
+.rng-in {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  margin: 0;
+  background: none;
+  appearance: none;
+  /* Дорожку не ловим — иначе верхний из двух input перехватывал бы клики
+     по нижней ручке, и «от» переставала двигаться. */
+  pointer-events: none;
+}
+.rng-in:focus {
+  outline: none;
+}
+.rng-in::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--lime-700);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgba(16, 16, 28, 0.18);
+  cursor: grab;
+  pointer-events: auto;
+}
+.rng-in::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--lime-700);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgba(16, 16, 28, 0.18);
+  cursor: grab;
+  pointer-events: auto;
+}
+.rng-in:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(148, 209, 31, 0.35);
+}
+.rng-in:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(148, 209, 31, 0.35);
+}
+
+/* ------------------------------------------------------------------
+   24. Карточки в один уровень
+   Заголовок бывает в строку и в две, и от этого билетики с длительностью,
+   дата и цена в соседних карточках стояли на разной высоте — ряд рассыпался.
+   Место под заголовок резервируем всегда на две строки: разница уходит в
+   отступ под заголовком, а всё остальное выстраивается по линейке.
+   ------------------------------------------------------------------ */
+.pcard-title {
+  /* 2 строки × line-height 1.32 при 16px */
+  min-height: calc(2 * 1.32em);
+}
+/* Место (мета) — тоже одна строка на всех, иначе съезжает следующий ряд */
+.pcard-meta {
+  min-height: 1.3em;
+}
+
+/* ------------------------------------------------------------------
+   25. Карточка каталога — плашка
+   В выдаче карточки лежат на белом полотне и читались как список картинок с
+   подписями. Тот же приём, что на полке «Популярные туры»: белая плашка с
+   тенью, поднимается при наведении.
+   ------------------------------------------------------------------ */
+.catalog-grid .pcard {
+  gap: 10px;
+  padding: 0 0 16px;
+  border-radius: var(--r-card);
+  background: var(--surface);
+  /* Полотно каталога белое, поэтому одной тени мало — плашку держит
+     волосяная рамка, а тень только отрывает её от фона. */
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 2px 10px rgba(16, 16, 28, 0.05);
+  overflow: hidden;
+  transition:
+    transform var(--t-ui) var(--e-quart),
+    box-shadow var(--t-ui) var(--e-quart);
+}
+.catalog-grid .pcard:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 0 0 1px transparent,
+    var(--sh-lg);
+}
+/* Фото прижато к краям плашки, как на полке */
+.catalog-grid .pcard-media {
+  border-radius: var(--r-card) var(--r-card) 14px 14px;
+}
+.catalog-grid .pcard:hover .pcard-media {
+  transform: none;
+  box-shadow: none;
+}
+.catalog-grid .pcard-title,
+.catalog-grid .pcard-meta,
+.catalog-grid .pcard-facts,
+.catalog-grid .pcard-price {
+  padding-inline: 14px;
 }

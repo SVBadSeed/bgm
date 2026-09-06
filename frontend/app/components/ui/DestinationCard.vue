@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <a class="dcard" :href="item.url ?? '#'">
+  <a class="dcard" :href="destinationUrl(item)">
     <MediaSlot
       :image="item.image"
       :alt="item.name"

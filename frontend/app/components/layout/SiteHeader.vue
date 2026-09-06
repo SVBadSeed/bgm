@@ -3,17 +3,23 @@
    * Плавающая шапка внутри .hero-band. Цвета (белый/тёмный) переключает CSS
    * через .hero-band:has(.hero-shot.on .slot-empty) — см. landing.css.
    */
-  import type { Destination, MenuItem, SiteSettings } from '~/types/schema'
+  import type {
+    DepartureCity,
+    Destination,
+    MenuItem,
+    SiteSettings,
+  } from '~/types/schema'
 
   const props = withDefaults(
     defineProps<{
       menu: MenuItem[]
       settings: SiteSettings
       destinations?: Destination[]
+      cities?: DepartureCity[]
       /* Ссылка «Все направления» живёт в landing, а не в настройках сайта */
       allUrl?: string | null
     }>(),
-    { destinations: () => [], allUrl: null },
+    { destinations: () => [], cities: () => [], allUrl: null },
   )
 
   /* Мобильное меню строится тем же деревом, что и NavMenu, но раскрыто
@@ -31,7 +37,14 @@
       return props.destinations.map((d) => ({
         key: d.id,
         label: d.name,
-        url: d.url ?? '#',
+        url: destinationUrl(d),
+      }))
+    }
+    if (props.cities.length && /город/i.test(m.label)) {
+      return props.cities.map((c) => ({
+        key: c.id,
+        label: c.name,
+        url: cityUrl(c),
       }))
     }
     return []
@@ -66,6 +79,7 @@
         <NavMenu
           :menu="menu"
           :destinations="destinations"
+          :cities="cities"
           :all-url="allUrl"
         />
       </nav>

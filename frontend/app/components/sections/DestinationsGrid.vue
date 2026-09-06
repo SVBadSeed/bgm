@@ -45,7 +45,7 @@
             v-for="d in rest"
             :key="d.id"
             class="dest-tag ticket"
-            :href="d.url ?? '#'"
+            :href="destinationUrl(d)"
             >{{ d.name }}</a
           >
           <a v-if="allUrl" class="dest-tag ticket is-all" :href="allUrl"

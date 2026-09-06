@@ -9,6 +9,7 @@
       :settings="data.settings"
       :search-placeholder="data.landing.hero_search_placeholder"
       :destinations="data.destinations"
+      :cities="data.departureCities"
       :all-url="data.landing.destinations_all_url"
     />
     <slot />

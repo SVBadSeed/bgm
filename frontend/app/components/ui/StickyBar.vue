@@ -4,7 +4,12 @@
    * Отдельный компонент, а не переиспользованная .lp-header: у шапки над фото
    * своя логика цветов (светлая/тёмная по фону кадра), смешивать их незачем.
    */
-  import type { Destination, MenuItem, SiteSettings } from '~/types/schema'
+  import type {
+    DepartureCity,
+    Destination,
+    MenuItem,
+    SiteSettings,
+  } from '~/types/schema'
 
   withDefaults(
     defineProps<{
@@ -12,9 +17,15 @@
       settings: SiteSettings
       searchPlaceholder?: string | null
       destinations?: Destination[]
+      cities?: DepartureCity[]
       allUrl?: string | null
     }>(),
-    { searchPlaceholder: null, destinations: () => [], allUrl: null },
+    {
+      searchPlaceholder: null,
+      destinations: () => [],
+      cities: () => [],
+      allUrl: null,
+    },
   )
 
   /* Поиск переезжает сюда из hero: когда строка над кадром уходит за кромку,
@@ -88,6 +99,7 @@
         <NavMenu
           :menu="menu"
           :destinations="destinations"
+          :cities="cities"
           :all-url="allUrl"
           :focusable="shown"
         />

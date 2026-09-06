@@ -5,21 +5,27 @@
    * подпунктами из неё было не достать.
    *
    * Меню — дерево: пункты без родителя стоят в строке, пункты с родителем
-   * уходят в его список. Исключение одно: «Направления» тянут список из своей
-   * коллекции — вести те же регионы ещё и в меню значит держать два списка,
-   * которые разъедутся.
+   * уходят в его список. Исключения два: «Направления» и «Города выезда»
+   * тянут списки из своих коллекций — вести те же регионы и города ещё и в
+   * меню значит держать два списка, которые разъедутся.
    */
-  import type { Destination, MenuItem } from '~/types/schema'
+  import type { DepartureCity, Destination, MenuItem } from '~/types/schema'
 
   const props = withDefaults(
     defineProps<{
       menu: MenuItem[]
       destinations?: Destination[]
+      cities?: DepartureCity[]
       allUrl?: string | null
       /* Панель приезжает скрытой, и её ссылки не должны ловить фокус */
       focusable?: boolean
     }>(),
-    { destinations: () => [], allUrl: null, focusable: true },
+    {
+      destinations: () => [],
+      cities: () => [],
+      allUrl: null,
+      focusable: true,
+    },
   )
 
   const header = computed(() =>
@@ -29,6 +35,9 @@
 
   const isDests = (m: MenuItem) =>
     props.destinations.length > 0 && /направлен/i.test(m.label)
+
+  const isCities = (m: MenuItem) =>
+    props.cities.length > 0 && /город/i.test(m.label)
 
   type Link = { key: string; label: string; url: string }
   function submenu(m: MenuItem): Link[] {
@@ -40,7 +49,14 @@
       return props.destinations.map((d) => ({
         key: d.id,
         label: d.name,
-        url: d.url ?? '#',
+        url: destinationUrl(d),
+      }))
+    }
+    if (isCities(m)) {
+      return props.cities.map((c) => ({
+        key: c.id,
+        label: c.name,
+        url: cityUrl(c),
       }))
     }
     return []

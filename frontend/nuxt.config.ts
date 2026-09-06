@@ -32,6 +32,8 @@ export default defineNuxtConfig({
       siteUrl: 'http://localhost:3000',
       // true → не ходить в Directus вообще, рендерить моки (удобно верстать без бэка)
       useMock: false,
+      // Ключ чата Teletype. Пусто — виджет не подключается (дев и превью)
+      teletypeId: '',
     },
   },
 

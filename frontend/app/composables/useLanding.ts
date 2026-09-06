@@ -16,6 +16,8 @@ async function fetchFromDirectus(): Promise<LandingData> {
     destinations,
     advantages,
     reviews,
+    departures,
+    departureCities,
   ] = await Promise.all([
     client.request(readSingleton('site_settings')),
     client.request(readSingleton('landing')),
@@ -55,6 +57,29 @@ async function fetchFromDirectus(): Promise<LandingData> {
         fields: ['*', { tour: ['id', 'title', 'place_label', 'image'] }],
       }),
     ),
+    /* Только будущие выезды: прошедшие даты карточкам не нужны, а тянуть
+       весь архив расписания на главную — лишний вес. */
+    client.request(
+      readItems('departures', {
+        filter: {
+          ...published,
+          /* Directus сравнивает даты как надо, но SDK не даёт _gte полю,
+             которое в типах объявлено строкой — отсюда приведение. */
+          date_start: {
+            _gte: new Date().toISOString().slice(0, 10),
+          } as unknown as { _eq: string },
+        },
+        sort: ['date_start'],
+        limit: -1,
+      }),
+    ),
+    client.request(
+      readItems('departure_cities', {
+        filter: published,
+        sort: ['sort'],
+        limit: -1,
+      }),
+    ),
   ])
 
   return {
@@ -66,6 +91,8 @@ async function fetchFromDirectus(): Promise<LandingData> {
     excursions: allTours.filter((t) => t.kind === 'excursion'),
     tours: allTours.filter((t) => t.kind === 'tour'),
     destinations,
+    departures,
+    departureCities,
     advantages,
     reviews,
   } as LandingData

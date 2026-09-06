@@ -100,13 +100,16 @@ async function main() {
         promo_button_label: 'Подробнее',
         promo_button_url: '#tours',
         promo_image: promoImage,
-        excursions_title: 'Сейчас в Краснодаре',
+        excursions_title: 'Ближайшие туры',
         tours_title: 'Популярные туры',
         destinations_title: 'Популярные направления',
         reviews_title: 'Путешественники о нас',
         reviews_badge: 'Нам доверяют',
         reviews_subtitle:
           'Ваш комфорт — наша работа: стараемся, чтобы каждая поездка была незабываемой!',
+        hot_title: 'Горящие туры',
+        hot_all_url: '/tury?tip=hot',
+        catalog_facts: 'Свои автобусы|Место в салоне на выбор|Работаем с 2011 года',
         why_title: 'Почему выбирают нас',
         lead_title: 'Не нашли, что искали?',
         lead_subtitle: 'Мы перезвоним и ответим на ваши вопросы',
@@ -120,11 +123,13 @@ async function main() {
 
   // ---- menu -------------------------------------------------------------
   if (await isEmpty(client, 'menu_items')) {
+    /* «Города выезда» и «Направления» без своих подпунктов: списки собираются
+       из коллекций departure_cities и destinations. */
     const header = [
-      ['Экскурсии', '#excursions'],
-      ['Туры', '#tours', true],
+      ['Туры', '/tury', true],
+      ['Города выезда', '/tury'],
       ['Направления', '#dests'],
-      ['Отзывы', '#revs'],
+      ['Туристам', '#why'],
     ]
     const travel = [
       ['Туры', '#tours'],
@@ -300,7 +305,7 @@ async function main() {
         'Дагестан',
         '3 дня / 2 ночи',
         24900,
-        'Хит сезона',
+        null,
       ],
       [
         'Цветение лаванды и розы в Крыму: Ай-Петри, Ялта, Форос',

@@ -5,14 +5,29 @@
    * (белый над фото, тёмный в липкой панели). Знак цвета не меняет: чёрная
    * фигура лежит внутри лаймового квадрата и читается на любом фоне.
    */
-  withDefaults(defineProps<{ name?: string | null; href?: string }>(), {
-    name: 'богематур',
-    href: '#top',
-  })
+  const props = withDefaults(
+    defineProps<{ name?: string | null; to?: string }>(),
+    { name: 'богематур', to: '/' },
+  )
+
+  const route = useRoute()
+
+  /* Логотип ведёт на главную. Если мы уже на ней, переход ничего не изменит —
+     тогда это кнопка «наверх», как и ожидают от логотипа в шапке. */
+  function onClick(e: MouseEvent) {
+    if (route.path !== props.to) return
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 </script>
 
 <template>
-  <a class="logo" :href="href" :aria-label="name ?? 'богематур'">
+  <NuxtLink
+    class="logo"
+    :to="to"
+    :aria-label="name ?? 'богематур'"
+    @click="onClick"
+  >
     <svg
       class="logo-word"
       viewBox="0 0 2066 366"
@@ -58,5 +73,5 @@
         fill="#B9F24D"
       />
     </svg>
-  </a>
+  </NuxtLink>
 </template>

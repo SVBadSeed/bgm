@@ -3,7 +3,6 @@
     bodyAttrs: { class: 'lp' },
   })
 </script>
-
 <template>
   <NuxtLayout>
     <NuxtPage />

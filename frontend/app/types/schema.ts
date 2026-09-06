@@ -58,6 +58,10 @@ export interface Landing {
   reviews_badge: string | null
   reviews_subtitle: string | null
   reviews_all_url: string | null
+  hot_title: string | null
+  hot_all_url: string | null
+  /** Плашки в шапке каталога, через | */
+  catalog_facts: string | null
   why_title: string | null
   lead_title: string | null
   lead_subtitle: string | null
@@ -96,6 +100,8 @@ export interface Destination {
   sort: number | null
   name: string
   slug: string | null
+  /** «Туры в …»: заполняют, только если правило склонения ошиблось */
+  case_accusative: string | null
   kicker: string | null
   programs_label: string | null
   price_from: number | null
@@ -118,11 +124,53 @@ export interface Tour {
   place_label: string | null
   duration_label: string | null
   price_from: number | null
+  /** Цена до скидки. Больше текущей — тур считается горящим */
+  old_price: number | null
+  /* Признаки-справочники: словари лежат в app/utils/facets.ts */
+  rest_type: string | null
+  stay_type: string | null
+  difficulty: string | null
+  tour_type: string | null
+  transport: string | null
+  /** Ставит Directus. По ней тур попадает в фильтр «Новые» */
+  date_created?: string | null
   price_prefix: string | null
   price_note: string | null
   url: string | null
   image: ImageRef
   featured: boolean
+}
+
+/** Город, из которого уходит автобус */
+export interface DepartureCity {
+  id: string
+  status: Status
+  sort: number | null
+  name: string
+  slug: string | null
+  /** «Туры из …»: заполняют, только если правило склонения ошиблось */
+  case_genitive: string | null
+  /** «ул. Красная, 176 · 5:30» — место и время подачи */
+  pickup_note: string | null
+}
+
+/**
+ * Один выезд = одна дата тура. На выездах держится всё расписание: даты на
+ * карточках, сортировка «Ближайшие туры», фильтр по городу отправления.
+ */
+export interface Departure {
+  id: string
+  status: Status
+  sort: number | null
+  tour: string | Tour | null
+  /** ISO-дата, без времени: время подачи привязано к городу */
+  date_start: string
+  /** Пусто у однодневных */
+  date_end: string | null
+  city: string | DepartureCity | null
+  seats_left: number | null
+  /** Пусто — берётся price_from тура */
+  price: number | null
 }
 
 export type AdvantageIcon = 'bus' | 'seat' | 'pin' | 'shield' | 'star'
@@ -172,6 +220,8 @@ export interface Schema {
   menu_items: MenuItem[]
   hero_slides: HeroSlide[]
   destinations: Destination[]
+  departures: Departure[]
+  departure_cities: DepartureCity[]
   tours: Tour[]
   advantages: Advantage[]
   reviews: Review[]
@@ -189,6 +239,8 @@ export interface LandingData {
   excursions: Tour[]
   tours: Tour[]
   destinations: Destination[]
+  departures: Departure[]
+  departureCities: DepartureCity[]
   advantages: Advantage[]
   reviews: Review[]
 }

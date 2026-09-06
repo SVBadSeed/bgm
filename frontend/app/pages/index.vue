@@ -26,6 +26,25 @@
           m.placement === 'footer_legal' && /политик/i.test(m.label),
       )?.url ?? '#',
   )
+
+  /* «Ближайшие туры» — не отдельная выборка, а те же карточки, отсортированные
+     по дате ближайшего выезда. Форматы смешаны намеренно: человеку, который
+     смотрит «что скоро», неважно, экскурсия это или многодневный тур. */
+  /* Горящие — те, у кого в админке проставлена цена до скидки. Отдельная
+     секция, а не бейдж в общей ленте: за скидками приходят целенаправленно. */
+  const hot = computed(() =>
+    hotTours(
+      [...data.value.excursions, ...data.value.tours],
+      data.value.departures,
+    ).slice(0, 8),
+  )
+
+  const soonest = computed(() =>
+    nearestFirst(
+      [...data.value.excursions, ...data.value.tours],
+      data.value.departures,
+    ).slice(0, 8),
+  )
 </script>
 
 <template>
@@ -35,6 +54,7 @@
         :menu="data.menu"
         :settings="data.settings"
         :destinations="data.destinations"
+        :cities="data.departureCities"
         :all-url="landing.destinations_all_url"
       />
       <HeroSection
@@ -54,10 +74,21 @@
       />
 
       <ToursRail
+        v-if="hot.length"
+        id="hot"
+        variant="hot"
+        :title="landing.hot_title"
+        :all-url="landing.hot_all_url"
+        :items="hot"
+        :departures="data.departures"
+      />
+
+      <ToursRail
         id="excursions"
         :title="landing.excursions_title"
         :all-url="landing.excursions_all_url"
-        :items="data.excursions"
+        :items="soonest"
+        :departures="data.departures"
       />
 
       <ToursRail
@@ -67,6 +98,7 @@
         :title="landing.tours_title"
         :all-url="landing.tours_all_url"
         :items="data.tours"
+        :departures="data.departures"
       />
 
       <DestinationsGrid

@@ -135,7 +135,9 @@ const select = (field, label, choices, def) => ({
     width: 'half',
     options: { choices: choices.map(([value, text]) => ({ value, text })) },
   },
-  schema: { default_value: def ?? choices[0][0] },
+  /* Явный null означает «без значения по умолчанию»: у признаков-справочников
+     пустое поле — нормальное состояние, а не недозаполненное. */
+  schema: { default_value: def === null ? null : (def ?? choices[0][0]) },
 })
 // файл-картинка: поле + relation к directus_files (relation создаём отдельно ниже)
 const image = (field, label, note) => ({
@@ -150,6 +152,18 @@ const image = (field, label, note) => ({
   },
   schema: {},
   _relation: { related_collection: 'directus_files' },
+})
+const date = (field, label, opts = {}) => ({
+  field,
+  type: 'date',
+  meta: {
+    interface: 'datetime',
+    translations: ru(label),
+    width: opts.width || 'half',
+    note: opts.note,
+    required: opts.required,
+  },
+  schema: {},
 })
 const m2o = (field, label, related, template) => ({
   field,
@@ -262,7 +276,7 @@ const collections = [
       ),
       str('excursions_title', 'Заголовок «Экскурсии»', {
         width: 'half',
-        default: 'Сейчас в Краснодаре',
+        default: 'Ближайшие туры',
       }),
       str('excursions_all_url', 'Ссылка «Все» (экскурсии)', {
         width: 'half',
@@ -298,6 +312,18 @@ const collections = [
       str('reviews_all_url', 'Ссылка «Все отзывы»', {
         width: 'half',
         default: '#',
+      }),
+      str('hot_title', 'Заголовок «Горящие туры»', {
+        width: 'half',
+        default: 'Горящие туры',
+      }),
+      str('hot_all_url', 'Ссылка «Все» (горящие)', {
+        width: 'half',
+        default: '/tury?tip=hot',
+      }),
+      str('catalog_facts', 'Плашки в шапке каталога', {
+        default: 'Свои автобусы|Место в салоне на выбор|Работаем с 2011 года',
+        note: 'Три коротких обещания через | — показываются под заголовком раздела',
       }),
       str('why_title', 'Заголовок «Почему мы»', {
         default: 'Почему выбирают нас',
@@ -364,10 +390,17 @@ const collections = [
       sort(),
       str('name', 'Название', { width: 'half', required: true }),
       str('slug', 'Слаг', { width: 'half', options: { slug: true } }),
+      str('case_accusative', 'Название в винительном', {
+        width: 'half',
+        note: 'Для заголовка «Туры в …». Пусто — склоняем сами, заполнять только если склонилось неверно',
+      }),
       str('kicker', 'Подзаголовок', { width: 'half', note: 'Горы и море' }),
       str('programs_label', 'Подпись «N программ»', { width: 'half' }),
       int('price_from', 'Цена от, ₽'),
-      str('url', 'Ссылка', { width: 'half', default: '#' }),
+      str('url', 'Ссылка', {
+        width: 'half',
+        note: 'Пусто — ведёт на /napravleniya/<слаг>',
+      }),
       image('image', 'Фото'),
       bool('featured', 'Показывать на главной', true),
       ...dates(),
@@ -391,7 +424,7 @@ const collections = [
       ]),
       str('title', 'Название', { required: true }),
       str('slug', 'Слаг', { width: 'half', options: { slug: true } }),
-      str('tag', 'Бейдж на фото', { width: 'half', note: 'Хит сезона' }),
+      str('tag', 'Бейдж на фото', { width: 'half', note: 'Например: Новый маршрут' }),
       m2o('destination', 'Направление', 'destinations', '{{name}}'),
       str('place_label', 'Место (мета)', {
         width: 'half',
@@ -402,6 +435,69 @@ const collections = [
         note: '9 часов / 3 дня / 2 ночи',
       }),
       int('price_from', 'Цена, ₽'),
+      /* Признаки-справочники для фильтров каталога. Словарь повторён в
+         frontend/app/utils/facets.ts — правим оба места вместе. */
+      select(
+        'rest_type',
+        'Тип отдыха',
+        [
+          ['ekskursionnyy', 'Экскурсионный'],
+          ['aktivnyy', 'Активный'],
+          ['plyazhnyy', 'Пляжный'],
+          ['gastronomicheskiy', 'Гастрономический'],
+          ['gornolyzhnyy', 'Горнолыжный'],
+          ['palomnicheskiy', 'Паломнический'],
+        ],
+        null,
+      ),
+      select(
+        'stay_type',
+        'Тип размещения',
+        [
+          ['bez', 'Без размещения'],
+          ['gostinica', 'Гостиница'],
+          ['baza', 'База отдыха'],
+          ['gostevoy-dom', 'Гостевой дом'],
+          ['sanatoriy', 'Санаторий'],
+        ],
+        null,
+      ),
+      select(
+        'difficulty',
+        'Уровень сложности',
+        [
+          ['legkiy', 'Лёгкий'],
+          ['sredniy', 'Средний'],
+          ['slozhnyy', 'Сложный'],
+        ],
+        null,
+      ),
+      select(
+        'tour_type',
+        'Тип тура',
+        [
+          ['sbornyy', 'Сборный'],
+          ['gruppovoy', 'Групповой'],
+          ['individualnyy', 'Индивидуальный'],
+          ['avtorskiy', 'Авторский'],
+        ],
+        null,
+      ),
+      select(
+        'transport',
+        'Тип транспорта',
+        [
+          ['avtobus', 'Автобус'],
+          ['mikroavtobus', 'Микроавтобус'],
+          ['poezd', 'Поезд'],
+          ['dzhip', 'Джип'],
+          ['peshkom', 'Пешком'],
+        ],
+        null,
+      ),
+      int('old_price', 'Цена до скидки, ₽', {
+        note: 'Заполнено и больше обычной цены — тур попадает в «Горящие»',
+      }),
       str('price_prefix', 'Префикс цены', {
         width: 'half',
         note: '«от» для туров, пусто для экскурсий',
@@ -413,6 +509,57 @@ const collections = [
       str('url', 'Ссылка', { width: 'half', default: '#' }),
       image('image', 'Фото'),
       bool('featured', 'Показывать на главной', true),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'departure_cities',
+    meta: listMeta(
+      'departure_board',
+      'Города выезда',
+      '{{name}}',
+      'Откуда уходит автобус. На них ссылаются выезды и фильтр каталога.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      str('name', 'Город', { width: 'half', required: true }),
+      str('slug', 'Слаг', { width: 'half', options: { slug: true } }),
+      str('case_genitive', 'Название в родительном', {
+        width: 'half',
+        note: 'Для заголовка «Туры из …». Пусто — склоняем сами, заполнять только если склонилось неверно',
+      }),
+      str('pickup_note', 'Место и время подачи', {
+        note: 'ул. Красная, 176 · 5:30 — показывается на странице тура',
+      }),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'departures',
+    meta: listMeta(
+      'event',
+      'Выезды',
+      '{{tour.title}} — {{date_start}}',
+      'Один выезд = одна дата тура. Отсюда берутся даты на карточках, сортировка «Ближайшие» и фильтр по городу выезда.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      m2o('tour', 'Тур', 'tours', '{{title}}'),
+      date('date_start', 'Дата выезда', { required: true }),
+      date('date_end', 'Дата возвращения', {
+        note: 'Для однодневных можно оставить пустым',
+      }),
+      m2o('city', 'Город выезда', 'departure_cities', '{{name}}'),
+      int('seats_left', 'Свободных мест', {
+        note: 'Пусто — не показываем счётчик',
+      }),
+      int('price', 'Цена этой даты, ₽', {
+        note: 'Пусто — берётся цена тура. Заполняется, когда сезон дороже',
+      }),
       ...dates(),
     ],
   },
@@ -507,6 +654,18 @@ const publicPermissions = [
     permissions: published,
   },
   {
+    collection: 'departure_cities',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
+  },
+  {
+    collection: 'departures',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
+  },
+  {
     collection: 'hero_slides',
     action: 'read',
     fields: ['*'],
@@ -523,6 +682,57 @@ const publicPermissions = [
     action: 'read',
     fields: ['*'],
     permissions: published,
+  },
+  {
+    collection: 'departure_cities',
+    meta: listMeta(
+      'departure_board',
+      'Города выезда',
+      '{{name}}',
+      'Откуда уходит автобус. На них ссылаются выезды и фильтр каталога.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      str('name', 'Город', { width: 'half', required: true }),
+      str('slug', 'Слаг', { width: 'half', options: { slug: true } }),
+      str('case_genitive', 'Название в родительном', {
+        width: 'half',
+        note: 'Для заголовка «Туры из …». Пусто — склоняем сами, заполнять только если склонилось неверно',
+      }),
+      str('pickup_note', 'Место и время подачи', {
+        note: 'ул. Красная, 176 · 5:30 — показывается на странице тура',
+      }),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'departures',
+    meta: listMeta(
+      'event',
+      'Выезды',
+      '{{tour.title}} — {{date_start}}',
+      'Один выезд = одна дата тура. Отсюда берутся даты на карточках, сортировка «Ближайшие» и фильтр по городу выезда.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      m2o('tour', 'Тур', 'tours', '{{title}}'),
+      date('date_start', 'Дата выезда', { required: true }),
+      date('date_end', 'Дата возвращения', {
+        note: 'Для однодневных можно оставить пустым',
+      }),
+      m2o('city', 'Город выезда', 'departure_cities', '{{name}}'),
+      int('seats_left', 'Свободных мест', {
+        note: 'Пусто — не показываем счётчик',
+      }),
+      int('price', 'Цена этой даты, ₽', {
+        note: 'Пусто — берётся цена тура. Заполняется, когда сезон дороже',
+      }),
+      ...dates(),
+    ],
   },
   {
     collection: 'advantages',
