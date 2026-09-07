@@ -497,9 +497,6 @@ img {
 .pcard:hover {
   color: var(--ink);
 }
-.pcard:hover .pcard-media {
-  transform: translateY(-3px);
-}
 .pcard-media {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -715,7 +712,10 @@ img {
   display: flex;
   gap: 18px;
   overflow-x: auto;
-  scroll-snap-type: x proximity;
+  /* Явно запрещаем вертикальную прокрутку: при overflow-x: auto она сама
+     становится «auto», лента превращается в вертикальный скроллер и съедает
+     колесо — страница под курсором стоит на месте. */
+  overflow-y: hidden;
   scrollbar-width: none;
   padding: 4px var(--pad) 6px;
   margin: -4px calc(var(--pad) * -1) 0;
@@ -725,7 +725,6 @@ img {
 }
 .rev {
   flex: 0 0 372px;
-  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   background: var(--surface);
@@ -896,9 +895,12 @@ img {
   margin: 0 0 17px;
   font-family: var(--font);
 }
+/* align-items: flex-start — иначе ссылки-флексы растягиваются на всю колонку,
+   и подсветка при наведении срабатывает далеко в стороне от текста. */
 .f-links {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 11px;
 }
 .f-links a {
@@ -924,16 +926,29 @@ img {
   max-width: 32ch;
 }
 .f-tel {
+  display: inline-block;
   font-family: var(--font-display);
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.025em;
   color: #fff;
 }
+.f-tel:hover {
+  color: var(--lime);
+}
 .f-mail {
   font-size: 15px;
   color: rgba(255, 255, 255, 0.62);
   margin-top: 8px;
+}
+.f-mail a {
+  color: inherit;
+}
+.f-mail a:hover {
+  color: var(--lime);
+}
+.f-links a:hover {
+  color: var(--lime);
 }
 .socials {
   display: flex;
@@ -988,7 +1003,7 @@ img {
   display: flex;
   gap: 18px;
   overflow-x: auto;
-  scroll-snap-type: x proximity;
+  overflow-y: hidden;
   scroll-behavior: smooth;
   scrollbar-width: none;
   padding: 4px var(--pad) 6px;
@@ -997,9 +1012,7 @@ img {
 .rail-track::-webkit-scrollbar {
   display: none;
 }
-.rail-track > * {
-  scroll-snap-align: start;
-}
+
 
 /* ---------------- пустые фото-слоты: подсказка должна быть видна ----------------
    Встроенная подсказка .slot нарисована тёмным по прозрачному, поэтому пока

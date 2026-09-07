@@ -7,6 +7,8 @@ import type {
   DepartureCity,
   Advantage,
   Destination,
+  ForeignOffer,
+  ForeignPage,
   HeroSlide,
   Landing,
   LandingData,
@@ -19,16 +21,28 @@ import type {
 const settings: SiteSettings = {
   id: 'mock',
   brand_name: 'богематур',
-  phone: '+7 861 205-40-40',
-  phone_href: '+78612054040',
-  email: 'info@bogematur.ru',
-  address: 'Краснодар, ул. Красная, 176',
+  phone: '8 (800) 777-76-77',
+  phone_href: 'tel:88007777677',
+  phone_kicker: 'Номер для бесплатных звонков только из России',
+  phone_note:
+    'Отвечаем на звонки ежедневно с 09:00 до 21:00. Вы в дороге ночью и у Вас срочный вопрос? Наберите этот номер и нажмите 0.',
+  phone2: '+7 (918) 494-04-45',
+  phone2_href: 'tel:+79184940445',
+  phone2_note:
+    'На данном номере у нас WhatsApp, Telegram, Max. Пишите в любое время!',
+  email: 'info@bogema.ru',
+  office_title: 'Офис в г. Новороссийск',
+  address:
+    'ул. Новороссийской Республики 14А, 2 этаж, офис 13 (БЦ «Венеция»)',
+  work_hours: 'Режим работы: ПН–ПТ с 09:00 до 18:00. СБ-ВС — выходной.',
   about:
-    'Туроператор по югу России и Кавказу. РТО 025467, работаем с 2011 года.',
-  copyright: '© 2026 ООО «БогемаТур»',
-  vk_url: '#',
-  telegram_url: '#',
-  whatsapp_url: '#',
+    'Туроператор по югу России и Кавказу. ООО «АТТ», в реестре туроператоров В031-00161-00/04513871.',
+  copyright: '© 2026 ООО «АТТ»',
+  vk_url: 'https://vk.com/bogematur',
+  telegram_url: 'https://t.me/bogematour',
+  whatsapp_url: 'https://chat.whatsapp.com/IQpKtr2xYH2La6CFN3MeWw',
+  max_url: 'https://max.ru/id9713033679_biz3',
+  map_url: '',
   lk_url: '#',
   favorites_url: '#',
 }
@@ -161,14 +175,9 @@ const menu: MenuItem[] = [
      коллекций, чтобы не вести одни и те же города и регионы в двух местах. */
   ...menuOf('header', [['Города выезда', '/tury']]),
   ...menuOf('header', [['Направления', '#dests']]),
-  ...branch('Туристам', '#why', [
-    ['О компании', '#'],
-    ['Как оплатить', '#'],
-    ['Документы', '#'],
-    ['Вопросы и ответы', '#'],
-    ['Отзывы', '#revs'],
-  ]),
-  ...menuOf('header', [['🔥 Акции', '#']]),
+  /* «Контакты» открывают окно поверх страницы: ссылку перехватывает
+     ContactsDialog, отдельной страницы под них нет. */
+  ...menuOf('header', [['Контакты', '#contacts']]),
   ...menuOf('footer_travel', [
     ['Туры', '/tury'],
     ['Экскурсии', '/tury?dlitelnost=1'],
@@ -325,11 +334,8 @@ const excursions: Tour[] = (
   date_created: createdAgo(i * 17),
   /* Признаки перебираем по кругу: моки нужны, чтобы в фильтрах было что
      выбирать, а не чтобы описать реальные программы. */
-  rest_type: ['ekskursionnyy', 'aktivnyy', 'gastronomicheskiy'][i % 3] ?? null,
-  stay_type: 'bez',
   difficulty: i % 4 === 3 ? 'sredniy' : 'legkiy',
-  tour_type: i % 3 === 2 ? 'avtorskiy' : 'sbornyy',
-  transport: i % 5 === 4 ? 'mikroavtobus' : 'avtobus',
+  transport: 'avtobus',
   price_prefix: '',
   price_note: 'за человека',
   url: '#',
@@ -387,12 +393,8 @@ const tours: Tour[] = (
   price_from,
   old_price: i % 2 === 0 ? Math.round((price_from * 1.18) / 100) * 100 : null,
   date_created: createdAgo(i * 23),
-  rest_type:
-    ['aktivnyy', 'ekskursionnyy', 'plyazhnyy', 'gornolyzhnyy'][i % 4] ?? null,
-  stay_type: ['gostinica', 'baza', 'gostevoy-dom'][i % 3] ?? null,
   difficulty: ['legkiy', 'sredniy', 'slozhnyy'][i % 3] ?? null,
-  tour_type: i % 2 === 0 ? 'gruppovoy' : 'avtorskiy',
-  transport: i % 4 === 3 ? 'dzhip' : 'avtobus',
+  transport: ['avtobus', 'poezd', 'samolet'][i % 3] ?? null,
   price_prefix: 'от',
   price_note: 'за туриста',
   url: '#',
@@ -431,6 +433,39 @@ const advantages: Advantage[] = (
   text,
   link_label,
   link_url,
+  page: 'landing' as const,
+}))
+
+/* Преимущества страницы зарубежных туров. Та же коллекция, что и на главной,
+   отличается только полем «страница»: блок один, вести его в двух местах
+   менеджеру незачем. Тексты длиннее — за границу едут дороже и вопросов
+   задают больше. */
+const foreignPerks: Advantage[] = (
+  [
+    [
+      'headset',
+      'Профессиональные менеджеры',
+      'Подберём тур под ваши даты, бюджет и пожелания: сравним операторов, проверим отели и предложим варианты, из которых останется только выбрать.',
+    ],
+    [
+      'shield',
+      'Всё оформление на нас',
+      'Договор, страховка, ваучеры и билеты — готовим сами. Вы получаете пакет документов и телефон, по которому отвечают в поездке.',
+    ],
+    [
+      'diamond',
+      'Условия, которых нет в поиске',
+      'Раннее бронирование, места у моря, трансфер и индивидуальные экскурсии — договариваемся напрямую с принимающей стороной.',
+    ],
+  ] as [Advantage['icon'], string, string][]
+).map(([icon, title, text]) => ({
+  ...item(),
+  icon,
+  title,
+  text,
+  link_label: null,
+  link_url: null,
+  page: 'foreign' as const,
 }))
 
 const tourRef = (title: string) =>
@@ -508,6 +543,62 @@ const departures: Departure[] = (() => {
   return rows
 })()
 
+/* ---------------------------------------------------------------- заграница */
+
+/* Даты вылетов считаем от сегодня: демо не должно протухать через месяц */
+const inDays = (n: number) => {
+  const d = new Date()
+  d.setDate(d.getDate() + n)
+  return d.toISOString().slice(0, 10)
+}
+
+export const mockForeignPage: ForeignPage = {
+  id: 'mock',
+  seo_title: 'Пакетные туры за границу из Краснодара и Сочи — БогемаТур',
+  seo_description:
+    'Турция, Египет, ОАЭ и Таиланд: отель и перелёт одним пакетом. Подбор, бронирование и оформление документов — на нас.',
+  title: 'Пакетные туры за границу',
+  image: '/demo/afiny.jpg',
+  facts:
+    'Турция, Египет, ОАЭ, Таиланд|Вылеты из Краснодара, Сочи и Минвод|Рассрочка и оплата картой',
+  widget_code: '',
+  widget_note:
+    'Цены обновляются онлайн у туроператоров. Нашли дешевле — скажите менеджеру, проверим.',
+  hot_title: 'Горящие предложения',
+  hot_all_url: '',
+  perks_title: 'Почему за границу — с нами',
+}
+
+export const mockForeignOffers: ForeignOffer[] = (
+  [
+    ['Marine Family Club', 5, 'Турция', 'Сиде', 7, 'uai', 4.6, 65400, 47900, 6],
+    ['Beach Safari Resort', 4, 'Египет', 'Марса-Алам', 7, 'ai', 4.4, 50600, 41600, 8],
+    ['Citrus Plaza Hotel', 4, 'Турция', 'Аланья', 7, 'ai', 4.2, 55800, 42700, 6],
+    ['Rehana Royal Beach', 5, 'Египет', 'Шарм-эль-Шейх', 7, 'uai', 4.5, 78300, 58700, 11],
+    ['Marjan Island Resort', 5, 'ОАЭ', 'Рас-эль-Хайма', 6, 'ai', 4.7, 96500, 82300, 13],
+    ['Aegean Blue', 4, 'Греция', 'Крит', 8, 'hb', 4.5, 92000, 79400, 15],
+    ['Crowne Plaza Deira', 5, 'ОАЭ', 'Дубай', 7, 'ro', 4.6, 0, 71700, 9],
+    ['Baumanburi Phuket', 4, 'Таиланд', 'Пхукет', 11, 'bb', 4.3, 0, 75000, 12],
+  ] as [string, number, string, string, number, ForeignOffer['meal'], number, number, number, number][]
+).map(
+  ([hotel, stars, country, city, nights, meal, rating, oldPrice, price, day]) => ({
+    ...item(),
+    hotel,
+    stars,
+    country,
+    city,
+    nights,
+    meal,
+    rating,
+    old_price: oldPrice || null,
+    price,
+    price_note: 'за двоих',
+    date_start: inDays(day),
+    url: '#',
+    image: '/demo/sfinks.jpg',
+  }),
+)
+
 export const mockLanding: LandingData = {
   source: 'mock',
   settings,
@@ -519,6 +610,6 @@ export const mockLanding: LandingData = {
   destinations,
   departures,
   departureCities,
-  advantages,
+  advantages: [...advantages, ...foreignPerks],
   reviews,
 }

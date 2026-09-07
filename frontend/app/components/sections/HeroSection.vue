@@ -2,6 +2,11 @@
   /*
    * Hero: ротация слайдов раз в 6 с, пауза при наведении, точки-переключатели
    * (они же индикатор времени до смены кадра), строка «На фото» под карточкой.
+   *
+   * Часы одни на всё: полоска в точке и смена кадра считаются от одного
+   * счётчика. Раньше полоску вела CSS-анимация, а кадр — setInterval, и после
+   * паузы они расходились: полоска добегала до конца и кадр «залипал» до
+   * следующего срабатывания таймера.
    */
   import type { HeroSlide } from '~/types/schema'
 
@@ -11,9 +16,16 @@
     placeholder: string | null
   }>()
 
+  const SHOT_MS = 6000
+
   const cur = ref(0)
   const paused = ref(false)
-  let timer: ReturnType<typeof setInterval> | null = null
+  const dots = ref<HTMLElement | null>(null)
+  /* Прогресс держим вне реактивности: он меняется каждый кадр, а перерисовывать
+     из-за него разметку незачем — достаточно переменной на самой точке. */
+  let elapsed = 0
+  let last = 0
+  let raf = 0
 
   const current = computed(() => props.slides[cur.value] ?? null)
   /* Знаки внутри строки разбирает splitTitleLines: тем же приёмом
@@ -24,32 +36,52 @@
     const n = props.slides.length
     if (!n) return
     cur.value = ((i % n) + n) % n
+    elapsed = 0
+    paint()
+  }
+
+  function paint() {
+    const el = dots.value?.children[cur.value] as HTMLElement | undefined
+    el?.style.setProperty('--p', String(Math.min(elapsed / SHOT_MS, 1)))
+  }
+
+  function frame(t: number) {
+    raf = requestAnimationFrame(frame)
+    const dt = last ? t - last : 0
+    last = t
+    if (paused.value || props.slides.length < 2) return
+    elapsed += dt
+    if (elapsed >= SHOT_MS) show(cur.value + 1)
+    else paint()
+  }
+
+  function start() {
+    if (!raf) raf = requestAnimationFrame(frame)
   }
   function stop() {
-    if (timer) clearInterval(timer)
-    timer = null
-  }
-  function restart() {
-    stop()
-    if (props.slides.length > 1)
-      timer = setInterval(() => show(cur.value + 1), 6000)
+    if (raf) cancelAnimationFrame(raf)
+    raf = 0
+    last = 0
   }
   function pick(i: number) {
     show(i)
-    restart()
   }
   /* Отдельные методы, а не выражения в шаблоне: без точек с запятой
      (prettier их убирает) Vue не разбирает многострочный обработчик. */
   function onEnter() {
-    stop()
     paused.value = true
   }
   function onLeave() {
-    restart()
+    /* Кадр после паузы продолжается с того же места, а не начинается заново:
+       полоска в точке показывает ровно оставшееся время. */
+    last = 0
     paused.value = false
   }
 
-  onMounted(restart)
+  onMounted(() => {
+    start()
+    paint()
+  })
   onBeforeUnmount(stop)
 
   const query = ref('')
@@ -119,7 +151,7 @@
       </form>
     </div>
 
-    <div v-if="slides.length > 1" class="shot-dots">
+    <div v-if="slides.length > 1" ref="dots" class="shot-dots">
       <button
         v-for="(s, i) in slides"
         :key="s.id"

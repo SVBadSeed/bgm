@@ -1,8 +1,8 @@
 <script setup lang="ts">
   /*
-   * Обёртка страниц каталога. Шапка не стоит на белом, а висит над фотографией
-   * раздела — как на главной: страница начинается кадром, и белая полоса над
-   * ним отрезала бы его от заголовка.
+   * Обёртка страниц каталога. Шапка та же, что на главной: висит над
+   * фотографией раздела, приколота к верху и белеет, когда фото под ней
+   * заканчивается. Поля поиска в ней нет — в каталоге свой, крупный.
    */
   const { data } = await useLanding()
 
@@ -19,6 +19,7 @@
 <template>
   <div class="page-shell is-over">
     <SiteHeader
+      float
       :menu="data.menu"
       :settings="data.settings"
       :destinations="data.destinations"
@@ -37,6 +38,7 @@
         :policy-url="policyUrl"
       />
     </main>
+    <ContactsDialog :settings="data.settings" />
     <SiteFooter
       :settings="data.settings"
       :menu="data.menu"

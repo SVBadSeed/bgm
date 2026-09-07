@@ -38,6 +38,7 @@
         :policy-url="policyUrl"
       />
     </main>
+    <ContactsDialog :settings="data.settings" />
     <SiteFooter
       :settings="data.settings"
       :menu="data.menu"

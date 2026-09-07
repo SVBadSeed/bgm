@@ -102,8 +102,75 @@
     }
   }
 
+  /*
+   * Пока человек выбирает фильтры, страница не должна укорачиваться. Выдача
+   * становится короче — браузер подтягивает прокрутку к новому концу
+   * документа, и человека выбрасывает вверх посреди выбора, к галочке уже не
+   * вернуться. Поэтому на время работы с колонкой держим прежнюю высоту
+   * выдачи и отпускаем её, когда указатель уходит из фильтров.
+   */
+  const main = ref<HTMLElement | null>(null)
+  const hold = ref<number | null>(null)
+
+  function freeze() {
+    if (!import.meta.client || !main.value) return
+    hold.value = Math.max(hold.value ?? 0, main.value.offsetHeight)
+  }
+
+  /*
+   * Отпускаем не сразу: если убрать подпорку, когда человек стоит ниже нового
+   * конца документа, прокрутку дёрнет — то же самое, от чего мы и защищаемся.
+   * Поэтому проверяем, безопасно ли, и если нет — ждём, пока он прокрутит
+   * вверх достаточно, и отпускаем там, где это уже ничего не сдвинет.
+   */
+  function canRelease(): boolean {
+    const el = main.value
+    if (!el || hold.value == null) return true
+    /* Меряем настоящую высоту содержимого: пока стоит подпорка, и offsetHeight,
+       и scrollHeight равны ей самой и ничего не говорят о том, насколько
+       страница укоротится. */
+    const kept = el.style.minHeight
+    el.style.minHeight = '0px'
+    const natural = el.offsetHeight
+    el.style.minHeight = kept
+    const shrink = hold.value - natural
+    if (shrink <= 0) return true
+    return (
+      window.scrollY <=
+      document.documentElement.scrollHeight - shrink - window.innerHeight
+    )
+  }
+
+  function release() {
+    if (!import.meta.client || hold.value == null) return
+    if (canRelease()) {
+      hold.value = null
+      window.removeEventListener('scroll', onScrollRelease)
+      return
+    }
+    window.addEventListener('scroll', onScrollRelease, { passive: true })
+  }
+
+  function onScrollRelease() {
+    if (!canRelease()) return
+    hold.value = null
+    window.removeEventListener('scroll', onScrollRelease)
+  }
+
+  onBeforeUnmount(() => {
+    if (import.meta.client) window.removeEventListener('scroll', onScrollRelease)
+  })
+
+  watch(
+    () => route.path,
+    () => {
+      hold.value = null
+    },
+  )
+
   /* Уточнение: страница та же, меняется только адресная часть */
   function apply(next: CatalogQuery) {
+    freeze()
     router.push({
       path: route.path,
       query: queryOf(next, !!props.lockCity, !!props.lockDestination),
@@ -267,6 +334,8 @@
       .map((d) => ({ value: d.slug as string, label: d.name })),
   )
   const months = computed(() => monthsWithDepartures(data.value.departures))
+  /* Дни, в которые есть выезды: календарь «Когда» подсвечивает только их */
+  const days = computed(() => departureDays(data.value.departures))
 
   /* «Популярное» — соседние срезы того же каталога: на странице направления
      это города выезда, везде ещё — направления. Ссылки ведут на страницы,
@@ -320,19 +389,6 @@
   const visible = computed(() => rows.value.slice(0, shown.value))
 
   const filters = ref<InstanceType<typeof CatalogFilters> | null>(null)
-  const results = ref<HTMLElement | null>(null)
-
-  /* После «Найти» выдача должна оказаться перед глазами, а не под шапкой */
-  watch(
-    () => route.fullPath,
-    () => {
-      if (!import.meta.client) return
-      const el = results.value
-      if (el && el.getBoundingClientRect().top < 0) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-    },
-  )
 
   useSeoMeta({
     title: () => `${heading.value} — БогемаТур`,
@@ -349,6 +405,7 @@
       :cities="cityOptions"
       :destinations="destOptions"
       :months="months"
+      :days="days"
       :query="query"
       :lock-city="!!lockCity"
       :lock-destination="!!lockDestination"
@@ -366,13 +423,14 @@
         <span>{{ crumb }}</span>
       </nav>
 
-      <div ref="results" class="catalog">
-        <aside class="catalog-side">
+      <div class="catalog">
+        <aside class="catalog-side" @pointerleave="release">
           <CatalogFilters
             ref="filters"
             :destinations="data.destinations"
             :cities="data.cities"
             :departures="data.departures"
+            :days="days"
             :query="query"
             :lock-city="!!lockCity"
             :lock-destination="!!lockDestination"
@@ -384,7 +442,11 @@
           />
         </aside>
 
-        <div class="catalog-main">
+        <div
+          ref="main"
+          class="catalog-main"
+          :style="hold ? { minHeight: `${hold}px` } : undefined"
+        >
           <div class="catalog-top">
             <p class="catalog-found">
               Найдено {{ rows.length }}
@@ -402,7 +464,9 @@
                   >{{ filters.activeCount }}</span
                 >
               </button>
-              <label class="catalog-sort">
+              <!-- Не label: он передавал клик по слову «Сортировка» первому
+                   контролу внутри, и список раскрывался мимо кнопки. -->
+              <div class="catalog-sort">
                 <span>Сортировка</span>
                 <SelectMenu
                   :model-value="
@@ -414,7 +478,7 @@
                     refine({ sort: ($event as SortKey) ?? 'date' })
                   "
                 />
-              </label>
+              </div>
             </div>
           </div>
 

@@ -1,7 +1,15 @@
 <script setup lang="ts">
   /*
-   * Плавающая шапка внутри .hero-band. Цвета (белый/тёмный) переключает CSS
-   * через .hero-band:has(.hero-shot.on .slot-empty) — см. landing.css.
+   * Шапка сайта. Над кадром — на главной и в разделах каталога — она приколота
+   * к верху и едет вместе со страницей в своём обычном виде; никакой второй,
+   * уменьшенной панели нет, это одна и та же шапка.
+   *
+   * Белой она становится в один момент: на главной — когда в неё садится
+   * строка поиска с кадра, в каталоге — когда под шапкой заканчивается фото
+   * раздела. Дальше её нельзя оставлять светлой: под ней белое полотно.
+   *
+   * Цвета (белый/тёмный) переключает CSS через
+   * .hero-band:has(.hero-shot.on .slot-empty) — см. landing.css.
    */
   import type {
     DepartureCity,
@@ -18,8 +26,20 @@
       cities?: DepartureCity[]
       /* Ссылка «Все направления» живёт в landing, а не в настройках сайта */
       allUrl?: string | null
+      /* Шапка висит над кадром и приколота к верху */
+      float?: boolean
+      /* Поле поиска в шапке нужно только на главной: в каталоге свой поиск */
+      search?: boolean
+      searchPlaceholder?: string | null
     }>(),
-    { destinations: () => [], cities: () => [], allUrl: null },
+    {
+      destinations: () => [],
+      cities: () => [],
+      allUrl: null,
+      float: false,
+      search: false,
+      searchPlaceholder: null,
+    },
   )
 
   /* Мобильное меню строится тем же деревом, что и NavMenu, но раскрыто
@@ -51,6 +71,45 @@
   }
 
   const open = ref(false)
+
+  /*
+   * Считаем по живому положению элементов: кадр меняет высоту, пока грузится
+   * фотография, и запомненные однажды пороги уезжают.
+   */
+  const solid = ref(false)
+  const root = ref<HTMLElement | null>(null)
+  let ticking = false
+
+  function onScroll() {
+    if (!props.float || ticking) return
+    ticking = true
+    requestAnimationFrame(() => {
+      ticking = false
+      const h = root.value?.offsetHeight ?? 70
+      const field = props.search
+        ? document.querySelector<HTMLElement>('.hero-search')
+        : null
+      if (field) {
+        /* Строка поиска подходит под нижнюю кромку — её место занимает
+           такое же поле внутри шапки. */
+        solid.value = field.getBoundingClientRect().top <= h
+        return
+      }
+      /* Иначе граница — конец кадра под шапкой: дальше идёт белое полотно. */
+      const cover = document.querySelector<HTMLElement>('.chero, .hero-band')
+      solid.value = cover
+        ? cover.getBoundingClientRect().bottom <= h
+        : window.scrollY > h
+    })
+  }
+
+  /* Поиск из шапки ведёт в каталог: это единственное место, где он что-то
+     делает, — на главной искать не по чему. */
+  const query = ref('')
+  function onSearch() {
+    const q = query.value.trim()
+    if (q) navigateTo({ path: '/tury', query: { poisk: q } })
+  }
   const close = () => (open.value = false)
 
   function onDocClick(e: MouseEvent) {
@@ -63,17 +122,51 @@
   onMounted(() => {
     document.addEventListener('click', onDocClick)
     document.addEventListener('keydown', onKey)
+    if (props.float) {
+      onScroll()
+      window.addEventListener('scroll', onScroll, { passive: true })
+      window.addEventListener('resize', onScroll)
+    }
   })
   onBeforeUnmount(() => {
     document.removeEventListener('click', onDocClick)
     document.removeEventListener('keydown', onKey)
+    window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('resize', onScroll)
   })
 </script>
 
 <template>
-  <header class="lp-header">
+  <header
+    ref="root"
+    class="lp-header"
+    :class="{ 'is-float': float, 'is-solid': float && solid }"
+  >
     <div class="wrap">
       <BrandLogo :name="settings.brand_name" />
+
+      <!-- Поле приезжает снизу, оттуда, где строка осталась над кадром -->
+      <form v-if="float && search" class="hd-search" @submit.prevent="onSearch">
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#9A9AA4"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M11 11m-7 0a7 7 0 1 0 14 0a7 7 0 1 0-14 0" />
+          <path d="M20 20l-3.5-3.5" />
+        </svg>
+        <input
+          v-model="query"
+          type="search"
+          :placeholder="searchPlaceholder ?? 'Куда поедем?'"
+          :tabindex="solid ? 0 : -1"
+        />
+      </form>
 
       <nav class="lp-nav">
         <NavMenu

@@ -103,7 +103,8 @@
         />
       </svg>
     </button>
-    <div v-if="open" class="selm-list">
+    <Transition name="selm">
+      <div v-if="open" class="selm-list">
       <button
         type="button"
         class="selm-opt"
@@ -134,7 +135,8 @@
           </svg>
         </i>
         {{ o.label }}
-      </button>
-    </div>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>

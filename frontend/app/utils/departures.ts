@@ -152,6 +152,21 @@ export function monthsWithDepartures(
   })
 }
 
+/**
+ * Дни, в которые вообще что-то уезжает — YYYY-MM-DD. Календарь подсвечивает
+ * только их: щёлкать по дате, на которую ничего нет, и получать пустую выдачу
+ * человек не должен.
+ */
+export function departureDays(departures: Departure[]): string[] {
+  const from = today()
+  const seen = new Set<string>()
+  for (const d of departures) {
+    const t = Date.parse(d.date_start)
+    if (Number.isFinite(t) && t >= from) seen.add(d.date_start.slice(0, 10))
+  }
+  return [...seen].sort()
+}
+
 /** Сколько дней идёт тур — из «3 дня / 2 ночи»; у экскурсии один */
 export function daysOf(tour: Tour): number {
   const m = /(\d+)\s*дн/.exec(tour.duration_label ?? '')

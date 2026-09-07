@@ -18,6 +18,8 @@
     cities: { value: string; label: string }[]
     destinations: { value: string; label: string }[]
     months: { value: string; label: string }[]
+    /** Даты выездов для календаря в поиске */
+    days: string[]
     query: CatalogQuery
     /** Соседние срезы каталога под поиском */
     popular: { key: string; label: string; count: number; url: string }[]
@@ -86,6 +88,7 @@
         :cities="cities"
         :destinations="destinations"
         :months="months"
+        :days="days"
         :query="query"
         @search="emit('submit', $event)"
       />

@@ -209,6 +209,8 @@ html {
 .shot-dots button.on {
   background: rgba(255, 255, 255, 0.42);
 }
+/* Заполнение ведёт скрипт через --p: одни часы и для полоски, и для смены
+   кадра, поэтому полоска не может добежать раньше, чем сменится фото. */
 .shot-dots button.on::after {
   content: '';
   position: absolute;
@@ -216,18 +218,7 @@ html {
   border-radius: inherit;
   background: #fff;
   transform-origin: left center;
-  animation: dot-fill 6s linear both;
-}
-.hero-card.is-paused .shot-dots button.on::after {
-  animation-play-state: paused;
-}
-@keyframes dot-fill {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
+  transform: scaleX(var(--p, 0));
 }
 /* Светлый вариант hero (фото ещё не загружено) */
 .hero-card:has(.hero-shot.on .slot-empty) .shot-dots button {
@@ -308,155 +299,6 @@ html {
   }
 }
 
-/* Липкая панель: приезжает, когда hero уехал наверх */
-.stickybar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: var(--z-sticky);
-  padding: 10px 0;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  transform: translateY(-100%);
-  transition: transform var(--t-move) var(--e-quint);
-}
-.stickybar.on {
-  transform: none;
-}
-.stickybar .wrap {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.stickybar .logo-word {
-  color: var(--ink);
-  font-size: 19px;
-}
-/* Поисковая строка прилетает в панель снизу — оттуда, где она осталась
-   в hero. Задержка в 120 мс даёт панели сначала доехать, иначе поле
-   появляется в воздухе раньше, чем под ним есть фон. */
-.stickybar-search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: clamp(200px, 22vw, 280px);
-  height: 38px;
-  padding: 0 14px;
-  border-radius: var(--r-pill);
-  background: var(--bg);
-  opacity: 0;
-  transform: translateY(14px) scale(0.96);
-  transition:
-    opacity var(--t-ui) var(--e-quart),
-    transform var(--t-move) var(--e-quint),
-    background var(--t-ui) var(--e-quart);
-}
-.stickybar.on .stickybar-search {
-  opacity: 1;
-  transform: none;
-  transition-delay: 120ms;
-}
-.stickybar-search:focus-within {
-  background: #fff;
-  box-shadow: inset 0 0 0 1px var(--ink);
-}
-.stickybar-search svg {
-  flex: 0 0 auto;
-}
-.stickybar-search input {
-  width: 100%;
-  border: none;
-  background: none;
-  font: inherit;
-  font-size: 14.5px;
-  color: var(--ink);
-}
-.stickybar-search input:focus {
-  outline: none;
-}
-/* Строка поиска уходит первой: она полезна, но не критична, а навигация
-   и кнопки должны остаться. */
-@media (max-width: 1140px) {
-  .stickybar-search {
-    display: none;
-  }
-}
-
-.stickybar-nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin: 0 auto;
-}
-/* Кабинет в панели тёмный: панель светлая, и белая пилюля из шапки
-   на ней бы потерялась. */
-.stickybar-lk {
-  display: inline-flex;
-  align-items: center;
-  height: 38px;
-  padding: 0 18px;
-  border-radius: var(--r-pill);
-  background: var(--ink);
-  color: #fff;
-  font-size: 14.5px;
-  font-weight: 600;
-  white-space: nowrap;
-  transition: background var(--t-ui) var(--e-quart);
-}
-.stickybar-lk:hover {
-  background: #2b2b2b;
-  color: #fff;
-}
-.stickybar .hd-fav {
-  width: 38px;
-  height: 38px;
-}
-@media (max-width: 900px) {
-  .stickybar-lk {
-    display: none;
-  }
-}
-.stickybar-nav a {
-  height: 36px;
-  /* Иначе длинные подписи ломались на две строки и панель раздувалась */
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 15px;
-  border-radius: var(--r-pill);
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--text-2);
-  transition:
-    background var(--t-ui) var(--e-quart),
-    color var(--t-ui) var(--e-quart);
-}
-.stickybar-nav a:hover {
-  background: var(--bg);
-  color: var(--ink);
-}
-.stickybar-nav a.on {
-  background: var(--lime);
-  color: var(--ink);
-}
-.stickybar-tel {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
-@media (max-width: 1080px) {
-  .stickybar-nav {
-    display: none;
-  }
-  .stickybar-tel {
-    margin-left: auto;
-  }
-}
 
 /* ------------------------------------------------------------------
    4. Карточки: наведение и отклик
@@ -657,10 +499,13 @@ html {
 .rail-track,
 .revs {
   /* Лента строго по колонке контента. В прототипе она вылезала за неё на
-     величину поля, и справа торчал обрезанный край следующей карточки. */
-  padding-inline: 0;
-  margin-inline: 0;
-  scroll-padding-inline: 0;
+     величину поля, и справа торчал обрезанный край следующей карточки.
+     Поля с отрицательными полями наружу: сама лента шире колонки, а её
+     содержимое — ровно по колонке. Иначе overflow срезает рамку и тень
+     крайних карточек, и они выглядят обрубленными по бокам. */
+  padding-inline: 14px;
+  margin-inline: -14px;
+  scroll-padding-inline: 14px;
   /* overflow-x: auto режет и по вертикали, поэтому под подъём карточки
      и её тень при наведении нужен запас, иначе верх срезается. */
   padding-block: 14px 22px;
@@ -728,37 +573,6 @@ html {
 .shelf .arw:not(:disabled):hover {
   background: #fff;
 }
-/* Карточки внутри полки становятся белыми плашками */
-.shelf .pcard {
-  background: var(--surface);
-  border-radius: 26px;
-  /* Фото прижато к верху и бокам: белая рамка вокруг него только мешала */
-  padding: 0 0 16px;
-  overflow: hidden;
-  box-shadow: var(--sh-sm);
-  transition:
-    transform var(--t-ui) var(--e-quart),
-    box-shadow var(--t-ui) var(--e-quart);
-}
-.shelf .pcard:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--sh-lg);
-}
-.shelf .pcard:hover .pcard-media {
-  transform: none;
-  box-shadow: none;
-}
-.shelf .pcard-media {
-  /* Верхние углы точно по карточке, нижние — свои */
-  border-radius: 26px 26px 22px 22px;
-}
-.shelf .pcard-title,
-.shelf .pcard-meta,
-.shelf .pcard-facts,
-.shelf .pcard-price {
-  padding-inline: 14px;
-}
-
 /* Маскот выглядывает из-за верхнего края полки */
 .mascot {
   position: absolute;

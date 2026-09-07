@@ -198,9 +198,6 @@
   height: 30px;
   width: auto;
 }
-.stickybar .logo svg.logo-word {
-  height: 26px;
-}
 @media (max-width: 780px) {
   .logo svg.logo-word {
     height: 26px;
@@ -239,13 +236,8 @@
 
 .dcard,
 .rev,
-.pcard-media,
-.shelf .pcard {
+.pcard-media {
   border-radius: var(--r-card);
-}
-/* У фото в карточке полки верх совпадает с углами карточки, низ мельче */
-.shelf .pcard-media {
-  border-radius: var(--r-card) var(--r-card) 14px 14px;
 }
 .rev-ref .rr-media {
   border-radius: 10px;
@@ -307,10 +299,13 @@
   line-height: 1.45;
   color: #2a3a10;
 }
+/* align-items: flex-start — иначе ссылки-флексы занимают всю ширину колонки,
+   и наведение срабатывает в полуметре от телефона. */
 .lead-contacts {
   margin-top: 26px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
 }
 .lead-tel {
@@ -325,6 +320,10 @@
 .lead-mail {
   font-size: 16px;
   color: #2a3a10;
+}
+/* Общий ховер ссылок лаймовый, а фон здесь тоже лаймовый — подпись пропадала */
+.lead-mail:hover {
+  color: var(--ink);
 }
 .lead-addr {
   margin: 6px 0 0;
@@ -853,16 +852,6 @@
   background: rgba(12, 12, 16, 0.52);
   transform: scale(1.06);
 }
-/* В липкой панели кружка нет: там ряд плоских ссылок, и подложка под одним
-   только сердцем выбивалась бы из строки. */
-.stickybar .hd-fav {
-  background: none;
-  backdrop-filter: none;
-}
-.stickybar .hd-fav:hover {
-  background: none;
-  transform: scale(1.12);
-}
 
 /* Кнопка кабинета в шапке: та же светлая пилюля, что была у иконки,
    только с подписью. Ниже 900px остаётся бургер, и она не нужна. */
@@ -961,8 +950,7 @@
 }
 /* Селектор с .lp-nav: у ссылок шапки своя тёмная пилюля, и внутри списка
    она превращала пункты в серые плашки. */
-.lp-nav .nav-menu a,
-.stickybar-nav .nav-menu a {
+.lp-nav .nav-menu a {
   height: auto;
   padding: 9px 12px;
   border-radius: 12px;
@@ -973,13 +961,11 @@
   white-space: nowrap;
   transition: background var(--t-ui) var(--e-quart);
 }
-.lp-nav .nav-menu a:hover,
-.stickybar-nav .nav-menu a:hover {
+.lp-nav .nav-menu a:hover {
   background: var(--bg);
   color: var(--ink);
 }
-.lp-nav .nav-menu-all,
-.stickybar-nav .nav-menu-all {
+.lp-nav .nav-menu-all {
   grid-column: 1 / -1;
   margin-top: 6px;
   padding-top: 12px;
@@ -1058,7 +1044,6 @@
     font-size: 14px;
   }
 }
-
 
 /* Шапка ленты отзывов: билет с оценкой, заголовок, короткое описание.
    Описание держим узким — строка во всю ширину полотна читается тяжело. */
@@ -1223,16 +1208,6 @@
   }
 }
 
-/* Выпадающие списки в липкой панели: сама панель ничего не обрезает,
-   но список должен лежать выше соседних секций страницы. */
-.stickybar .nav-menu {
-  z-index: 40;
-}
-.stickybar-nav .nav-drop > a {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
 
 /* ------------------------------------------------------------------
    16. Даты выездов на карточке
@@ -1243,11 +1218,13 @@
 /* Ряд фактов: билеты длительности и ближайшая дата рядом. Раздельными
    строками карточка распадалась на шесть уровней, и глазу не за что было
    зацепиться — теперь их четыре: название, место, факты, цена. */
+/* Дата всегда своей строкой под билетиками. В строку она влезала только у
+   однодневных, и соседние карточки в ряду выглядели свёрстанными по-разному. */
 .pcard-facts {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
   margin-bottom: 4px;
 }
 .pcard-facts .pcard-pills {
@@ -1341,55 +1318,14 @@
 .catalog-side {
   position: sticky;
   top: 20px;
+  /* Свой слой: раскрытый календарь шире колонки и выходит на выдачу — без
+     этого карточки, идущие дальше по разметке, накрывали бы его. */
+  z-index: 2;
 }
 .cfilters {
   padding: 20px;
   border-radius: var(--r-block);
   background: var(--bg);
-}
-.cfilters-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.cchip {
-  height: 34px;
-  padding: 0 15px;
-  border: none;
-  border-radius: var(--r-pill);
-  background: var(--surface);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  cursor: pointer;
-  transition:
-    background var(--t-ui) var(--e-quart),
-    color var(--t-ui) var(--e-quart);
-}
-.cchip:hover {
-  background: var(--lime);
-}
-.cchip.on {
-  background: var(--ink);
-  color: #fff;
-}
-.cfilters-reset {
-  display: block;
-  width: 100%;
-  margin-top: 16px;
-  padding: 10px 0 0;
-  border: none;
-  border-top: 1px solid var(--border-2);
-  background: none;
-  font: inherit;
-  font-size: 14px;
-  color: var(--text-2);
-  cursor: pointer;
-  transition: color var(--t-ui) var(--e-quart);
-}
-.cfilters-reset:hover {
-  color: var(--ink);
 }
 
 /* Выпадающий список фильтра */
@@ -1434,7 +1370,21 @@
 .selm.open .selm-btn svg {
   transform: rotate(180deg);
 }
+/* Список выезжает сверху и так же уезжает: раньше уход был мгновенным, и
+   закрытие выглядело обрывом. */
+.selm-enter-active,
+.selm-leave-active {
+  transition:
+    opacity var(--t-ui) var(--e-quart),
+    transform var(--t-ui) var(--e-quart);
+}
+.selm-enter-from,
+.selm-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.985);
+}
 .selm-list {
+  transform-origin: top center;
   position: absolute;
   left: 0;
   right: 0;
@@ -1614,9 +1564,11 @@
    поэтому те же элементы переворачиваются в тёмные, а сама шапка встаёт
    в поток — накладывать её не на что.
    ------------------------------------------------------------------ */
-.lp-header.is-solid {
+.lp-header.is-solid:not(.is-float) {
   position: static;
   padding: 16px 0;
+}
+.lp-header.is-solid {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
@@ -1682,55 +1634,72 @@
 }
 
 /* Горящие туры — та же полка, что и «Популярные»: одна разметка, одни
-   отступы в карточках. Отличаются только цвета, поэтому здесь ровно два
-   переопределения — фон и тлеющая полоса по верхнему краю. */
+   отступы в карточках. Отличается только фон. */
 .shelf.is-hot {
+  /* Огонёк на фоне — тот же приём, что клякса на лаймовой полке: крупно и
+     кадрированно. Целиком он не поместится, поэтому важно показать верх:
+     остриё и плечи в свободной полосе над карточками читаются как пламя,
+     а обрезанная посередине середина читалась просто пятном. */
   background:
+    url('/decor-flame.svg') no-repeat right 20px top -96px / auto 960px,
     radial-gradient(
-      70% 120% at 4% 0%,
-      rgba(255, 157, 46, 0.5) 0%,
-      rgba(255, 157, 46, 0) 62%
-    ),
+        70% 120% at 4% 0%,
+        rgba(255, 157, 46, 0.5) 0%,
+        rgba(255, 157, 46, 0) 62%
+      )
+      no-repeat,
     radial-gradient(
-      60% 130% at 97% 104%,
-      rgba(228, 50, 47, 0.42) 0%,
-      rgba(228, 50, 47, 0) 60%
-    ),
+        60% 130% at 97% 104%,
+        rgba(228, 50, 47, 0.42) 0%,
+        rgba(228, 50, 47, 0) 60%
+      )
+      no-repeat,
     #fff4e8;
 }
-.shelf.is-hot::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  border-radius: var(--r-block) var(--r-block) 0 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 209, 102, 0) 0%,
-    #ffd166 18%,
-    #ff7a18 48%,
-    #e4322f 74%,
-    rgba(228, 50, 47, 0) 100%
-  );
+@media (max-width: 780px) {
+  .shelf.is-hot {
+    background-position:
+      right -40px top -50px,
+      0 0,
+      0 0;
+    background-size:
+      auto 85%,
+      auto,
+      auto;
+  }
 }
+/* Билетики длительности на горящей полке — в цвет акции. Лайм и голубой
+   тянули карточку обратно в спокойную гамму, и полка теряла «горячесть». */
+.shelf.is-hot .dpill.d1 {
+  background: #ffe3cc;
+  color: #a33c05;
+}
+.shelf.is-hot .dpill.d2 {
+  background: #ffd9d5;
+  color: #ab2b28;
+}
+
 .hot-sec .sec-h2 {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
-/* Размер лучшей скидки прямо у заголовка: объясняет, зачем сюда смотреть */
+/* Размер лучшей скидки прямо у заголовка: объясняет, зачем сюда смотреть.
+   Рядом с сорокапиксельным заголовком мелкая плашка смотрелась случайной,
+   поэтому она заметно крупнее обычного бейджа. */
 .hot-best {
   display: inline-flex;
   align-items: center;
-  height: 28px;
-  padding: 0 11px;
+  height: 36px;
+  padding: 0 15px;
   border-radius: 999px;
   background: linear-gradient(96deg, #ff7a18 0%, #e4322f 100%);
   color: #fff;
   font-family: var(--font-ui, inherit);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: 0;
 }
 .hot-flame {
@@ -1850,14 +1819,10 @@
   }
   /* В шторке фон белый, а в колонке — серый: элементы управления, которые
      на сером были белыми, здесь сливались с подложкой. */
-  .cfilters .cchip,
   .cfilters .selm-btn,
   .cfilters .ffield,
   .cfilters .fcheck .selm-box {
     background: var(--bg);
-  }
-  .cfilters .cchip.on {
-    background: var(--ink);
   }
   .cfilters .fcheck input:checked + .selm-box {
     background: var(--lime);
@@ -1923,6 +1888,10 @@
 }
 .chero {
   position: relative;
+  /* Свой слой над выдачей: раскрытый календарь и списки городов вылезают за
+     нижний край кадра, и без этого их накрывала колонка фильтров. Ниже
+     шапки (50) — она перекрывает всё. */
+  z-index: 4;
   padding: 116px 0 52px;
   margin-bottom: 30px;
   color: #fff;
@@ -2201,46 +2170,21 @@
    готовыми отрезками и своими числами, — потому что «на выходные» и
    «ровно 3 дня» спрашивают одинаково часто.
    ------------------------------------------------------------------ */
-.fchips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-.fchip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 30px;
-  padding: 0 11px;
-  border: none;
-  border-radius: var(--r-pill);
-  background: var(--ink);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
-  transition: background var(--t-ui) var(--e-quart);
-}
-.fchip:hover {
-  background: #2b2b2b;
-}
-.fchip svg {
-  flex: none;
-  opacity: 0.65;
-}
-
 .fgroup + .fgroup {
   border-top: 1px solid var(--border-2);
 }
+/* Заголовок группы: название, свой сброс и стрелка. Три отдельные кнопки —
+   вложить кнопку в кнопку нельзя, а нажимать нужно и на название, и на
+   стрелку. */
 .fgroup-h {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  width: 100%;
   padding: 15px 0 11px;
+}
+.fgroup-t {
+  flex: 1 1 auto;
+  padding: 0;
   border: none;
   background: none;
   font: inherit;
@@ -2250,16 +2194,88 @@
   text-align: left;
   cursor: pointer;
 }
-.fgroup-h svg {
+.fgroup-clear {
   flex: none;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
   color: var(--text-2);
+  cursor: pointer;
+  transition: color var(--t-ui) var(--e-quart);
+}
+.fgroup-clear:hover {
+  color: var(--ink);
+}
+.fgroup-x {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.fgroup-x svg {
   transition: transform var(--t-ui) var(--e-quart);
 }
-.fgroup.closed .fgroup-h svg {
+.fgroup.closed .fgroup-x svg {
   transform: rotate(-90deg);
 }
+
+/* Общий сброс наверху колонки. Он на месте всегда, поэтому в неактивном
+   состоянии просто гасится, а не исчезает — иначе колонка прыгает. */
+.fclear {
+  display: block;
+  width: 100%;
+  height: 38px;
+  margin-bottom: 4px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.fclear:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.fclear.on {
+  background: var(--ink);
+  color: #fff;
+}
+.fclear.on:hover {
+  background: #2b2b2b;
+}
+/* 1fr → 0fr: единственный способ анимировать раскрытие блока неизвестной
+   высоты, не измеряя её скриптом. */
 .fgroup-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--t-move) var(--e-quart);
+}
+.fgroup.closed .fgroup-body {
+  grid-template-rows: 0fr;
+}
+.fgroup-in {
+  min-height: 0;
+  overflow: hidden;
   padding-bottom: 16px;
+  opacity: 1;
+  transition: opacity var(--t-ui) var(--e-quart);
+}
+.fgroup.closed .fgroup-in {
+  opacity: 0;
 }
 
 /* Строка с галочкой: настоящий input спрятан, но остаётся для клавиатуры */
@@ -2442,43 +2458,782 @@ input.ffield[type='number'] {
 }
 
 /* ------------------------------------------------------------------
-   25. Карточка каталога — плашка
-   В выдаче карточки лежат на белом полотне и читались как список картинок с
-   подписями. Тот же приём, что на полке «Популярные туры»: белая плашка с
-   тенью, поднимается при наведении.
+   25. Карточка тура — одна плашка на все ряды
+   Раньше плашкой была только карточка на цветной полке, а в лентах и в
+   каталоге те же данные лежали голыми на белом — одни и те же карточки
+   выглядели тремя разными. Теперь вид один, а контекст меняет только то,
+   что от него зависит: на цветной полке рамка не нужна, её роль играет фон.
    ------------------------------------------------------------------ */
-.catalog-grid .pcard {
+.pcard {
   gap: 10px;
   padding: 0 0 16px;
   border-radius: var(--r-card);
   background: var(--surface);
-  /* Полотно каталога белое, поэтому одной тени мало — плашку держит
-     волосяная рамка, а тень только отрывает её от фона. */
+  /* Рамку рисуем снаружи, а не внутрь: внутренняя линия ложилась поверх
+     фотографии и читалась как обводка кадра. Тень — короткая и растушёванная
+     книзу, без видимой границы: серое пятно под карточкой выглядело грязью. */
   box-shadow:
-    inset 0 0 0 1px var(--border),
-    0 2px 10px rgba(16, 16, 28, 0.05);
+    0 0 0 1px rgba(16, 16, 28, 0.06),
+    0 6px 16px -10px rgba(16, 16, 28, 0.22);
   overflow: hidden;
   transition:
     transform var(--t-ui) var(--e-quart),
     box-shadow var(--t-ui) var(--e-quart);
 }
-.catalog-grid .pcard:hover {
+.pcard:hover {
   transform: translateY(-4px);
   box-shadow:
-    inset 0 0 0 1px transparent,
-    var(--sh-lg);
+    0 0 0 1px rgba(16, 16, 28, 0.05),
+    0 16px 30px -16px rgba(16, 16, 28, 0.3);
 }
-/* Фото прижато к краям плашки, как на полке */
-.catalog-grid .pcard-media {
+/* Фото прижато к краям плашки: верх по её углам, низ мельче */
+.pcard-media {
   border-radius: var(--r-card) var(--r-card) 14px 14px;
 }
-.catalog-grid .pcard:hover .pcard-media {
+/* Поднимается вся карточка, поэтому фото внутри уже не дёргается */
+.pcard:hover .pcard-media {
   transform: none;
   box-shadow: none;
 }
-.catalog-grid .pcard-title,
-.catalog-grid .pcard-meta,
-.catalog-grid .pcard-facts,
-.catalog-grid .pcard-price {
+.pcard-title,
+.pcard-meta,
+.pcard-facts,
+.pcard-price {
   padding-inline: 14px;
+}
+/* На цветных полках тени нет вовсе: нейтральный серый по лайму мутнеет и
+   читается грязью, а отделять карточку там и не нужно — это делает фон. */
+.shelf .pcard {
+  box-shadow: none;
+}
+.shelf .pcard:hover {
+  box-shadow: 0 14px 26px -16px rgba(16, 16, 28, 0.34);
+}
+
+/* ------------------------------------------------------------------
+   26. Шапка главной: одна на всю страницу
+   Она приколота к верху и едет вместе с содержимым в своём обычном виде.
+   Второй, уменьшенной панели нет: белым становится этот же элемент, и
+   ровно тогда, когда в него садится строка поиска с кадра.
+   ------------------------------------------------------------------ */
+.lp-header.is-float {
+  position: fixed;
+  padding: 14px 0;
+  transition:
+    background-color var(--t-move) var(--e-quart),
+    border-color var(--t-move) var(--e-quart);
+}
+.lp-header.is-float.is-solid {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Поле поиска в шапке. До своего момента оно свёрнуто в ноль по ширине —
+   так соседи не прыгают, а появление читается как «строка приехала сюда». */
+.hd-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 0;
+  height: 42px;
+  padding: 0;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(10px);
+  transition:
+    width var(--t-move) var(--e-quint),
+    padding var(--t-move) var(--e-quint),
+    opacity var(--t-ui) var(--e-quart),
+    transform var(--t-move) var(--e-quint);
+}
+.lp-header.is-solid .hd-search {
+  width: clamp(180px, 16vw, 250px);
+  padding: 0 16px;
+  opacity: 1;
+  transform: none;
+}
+.hd-search svg {
+  flex: none;
+}
+.hd-search input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.hd-search input:focus {
+  outline: none;
+}
+.hd-search:focus-within {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+@media (max-width: 1140px) {
+  .lp-header.is-solid .hd-search {
+    width: 0;
+    padding: 0;
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   27. Окно контактов
+   Контакты не отдельной страницей, а окном поверх: человек листает каталог
+   и не должен терять подборку ради телефона. Три карточки вместо ряда
+   одинаковых кружков — у каждой свой вопрос: куда звонить бесплатно, куда
+   приехать, куда написать.
+   ------------------------------------------------------------------ */
+.cdlg-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: start center;
+  padding: 92px 16px 24px;
+  overflow-y: auto;
+  background: rgba(10, 10, 12, 0.45);
+  backdrop-filter: blur(2px);
+}
+.cdlg {
+  position: relative;
+  width: min(900px, 100%);
+  padding: 30px 32px 28px;
+  border-radius: var(--r-block);
+  background: var(--surface);
+  box-shadow: var(--sh-lg);
+}
+.cdlg-x {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.cdlg-x:hover {
+  background: #ececf0;
+}
+.cdlg-h {
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.cdlg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.ccard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 18px 20px;
+  border-radius: 18px;
+  background: var(--bg);
+}
+.ccard-cap {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+.ccard-tel {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.ccard-tel:hover {
+  color: var(--lime-700);
+}
+.ccard-addr {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.ccard-note {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+/* Мессенджеры кнопками, а не кружками: подпись важнее значка — по ней и
+   выбирают, куда писать. Сетка в две колонки, а не перенос по ширине: от
+   переноса третья кнопка висела под первой сиротой. */
+.ccard-ways {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+/* Нечётная последняя занимает строку целиком — так у блока ровный низ */
+.cway:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.cway {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.cway svg {
+  flex: none;
+}
+.cway.is-whatsapp:hover {
+  background: #25d366;
+  color: #fff;
+}
+.cway.is-telegram:hover {
+  background: #2aabee;
+  color: #fff;
+}
+.cway.is-max:hover {
+  background: #7b5cf0;
+  color: #fff;
+}
+
+/* Карта во всю ширину окна: адрес словами мало кому что-то говорит */
+.cdlg-map {
+  display: block;
+  width: 100%;
+  height: 240px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 18px;
+  background: var(--bg);
+}
+
+.cdlg-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-top: 18px;
+}
+.cdlg-mail {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cdlg-mail:hover {
+  color: var(--lime-700);
+}
+/* Значки в футере светлые на тёмном, здесь наоборот — окно белое */
+.cdlg .socials {
+  margin-top: 0;
+}
+.cdlg .socials a {
+  width: 38px;
+  height: 38px;
+  background: var(--bg);
+}
+.cdlg .socials a svg {
+  fill: var(--ink);
+}
+.cdlg .socials a:hover {
+  background: var(--lime);
+}
+.cdlg-legal {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-3, var(--text-2));
+}
+
+/* Окно приезжает коротким движением снизу — как шторка фильтров */
+.cdlg-enter-active,
+.cdlg-leave-active {
+  transition: opacity var(--t-ui) var(--e-quart);
+}
+.cdlg-enter-active .cdlg,
+.cdlg-leave-active .cdlg {
+  transition: transform var(--t-move) var(--e-quint);
+}
+.cdlg-enter-from,
+.cdlg-leave-to {
+  opacity: 0;
+}
+.cdlg-enter-from .cdlg,
+.cdlg-leave-to .cdlg {
+  transform: translateY(12px);
+}
+
+@media (max-width: 820px) {
+  .cdlg-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 680px) {
+  .cdlg-veil {
+    padding: 70px 12px 20px;
+  }
+  .cdlg {
+    padding: 24px 18px 22px;
+  }
+  .cdlg-map {
+    height: 190px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   28. Зарубежные туры
+   Подбор ведёт чужой модуль, и страница построена вокруг него: кадр говорит,
+   куда мы возим, ниже встаёт модуль, а витрина показывает цены до того, как
+   он загрузится. Полка предложений — та же горящая полка, что на главной:
+   одна карточка на весь сайт, разное содержимое.
+   ------------------------------------------------------------------ */
+/* Кадр выше, чем в каталоге: под ним нет ни поиска, ни колонки фильтров —
+   только заголовок, и в узкой полосе он выглядел обрезком. */
+.zhero {
+  padding: 168px 0 118px;
+}
+/* Снимок высокий, а полоса широкая: центр обрезки поднимаем, иначе от кадра
+   остаётся земля под ногами вместо того, ради чего его выбрали. */
+.zhero .chero-photo {
+  object-position: center 38%;
+}
+.zhero .chero-facts {
+  margin-top: 24px;
+}
+.zhero .chero-facts li {
+  font-size: 16px;
+}
+
+/* Модуль партнёра идёт своей вёрсткой — мы даём ему ширину контейнера и
+   не навязываем ни рамки, ни подложки. */
+.zwidget {
+  padding: 30px 0 0;
+}
+/* Пока модуля нет, витрина идёт сразу за крошками: обычная отбивка секции
+   оставляла посреди страницы пустую белую полосу. */
+.zpage .zwidget + .sec,
+.zpage .crumbs + .sec,
+.zpage .wrap + .sec {
+  padding-top: 34px;
+}
+.embed-note {
+  margin: 12px 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* Оценка на фото: белая плашка поверх кадра — читается и на песке, и на море */
+.ocard-rate {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.ocard-rate svg {
+  flex: none;
+  color: #f0a92b;
+}
+/* Звёзды отеля — частью названия: «5★ Marine Family Club» читается одной
+   строкой, а отдельной плашкой они спорили бы со скидкой и оценкой. */
+.ocard-stars {
+  margin-right: 3px;
+  font-weight: 700;
+  color: #b97a12;
+  white-space: nowrap;
+}
+/* Скидка есть не у всех, а бейдж «в избранное» есть всегда: без скидки
+   плашка оценки остаётся единственной подписью на фото. */
+.ocard .pcard-dates-cap {
+  color: var(--text-2);
+}
+
+/* ------------------------------------------------------------------
+   Три довода на внутренней странице. Каркаса автобуса здесь нет: за границу
+   летят, и автобус в этом месте сбивал бы с толку.
+   ------------------------------------------------------------------ */
+.perks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.perk {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 26px;
+  border-radius: 22px;
+  background: var(--bg);
+}
+.perk .blob {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 20px;
+  background: var(--lime);
+  flex: none;
+}
+.perk h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.028em;
+}
+.perk p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.perk a {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 17px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .perks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 680px) {
+  .zhero {
+    padding: 120px 0 64px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   29. «Когда»: календарь и месяцы
+   Один контрол на два способа ответить: точной датой или месяцем. Панель
+   живёт по правилам выпадающих списков — те же радиусы, тень и появление,
+   чтобы в ряду полей она не выглядела гостем из другого интерфейса.
+   ------------------------------------------------------------------ */
+/* Иконка календаря не стрелка — переворачивать её при открытии незачем */
+.wpick.open .selm-btn svg {
+  transform: none;
+}
+.wpick-pop {
+  transform-origin: top center;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  width: 316px;
+  max-width: calc(100vw - 32px);
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--sh-lg);
+}
+.csearch-field .wpick-pop {
+  top: calc(100% + 12px);
+}
+/* Развёрнутый вариант: панель без собственной подложки — она уже внутри
+   группы фильтров, и вторая карточка внутри карточки выглядит коробкой
+   в коробке. */
+.wpick.is-inline .wpick-pop {
+  position: static;
+  width: auto;
+  max-width: none;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.wpick.is-inline .wpick-day {
+  height: 32px;
+  font-size: 13.5px;
+}
+.wpick.is-inline .wpick-m {
+  height: 36px;
+  font-size: 13.5px;
+}
+
+/* Две вкладки сегментом: выбор способа, а не два разных фильтра */
+.wpick-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.wpick-tabs button {
+  height: 38px;
+  border: none;
+  border-radius: 12px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.wpick-tabs button:hover {
+  color: var(--ink);
+}
+.wpick-tabs button.on {
+  background: var(--lime-tint);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--lime);
+}
+
+.wpick-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.wpick-nav b {
+  font-size: 15px;
+  font-weight: 600;
+}
+.wpick-nav button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.wpick-nav button:hover:not(:disabled) {
+  background: var(--bg);
+}
+.wpick-nav button:disabled {
+  color: var(--border-2);
+  cursor: default;
+}
+
+.wpick-wd,
+.wpick-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.wpick-wd {
+  margin-bottom: 2px;
+}
+.wpick-wd span {
+  height: 24px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-3);
+}
+.wpick-day {
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  /* День без выездов не серый «выключенный», а просто бледный: он остаётся
+     ориентиром в сетке, но кликать по нему не за чем. */
+  color: var(--text-3);
+  cursor: default;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.wpick-day.out {
+  opacity: 0.45;
+}
+.wpick-day.has {
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+/* Точка под числом — «в этот день есть выезд». Читается быстрее, чем
+   разница в насыщенности цифры. */
+.wpick-day.has::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  margin: 2px auto 0;
+  border-radius: 50%;
+  background: var(--lime-700);
+}
+.wpick-day.has:hover {
+  background: var(--lime-tint);
+}
+.wpick-day.on {
+  background: var(--lime);
+  color: var(--ink);
+}
+.wpick-day.on::after {
+  background: var(--ink);
+  opacity: 0.5;
+}
+
+.wpick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.wpick-m {
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.wpick-m:hover:not(:disabled) {
+  background: var(--lime-tint);
+}
+.wpick-m:disabled {
+  background: none;
+  color: var(--text-3);
+  opacity: 0.6;
+  cursor: default;
+}
+.wpick-m.on {
+  background: var(--lime);
+}
+
+.wpick-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.wpick-clear {
+  border: none;
+  background: none;
+  padding: 6px 2px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color var(--t-ui) var(--e-quart);
+}
+.wpick-clear:hover:not(:disabled) {
+  color: var(--ink);
+}
+.wpick-clear:disabled {
+  color: var(--text-3);
+  opacity: 0.6;
+  cursor: default;
+}
+/* Переключатель «± 3 дня»: у автобусных туров выезды редкие, и запас по дням
+   чаще нужен, чем нет — поэтому он и включён по умолчанию. */
+.wpick-spread {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 6px 0 12px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background var(--t-ui) var(--e-quart),
+    color var(--t-ui) var(--e-quart);
+}
+.wpick-spread i {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: var(--r-pill);
+  background: var(--border-2);
+  transition: background var(--t-ui) var(--e-quart);
+}
+.wpick-spread i::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: transform var(--t-move) var(--e-quint);
+}
+.wpick-spread.on {
+  color: var(--ink);
+}
+.wpick-spread.on i {
+  background: var(--lime);
+}
+.wpick-spread.on i::after {
+  transform: translateX(14px);
+}
+
+/* В узкой колонке фильтров панель шире поля — пусть выходит за неё вправо,
+   а не сжимается до нечитаемого календаря. */
+@media (max-width: 1080px) {
+  .cfilters .wpick-pop {
+    right: 0;
+    left: auto;
+  }
 }

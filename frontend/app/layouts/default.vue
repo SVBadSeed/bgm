@@ -1,18 +1,15 @@
 <script setup lang="ts">
+  /*
+   * Обёртка главной. Шапка живёт внутри страницы — она приколота к верху и
+   * висит над кадром, поэтому второй, «липкой» панели здесь нет.
+   */
   const { data } = await useLanding()
 </script>
 
 <template>
   <div>
-    <StickyBar
-      :menu="data.menu"
-      :settings="data.settings"
-      :search-placeholder="data.landing.hero_search_placeholder"
-      :destinations="data.destinations"
-      :cities="data.departureCities"
-      :all-url="data.landing.destinations_all_url"
-    />
     <slot />
+    <ContactsDialog :settings="data.settings" />
     <SiteFooter
       :settings="data.settings"
       :menu="data.menu"

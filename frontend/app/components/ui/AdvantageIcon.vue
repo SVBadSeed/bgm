@@ -37,6 +37,21 @@
       <path d="M12 3l7 3v5c0 4.5-3 8.4-7 10-4-1.6-7-5.5-7-10V6l7-3z" />
       <path d="M9 12l2 2 4-4" />
     </template>
+    <template v-else-if="name === 'headset'">
+      <path d="M4 13v-1a8 8 0 0116 0v1" />
+      <path d="M4 13h2.4a1 1 0 011 1v3.6a1 1 0 01-1 1H5.4A1.4 1.4 0 014 17.2z" />
+      <path d="M20 13h-2.4a1 1 0 00-1 1v3.6a1 1 0 001 1h1a1.4 1.4 0 001.4-1.4z" />
+      <path d="M19 18.6v.6a2.2 2.2 0 01-2.2 2.2H13" />
+    </template>
+    <template v-else-if="name === 'diamond'">
+      <path d="M7.2 3.5h9.6l3.7 5-8.5 12-8.5-12z" />
+      <path d="M3 8.5h18" />
+      <path d="M9.4 8.5 12 20.5l2.6-12-2.6-5z" />
+    </template>
+    <template v-else-if="name === 'plane'">
+      <path d="M10.6 13.4 3 11l18-7-7 18-2.6-7.6z" />
+      <path d="m10.6 13.4 4.6-4.6" />
+    </template>
     <template v-else>
       <path
         d="M12 2l3 6.6 7 .7-5.2 4.8 1.4 7-6.2-3.6L5.8 21l1.4-7L2 9.3l7-.7z"

@@ -61,16 +61,27 @@ async function main() {
     await client.request(
       updateSingleton('site_settings', {
         brand_name: 'богематур',
-        phone: '+7 861 205-40-40',
-        phone_href: '+78612054040',
-        email: 'info@bogematur.ru',
-        address: 'Краснодар, ул. Красная, 176',
+        phone: '8 (800) 777-76-77',
+        phone_href: 'tel:88007777677',
+        phone_kicker: 'Номер для бесплатных звонков только из России',
+        phone_note:
+          'Отвечаем на звонки ежедневно с 09:00 до 21:00. Вы в дороге ночью и у Вас срочный вопрос? Наберите этот номер и нажмите 0.',
+        phone2: '+7 (918) 494-04-45',
+        phone2_href: 'tel:+79184940445',
+        phone2_note:
+          'На данном номере у нас WhatsApp, Telegram, Max. Пишите в любое время!',
+        email: 'info@bogema.ru',
+        office_title: 'Офис в г. Новороссийск',
+        address:
+          'ул. Новороссийской Республики 14А, 2 этаж, офис 13 (БЦ «Венеция»)',
         about:
-          'Туроператор по югу России и Кавказу. РТО 025467, работаем с 2011 года.',
-        copyright: '© 2026 ООО «БогемаТур»',
-        vk_url: '#',
-        telegram_url: '#',
-        whatsapp_url: '#',
+          'Туроператор по югу России и Кавказу. ООО «АТТ», в реестре туроператоров В031-00161-00/04513871.',
+        copyright: '© 2026 ООО «АТТ»',
+        vk_url: 'https://vk.com/bogematur',
+        telegram_url: 'https://t.me/bogematour',
+        whatsapp_url: 'https://chat.whatsapp.com/IQpKtr2xYH2La6CFN3MeWw',
+        max_url: 'https://max.ru/id9713033679_biz3',
+        work_hours: 'Режим работы: ПН–ПТ с 09:00 до 18:00. СБ-ВС — выходной.',
         lk_url: '#',
         favorites_url: '#',
       }),
@@ -129,7 +140,7 @@ async function main() {
       ['Туры', '/tury', true],
       ['Города выезда', '/tury'],
       ['Направления', '#dests'],
-      ['Туристам', '#why'],
+      ['Контакты', '#contacts'],
     ]
     const travel = [
       ['Туры', '#tours'],
@@ -412,11 +423,98 @@ async function main() {
       text,
       link_label,
       link_url,
+      page: 'landing',
       sort: i + 1,
       status: 'published',
     }))
-    await client.request(createItems('advantages', rows))
-    log(`+ advantages (${rows.length})`)
+    /* Доводы страницы зарубежных туров — та же коллекция, другая страница */
+    const foreign = [
+      [
+        'headset',
+        'Профессиональные менеджеры',
+        'Подберём тур под ваши даты, бюджет и пожелания: сравним операторов, проверим отели и предложим варианты, из которых останется только выбрать.',
+      ],
+      [
+        'shield',
+        'Всё оформление на нас',
+        'Договор, страховка, ваучеры и билеты — готовим сами. Вы получаете пакет документов и телефон, по которому отвечают в поездке.',
+      ],
+      [
+        'diamond',
+        'Условия, которых нет в поиске',
+        'Раннее бронирование, места у моря, трансфер и индивидуальные экскурсии — договариваемся напрямую с принимающей стороной.',
+      ],
+    ].map(([icon, title, text], i) => ({
+      icon,
+      title,
+      text,
+      page: 'foreign',
+      sort: rows.length + i + 1,
+      status: 'published',
+    }))
+    await client.request(createItems('advantages', [...rows, ...foreign]))
+    log(`+ advantages (${rows.length + foreign.length})`)
+  }
+
+  // ---- зарубежные туры ----------------------------------------------------
+  const foreignPage = await client.request(readSingleton('foreign_page'))
+  if (!foreignPage?.title) {
+    await client.request(
+      updateSingleton('foreign_page', {
+        seo_title: 'Пакетные туры за границу из Краснодара и Сочи — БогемаТур',
+        seo_description:
+          'Турция, Египет, ОАЭ и Таиланд: отель и перелёт одним пакетом. Подбор, бронирование и оформление документов — на нас.',
+        title: 'Пакетные туры за границу',
+        facts:
+          'Турция, Египет, ОАЭ, Таиланд|Вылеты из Краснодара, Сочи и Минвод|Рассрочка и оплата картой',
+        widget_note:
+          'Цены обновляются онлайн у туроператоров. Нашли дешевле — скажите менеджеру, проверим.',
+        hot_title: 'Горящие предложения',
+        perks_title: 'Почему за границу — с нами',
+      }),
+    )
+    log('+ foreign_page')
+  }
+
+  if (await isEmpty(client, 'foreign_offers')) {
+    /* Даты вылетов считаем от сегодня, чтобы демо не протухло через месяц */
+    const inDays = (n) => {
+      const d = new Date()
+      d.setDate(d.getDate() + n)
+      return d.toISOString().slice(0, 10)
+    }
+    const rows = [
+      ['Marine Family Club', 5, 'Турция', 'Сиде', 7, 'uai', 4.6, 65400, 47900, 6],
+      ['Beach Safari Resort', 4, 'Египет', 'Марса-Алам', 7, 'ai', 4.4, 50600, 41600, 8],
+      ['Citrus Plaza Hotel', 4, 'Турция', 'Аланья', 7, 'ai', 4.2, 55800, 42700, 6],
+      ['Rehana Royal Beach', 5, 'Египет', 'Шарм-эль-Шейх', 7, 'uai', 4.5, 78300, 58700, 11],
+      ['Marjan Island Resort', 5, 'ОАЭ', 'Рас-эль-Хайма', 6, 'ai', 4.7, 96500, 82300, 13],
+      ['Aegean Blue', 4, 'Греция', 'Крит', 8, 'hb', 4.5, 92000, 79400, 15],
+      ['Crowne Plaza Deira', 5, 'ОАЭ', 'Дубай', 7, 'ro', 4.6, 0, 71700, 9],
+      ['Baumanburi Phuket', 4, 'Таиланд', 'Пхукет', 11, 'bb', 4.3, 0, 75000, 12],
+    ].map(
+      (
+        [hotel, stars, country, city, nights, meal, rating, oldPrice, price, day],
+        i,
+      ) => ({
+        hotel,
+        stars,
+        country,
+        city,
+        nights,
+        meal,
+        rating,
+        old_price: oldPrice || null,
+        price,
+        price_note: 'за двоих',
+        date_start: inDays(day),
+        url: '#',
+        sort: i + 1,
+        status: 'published',
+      }),
+    )
+    await client.request(createItems('foreign_offers', rows))
+    log(`+ foreign_offers (${rows.length})`)
   }
 
   // ---- reviews ------------------------------------------------------------------

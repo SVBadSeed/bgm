@@ -115,6 +115,18 @@ const int = (field, label, opts = {}) => ({
   },
   schema: { default_value: opts.default },
 })
+const dec = (field, label, opts = {}) => ({
+  field,
+  type: 'float',
+  meta: {
+    interface: 'input',
+    translations: ru(label),
+    width: opts.width || 'half',
+    note: opts.note,
+    options: { min: opts.min ?? 0, max: opts.max },
+  },
+  schema: {},
+})
 const bool = (field, label, def = false) => ({
   field,
   type: 'boolean',
@@ -209,24 +221,46 @@ const collections = [
       }),
       str('phone', 'Телефон', {
         width: 'half',
-        note: 'Как показывать: +7 861 205-40-40',
+        note: 'Как показывать: 8 (800) 777-76-77',
       }),
       str('phone_href', 'Телефон для ссылки tel:', {
         width: 'half',
-        note: '+78612054040',
+        note: 'tel:88007777677',
+      }),
+      str('phone_kicker', 'Надпись над телефоном', {
+        note: 'Номер для бесплатных звонков только из России',
+      }),
+      text('phone_note', 'Пояснение под телефоном', {
+        note: 'Когда отвечают и что делать ночью',
+      }),
+      str('phone2', 'Второй телефон', { width: 'half' }),
+      str('phone2_href', 'Второй телефон для ссылки tel:', { width: 'half' }),
+      text('phone2_note', 'Пояснение под вторым телефоном', {
+        note: 'На данном номере у нас WhatsApp, Telegram, Max. Пишите в любое время!',
       }),
       str('email', 'E-mail', { width: 'half' }),
+      str('office_title', 'Заголовок карточки офиса', {
+        width: 'half',
+        note: 'Офис в г. Новороссийск',
+      }),
       str('address', 'Адрес'),
       text('about', 'О компании (футер)'),
       str('copyright', 'Копирайт', { width: 'half' }),
       str('vk_url', 'ВКонтакте', { width: 'half' }),
       str('telegram_url', 'Telegram', { width: 'half' }),
       str('whatsapp_url', 'WhatsApp', { width: 'half' }),
+      str('max_url', 'MAX', { width: 'half' }),
+      str('map_url', 'Ссылка на карту', {
+        note: 'Виджет Яндекс.Карт для окна контактов. Пусто — карта строится по адресу',
+      }),
       str('lk_url', 'Ссылка на личный кабинет', {
         width: 'half',
         note: 'Иконка пользователя в шапке',
       }),
       str('favorites_url', 'Ссылка «Избранное»', { width: 'half' }),
+      str('work_hours', 'Режим работы офиса', {
+        note: 'Одной строкой: ПН–ПТ с 09:00 до 18:00. СБ-ВС — выходной.',
+      }),
       ...dates(),
     ],
   },
@@ -438,31 +472,6 @@ const collections = [
       /* Признаки-справочники для фильтров каталога. Словарь повторён в
          frontend/app/utils/facets.ts — правим оба места вместе. */
       select(
-        'rest_type',
-        'Тип отдыха',
-        [
-          ['ekskursionnyy', 'Экскурсионный'],
-          ['aktivnyy', 'Активный'],
-          ['plyazhnyy', 'Пляжный'],
-          ['gastronomicheskiy', 'Гастрономический'],
-          ['gornolyzhnyy', 'Горнолыжный'],
-          ['palomnicheskiy', 'Паломнический'],
-        ],
-        null,
-      ),
-      select(
-        'stay_type',
-        'Тип размещения',
-        [
-          ['bez', 'Без размещения'],
-          ['gostinica', 'Гостиница'],
-          ['baza', 'База отдыха'],
-          ['gostevoy-dom', 'Гостевой дом'],
-          ['sanatoriy', 'Санаторий'],
-        ],
-        null,
-      ),
-      select(
         'difficulty',
         'Уровень сложности',
         [
@@ -473,25 +482,12 @@ const collections = [
         null,
       ),
       select(
-        'tour_type',
-        'Тип тура',
-        [
-          ['sbornyy', 'Сборный'],
-          ['gruppovoy', 'Групповой'],
-          ['individualnyy', 'Индивидуальный'],
-          ['avtorskiy', 'Авторский'],
-        ],
-        null,
-      ),
-      select(
         'transport',
         'Тип транспорта',
         [
           ['avtobus', 'Автобус'],
-          ['mikroavtobus', 'Микроавтобус'],
           ['poezd', 'Поезд'],
-          ['dzhip', 'Джип'],
-          ['peshkom', 'Пешком'],
+          ['samolet', 'Самолёт'],
         ],
         null,
       ),
@@ -576,9 +572,18 @@ const collections = [
         ['pin', 'Геометка'],
         ['shield', 'Щит'],
         ['star', 'Звезда'],
+        ['headset', 'Наушники с микрофоном'],
+        ['diamond', 'Бриллиант'],
+        ['plane', 'Самолёт'],
+      ]),
+      /* Блок один, страниц две: так преимущества заграницы не приходится
+         вести отдельной коллекцией с теми же полями. */
+      select('page', 'Где показывать', [
+        ['landing', 'Главная'],
+        ['foreign', 'Зарубежные туры'],
       ]),
       str('title', 'Заголовок', { width: 'half', required: true }),
-      str('text', 'Строка под заголовком', { width: 'half' }),
+      text('text', 'Текст под заголовком'),
       str('link_label', 'Текст ссылки', { width: 'half' }),
       str('link_url', 'Ссылка', { width: 'half', default: '#' }),
     ],
@@ -598,6 +603,88 @@ const collections = [
       int('rating', 'Оценка (1–5)', { default: 5, min: 1 }),
       text('text', 'Текст отзыва'),
       m2o('tour', 'Тур', 'tours', '{{title}}'),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'foreign_page',
+    meta: {
+      icon: 'flight_takeoff',
+      singleton: true,
+      translations: ru('Зарубежные туры'),
+      note: 'Страница /zarubezhnye-tury: тексты вокруг партнёрского модуля подбора',
+    },
+    fields: [
+      id(),
+      str('seo_title', 'SEO title'),
+      text('seo_description', 'SEO description'),
+      str('title', 'Заголовок страницы', {
+        default: 'Пакетные туры за границу',
+      }),
+      image('image', 'Фон кадра', 'Горизонтальное фото, не меньше 1600px'),
+      str('facts', 'Факты под заголовком', {
+        default:
+          'Турция, Египет, ОАЭ, Таиланд|Вылеты из Краснодара, Сочи и Минвод|Рассрочка и оплата картой',
+        note: 'Три коротких пункта через |',
+      }),
+      text('widget_code', 'Код модуля', {
+        note: 'Код партнёрского виджета целиком: разметка и <script>. Вставляется на страницу как есть — проверьте, что он от вашего поставщика.',
+      }),
+      text('widget_note', 'Приписка под модулем'),
+      str('hot_title', 'Заголовок витрины', {
+        width: 'half',
+        default: 'Горящие предложения',
+      }),
+      str('hot_all_url', 'Ссылка «Все» у витрины', { width: 'half' }),
+      str('perks_title', 'Заголовок блока преимуществ', {
+        default: 'Почему за границу — с нами',
+      }),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'foreign_offers',
+    meta: listMeta(
+      'beach_access',
+      'Зарубежные предложения',
+      '{{hotel}} — {{country}}',
+      'Витрина «Горящих предложений» на странице зарубежных туров. Заполняется вручную: цены модуля живут у партнёра, а здесь то, что мы обещаем сами.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      str('hotel', 'Отель', { required: true }),
+      int('stars', 'Звёзды', { note: 'От 1 до 5. Пусто — не показываем' }),
+      str('country', 'Страна', { width: 'half' }),
+      str('city', 'Курорт', { width: 'half' }),
+      int('nights', 'Ночей'),
+      /* Словарь повторён в frontend/app/utils/foreign.ts — правим вместе */
+      select(
+        'meal',
+        'Питание',
+        [
+          ['ro', 'Без питания'],
+          ['bb', 'Завтраки'],
+          ['hb', 'Полупансион'],
+          ['fb', 'Полный пансион'],
+          ['ai', 'Всё включено'],
+          ['uai', 'Ультра всё включено'],
+        ],
+        null,
+      ),
+      date('date_start', 'Дата вылета'),
+      dec('rating', 'Оценка гостей', { max: 5, note: 'Например 4.6' }),
+      int('price', 'Цена, ₽'),
+      int('old_price', 'Цена до скидки, ₽', {
+        note: 'Заполнено и больше обычной — на карточке появится размер скидки',
+      }),
+      str('price_note', 'Подпись к цене', {
+        width: 'half',
+        default: 'за двоих',
+      }),
+      str('url', 'Ссылка', { width: 'half', default: '#' }),
+      image('image', 'Фото'),
       ...dates(),
     ],
   },
@@ -684,55 +771,15 @@ const publicPermissions = [
     permissions: published,
   },
   {
-    collection: 'departure_cities',
-    meta: listMeta(
-      'departure_board',
-      'Города выезда',
-      '{{name}}',
-      'Откуда уходит автобус. На них ссылаются выезды и фильтр каталога.',
-    ),
-    fields: [
-      id(),
-      status(),
-      sort(),
-      str('name', 'Город', { width: 'half', required: true }),
-      str('slug', 'Слаг', { width: 'half', options: { slug: true } }),
-      str('case_genitive', 'Название в родительном', {
-        width: 'half',
-        note: 'Для заголовка «Туры из …». Пусто — склоняем сами, заполнять только если склонилось неверно',
-      }),
-      str('pickup_note', 'Место и время подачи', {
-        note: 'ул. Красная, 176 · 5:30 — показывается на странице тура',
-      }),
-      ...dates(),
-    ],
+    collection: 'foreign_page',
+    action: 'read',
+    fields: ['*'],
   },
   {
-    collection: 'departures',
-    meta: listMeta(
-      'event',
-      'Выезды',
-      '{{tour.title}} — {{date_start}}',
-      'Один выезд = одна дата тура. Отсюда берутся даты на карточках, сортировка «Ближайшие» и фильтр по городу выезда.',
-    ),
-    fields: [
-      id(),
-      status(),
-      sort(),
-      m2o('tour', 'Тур', 'tours', '{{title}}'),
-      date('date_start', 'Дата выезда', { required: true }),
-      date('date_end', 'Дата возвращения', {
-        note: 'Для однодневных можно оставить пустым',
-      }),
-      m2o('city', 'Город выезда', 'departure_cities', '{{name}}'),
-      int('seats_left', 'Свободных мест', {
-        note: 'Пусто — не показываем счётчик',
-      }),
-      int('price', 'Цена этой даты, ₽', {
-        note: 'Пусто — берётся цена тура. Заполняется, когда сезон дороже',
-      }),
-      ...dates(),
-    ],
+    collection: 'foreign_offers',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
   },
   {
     collection: 'advantages',

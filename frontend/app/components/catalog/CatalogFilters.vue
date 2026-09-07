@@ -1,9 +1,13 @@
 <script setup lang="ts">
   /*
-   * Фильтры каталога — колонкой слева, по образцу yarko.travel: сверху то, что
-   * уже выбрано, ниже сворачиваемые группы. Города, направления и месяцы —
-   * списки значений; длительность и цена — отрезки, которые задают галочками
-   * или своими числами.
+   * Фильтры каталога — колонкой слева, по образцу yarko.travel: сверху кнопка
+   * сброса со счётчиком, ниже сворачиваемые группы. Города, направления и
+   * месяцы — списки значений; длительность и цена — отрезки, которые задают
+   * галочками или своими числами.
+   *
+   * Сброс двухуровневый: общий сверху и свой у каждой группы. Списка
+   * выбранного отдельной строкой нет — он занимал место наверху колонки и
+   * повторял то, что и так видно в самих группах.
    *
    * Тип тура и быстрые срезы длительности стоят в шапке страницы — держать их
    * ещё и здесь значит показывать один переключатель дважды в одном экране.
@@ -24,6 +28,8 @@
     destinations: Destination[]
     cities: DepartureCity[]
     departures: Departure[]
+    /** Даты выездов для календаря «Когда» */
+    days: string[]
     query: CatalogQuery
     /* Город и направление могут быть заданы самой страницей — тогда их не
        выбирают: за них отвечает адрес. */
@@ -88,113 +94,43 @@
     return Number.isFinite(v) && v > 0 ? v : null
   }
 
-  function rangeLabel(
-    from: number | null | undefined,
-    to: number | null | undefined,
-    unit: string,
-  ): string {
-    const n = (v: number) => v.toLocaleString('ru-RU')
-    if (from && to) return `${n(from)}–${n(to)} ${unit}`
-    if (from) return `от ${n(from)} ${unit}`
-    return `до ${n(to as number)} ${unit}`
-  }
-
   /*
-   * Выбранное — строкой сверху. Иначе, чтобы понять, почему в выдаче три тура,
-   * приходится проглядеть всю колонку, а на телефоне ещё и открыть шторку.
+   * Сколько значений выбрано в каждой группе: от этого зависит и её
+   * собственная кнопка сброса, и общий счётчик наверху.
    */
-  interface Chip {
-    key: string
-    label: string
-    clear: () => void
-  }
-
-  const chips = computed<Chip[]>(() => {
-    const out: Chip[] = []
+  const counts = computed(() => {
     const q = props.query
-
-    if (q.type) {
-      out.push({
-        key: 'type',
-        label: q.type === 'hot' ? 'Горящие' : 'Новые',
-        clear: () => patch({ type: null }),
-      })
+    return {
+      city: props.lockCity ? 0 : (q.city?.length ?? 0),
+      destination: props.lockDestination ? 0 : (q.destination?.length ?? 0),
+      days: (q.length?.length ?? 0) + (q.daysFrom ? 1 : 0) + (q.daysTo ? 1 : 0),
+      /* Отрезок дат считаем одним выбором, а не двумя: человек выбрал одну
+         дату, а «с» и «по» — то, как мы её записали. */
+      month: (q.month?.length ?? 0) + (q.from || q.to ? 1 : 0),
+      price: (q.priceMin ? 1 : 0) + (q.priceMax ? 1 : 0),
+      type: q.type ? 1 : 0,
     }
-    if (!props.lockCity) {
-      for (const slug of q.city ?? []) {
-        const label = cityOptions.value.find((c) => c.value === slug)?.label
-        out.push({
-          key: `city-${slug}`,
-          label: `Из города: ${label ?? slug}`,
-          clear: () => patch({ city: (q.city ?? []).filter((v) => v !== slug) }),
-        })
-      }
-    }
-    if (!props.lockDestination) {
-      for (const slug of q.destination ?? []) {
-        const label = destOptions.value.find((d) => d.value === slug)?.label
-        out.push({
-          key: `dest-${slug}`,
-          label: label ?? slug,
-          clear: () =>
-            patch({
-              destination: (q.destination ?? []).filter((v) => v !== slug),
-            }),
-        })
-      }
-    }
-    for (const value of q.length ?? []) {
-      const label = LENGTHS.find((l) => l.value === value)?.label
-      out.push({
-        key: `len-${value}`,
-        label: label ?? value,
-        clear: () =>
-          patch({ length: (q.length ?? []).filter((v) => v !== value) }),
-      })
-    }
-    if (q.daysFrom || q.daysTo) {
-      out.push({
-        key: 'days',
-        label: rangeLabel(q.daysFrom, q.daysTo, 'дн.'),
-        clear: () => patch({ daysFrom: null, daysTo: null }),
-      })
-    }
-    for (const value of q.month ?? []) {
-      const label = months.value.find((m) => m.value === value)?.label
-      out.push({
-        key: `month-${value}`,
-        label: label ?? value,
-        clear: () =>
-          patch({ month: (q.month ?? []).filter((v) => v !== value) }),
-      })
-    }
-    if (q.priceMin || q.priceMax) {
-      out.push({
-        key: 'price',
-        label: rangeLabel(q.priceMin, q.priceMax, '₽'),
-        clear: () => patch({ priceMin: null, priceMax: null }),
-      })
-    }
-    for (const g of props.facetGroups) {
-      for (const value of q.facets?.[g.key] ?? []) {
-        const label = g.options.find((o) => o.value === value)?.label
-        out.push({
-          key: `${g.key}-${value}`,
-          label: label ?? value,
-          clear: () => toggleFacet(g.key, value),
-        })
-      }
-    }
-    return out
   })
 
-  const activeCount = computed(() => chips.value.length)
+  const facetCount = (key: FacetKey) => props.query.facets?.[key]?.length ?? 0
+
+  const activeCount = computed(
+    () =>
+      Object.values(counts.value).reduce((n, v) => n + v, 0) +
+      props.facetGroups.reduce((n, g) => n + facetCount(g.key), 0),
+  )
+
+  function clearFacet(key: FacetKey) {
+    patch({ facets: { ...props.query.facets, [key]: [] } })
+  }
 
   /* Сброс не трогает то, за что отвечает адрес страницы */
   function reset() {
     emit('change', {
       sort: props.query.sort,
       q: props.query.q,
+      from: null,
+      to: null,
       city: props.lockCity ? props.query.city : [],
       destination: props.lockDestination ? props.query.destination : [],
       facets: null,
@@ -221,28 +157,25 @@
     </div>
 
     <div class="cfilters-body">
-      <div v-if="chips.length" class="fchips">
-        <button
-          v-for="c in chips"
-          :key="c.key"
-          type="button"
-          class="fchip"
-          @click="c.clear()"
-        >
-          {{ c.label }}
-          <svg width="11" height="11" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M6 6l12 12M18 6L6 18"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.6"
-              stroke-linecap="round"
-            />
-          </svg>
-        </button>
-      </div>
+      <!-- Общий сброс висит сверху всегда: пока ничего не выбрано, он просто
+           показывает, что сбрасывать нечего, и колонка не прыгает от его
+           появления. -->
+      <button
+        type="button"
+        class="fclear"
+        :class="{ on: activeCount }"
+        :disabled="!activeCount"
+        @click="reset"
+      >
+        Сбросить фильтры<template v-if="activeCount"> ({{ activeCount }})</template>
+      </button>
 
-      <FilterGroup v-if="!lockCity" title="Город выезда">
+      <FilterGroup
+        v-if="!lockCity"
+        title="Город выезда"
+        :active="counts.city > 0"
+        @clear="patch({ city: [] })"
+      >
         <SelectMenu
           :model-value="query.city ?? []"
           :options="cityOptions"
@@ -252,7 +185,12 @@
         />
       </FilterGroup>
 
-      <FilterGroup v-if="!lockDestination" title="Направление">
+      <FilterGroup
+        v-if="!lockDestination"
+        title="Направление"
+        :active="counts.destination > 0"
+        @clear="patch({ destination: [] })"
+      >
         <SelectMenu
           :model-value="query.destination ?? []"
           :options="destOptions"
@@ -262,7 +200,11 @@
         />
       </FilterGroup>
 
-      <FilterGroup title="Количество дней">
+      <FilterGroup
+        title="Количество дней"
+        :active="counts.days > 0"
+        @clear="patch({ length: [], daysFrom: null, daysTo: null })"
+      >
         <label v-for="l in LENGTHS" :key="l.value" class="fcheck">
           <input
             type="checkbox"
@@ -316,22 +258,30 @@
         />
       </FilterGroup>
 
-      <FilterGroup v-if="months.length" title="Месяц выезда">
-        <div class="cfilters-chips">
-          <button
-            v-for="m in months"
-            :key="m.value"
-            type="button"
-            class="cchip"
-            :class="{ on: (query.month ?? []).includes(m.value) }"
-            @click="patch({ month: toggleIn(query.month ?? [], m.value) })"
-          >
-            {{ m.label }}
-          </button>
-        </div>
+      <!-- Дата и месяц одной группой: это один вопрос «когда», и держать
+           календарь отдельно от списка месяцев значит спрашивать дважды. -->
+      <FilterGroup
+        v-if="months.length"
+        title="Когда"
+        :active="counts.month > 0"
+        @clear="patch({ month: [], from: null, to: null })"
+      >
+        <WhenPicker
+          inline
+          :months="months"
+          :days="days"
+          :month="query.month ?? []"
+          :from="query.from ?? null"
+          :to="query.to ?? null"
+          @change="patch($event)"
+        />
       </FilterGroup>
 
-      <FilterGroup title="Цена">
+      <FilterGroup
+        title="Цена"
+        :active="counts.price > 0"
+        @clear="patch({ priceMin: null, priceMax: null })"
+      >
         <div class="fpair">
           <label class="ffield is-money">
             <input
@@ -372,6 +322,8 @@
         :key="g.key"
         :title="g.title"
         :open="false"
+        :active="facetCount(g.key) > 0"
+        @clear="clearFacet(g.key)"
       >
         <label v-for="o in g.options" :key="o.value" class="fcheck">
           <input
@@ -394,15 +346,6 @@
           <span>{{ o.label }}</span>
         </label>
       </FilterGroup>
-
-      <button
-        v-if="activeCount"
-        type="button"
-        class="cfilters-reset"
-        @click="reset"
-      >
-        Сбросить все фильтры
-      </button>
     </div>
 
     <div class="cfilters-foot">

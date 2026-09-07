@@ -39,6 +39,12 @@
     ).slice(0, 8),
   )
 
+  /* Преимущества общие для всех страниц, поэтому берём только свои: у
+     карточек зарубежной страницы своя страница и свой блок. */
+  const advantages = computed(() =>
+    data.value.advantages.filter((a) => a.page !== 'foreign'),
+  )
+
   const soonest = computed(() =>
     nearestFirst(
       [...data.value.excursions, ...data.value.tours],
@@ -51,11 +57,14 @@
   <div>
     <div id="top" class="hero-band">
       <SiteHeader
+        float
+        search
         :menu="data.menu"
         :settings="data.settings"
         :destinations="data.destinations"
         :cities="data.departureCities"
         :all-url="landing.destinations_all_url"
+        :search-placeholder="landing.hero_search_placeholder"
       />
       <HeroSection
         :slides="data.heroSlides"
@@ -117,11 +126,7 @@
         :items="data.reviews"
       />
 
-      <WhySection
-        id="why"
-        :title="landing.why_title"
-        :items="data.advantages"
-      />
+      <WhySection id="why" :title="landing.why_title" :items="advantages" />
 
       <LeadSection
         id="lead"
