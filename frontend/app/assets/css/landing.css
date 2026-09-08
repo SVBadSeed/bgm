@@ -173,14 +173,22 @@ img {
   align-items: center;
   gap: 8px;
 }
+/* Размытие подложки (backdrop-filter) осталось только у панели поиска.
+   Каждый такой элемент заставляет браузер отдельно снимать и размывать всё,
+   что под ним; их набиралось больше сорока на экран — четыре пилюли меню,
+   двадцать девять ссылок в выпадающих списках, чипы, иконки и сама липкая
+   шапка, которая пересчитывала размытие на каждом кадре прокрутки. На маке
+   с retina-экраном видеопамяти на это не хватало, и композитор просто
+   выбрасывал куски картинки: пропадали то пункты меню, то тексты карточек,
+   то половина экрана. Вместо размытия — чуть более плотный фон: на фотографии
+   разницы почти не видно, а рисоваться нечему. */
 .lp-nav a {
   height: 42px;
   display: inline-flex;
   align-items: center;
   padding: 0 19px;
   border-radius: var(--r-pill);
-  background: rgba(12, 12, 16, 0.34);
-  backdrop-filter: blur(12px);
+  background: rgba(12, 12, 16, 0.52);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -208,8 +216,7 @@ img {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: rgba(12, 12, 16, 0.34);
-  backdrop-filter: blur(12px);
+  background: rgba(12, 12, 16, 0.52);
   display: inline-grid;
   place-items: center;
   flex: none;
