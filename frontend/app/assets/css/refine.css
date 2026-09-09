@@ -257,7 +257,7 @@
   position: relative;
   margin-top: 24px;
   padding-block: 76px;
-  background-color: var(--slab);
+  background-color: var(--lead-bg);
   /* Клякса освободилась от блока подписки — теперь фактура здесь */
   background-image: url('/ink-splash.svg');
   background-repeat: no-repeat;
