@@ -292,7 +292,7 @@ img {
 /* ---------------- hero ---------------- */
 .hero-band {
   position: relative;
-  background: var(--slab);
+  background: var(--strip);
   border-radius: 0 0 44px 44px;
   padding-bottom: 30px;
 }
