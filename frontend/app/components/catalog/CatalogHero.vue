@@ -70,11 +70,11 @@
       <ul v-if="facts.length" class="chero-facts">
         <li v-for="f in facts" :key="f">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="11" fill="#b8f24e" />
+            <circle cx="12" cy="12" r="11" fill="var(--lime)" />
             <path
               d="M7 12.4l3.3 3.2L17 9"
               fill="none"
-              stroke="#0a0a0a"
+              stroke="var(--on-bright)"
               stroke-width="2.4"
               stroke-linecap="round"
               stroke-linejoin="round"

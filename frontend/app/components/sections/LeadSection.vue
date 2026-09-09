@@ -19,6 +19,18 @@
   )
 
   const message = ref('')
+
+  /* Со страницы тура сюда приезжает готовая строка «Тур: …, выезд …»: человек
+     нажал «Забронировать», и переписывать это руками ему незачем. Поле
+     остаётся обычным — написанное можно дополнить или стереть. */
+  const preset = useState<string>('lead-preset', () => '')
+  watch(
+    preset,
+    (v) => {
+      if (v) message.value = v
+    },
+    { immediate: true },
+  )
   const name = ref('')
   const phone = ref('')
   const email = ref('')

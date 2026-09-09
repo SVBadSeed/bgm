@@ -48,8 +48,8 @@
   z-index: 99;
   padding: 6px 10px;
   border-radius: var(--r-pill);
-  background: var(--ink);
-  color: #fff;
+  background: var(--ink-solid);
+  color: var(--on-ink);
   font-size: 12px;
   font-weight: 600;
   opacity: 0.75;

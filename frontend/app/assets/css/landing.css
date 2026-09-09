@@ -3,14 +3,22 @@
    ============================================================ */
 
 body {
-  background: var(--surface);
+  /* Тот же цвет, что у полотна: скругления .lp-main вырезают из него уголки,
+     и любой другой оттенок за ними читается грязной аркой на стыке. */
+  background: var(--canvas);
 }
 .lp-main {
   position: relative;
   z-index: 1;
-  background: var(--surface);
+  /* Полотно — отдельный цвет, а не «как у карточки»: в светлой теме они
+     совпадают, а в тёмной карточка обязана быть светлее полотна, иначе
+     она на нём пропадает — тени на тёмном фоне почти не видно. */
+  background: var(--canvas);
   border-radius: 0 0 var(--main-r) var(--main-r);
-  overflow: hidden;
+  /* clip, а не hidden: hidden делает полотно прокручиваемым контейнером, и
+     всё липкое внутри (панель разделов тура, карточка цены) переставало
+     липнуть. Обрезает clip так же, по скруглению. */
+  overflow: clip;
 }
 a {
   color: var(--ink);
@@ -82,7 +90,7 @@ img {
 }
 .all-link:hover {
   background: var(--lime);
-  color: var(--ink);
+  color: var(--on-bright);
 }
 .sec.gray .all-link {
   background: var(--surface);
@@ -105,6 +113,9 @@ img {
 }
 .arw:hover {
   background: var(--lime);
+  /* Шеврон рисуется currentColor: на лайме он обязан остаться тёмным
+     и в тёмной теме, где обычный цвет текста светлый. */
+  color: var(--on-bright);
 }
 .arw:disabled {
   opacity: 0.3;
@@ -156,7 +167,7 @@ img {
   top: 50%;
   width: 11.5px;
   height: 11.5px;
-  background: var(--ink);
+  background: var(--on-bright);
   border-radius: 4px;
   transform: translate(-50%, -50%) rotate(12deg);
 }
@@ -201,11 +212,11 @@ img {
 }
 .lp-nav a.on {
   background: var(--lime);
-  color: var(--ink);
+  color: var(--on-bright);
 }
 .lp-nav a.on:hover {
   background: var(--lime-600);
-  color: var(--ink);
+  color: var(--on-bright);
 }
 .hd-icons {
   display: flex;
@@ -281,7 +292,7 @@ img {
 /* ---------------- hero ---------------- */
 .hero-band {
   position: relative;
-  background: var(--lime);
+  background: var(--slab);
   border-radius: 0 0 44px 44px;
   padding-bottom: 30px;
 }
@@ -289,7 +300,7 @@ img {
   position: relative;
   border-radius: 0 0 40px 40px;
   overflow: hidden;
-  background: var(--ink);
+  background: var(--ink-block);
   min-height: 632px;
   display: flex;
   align-items: center;
@@ -370,7 +381,7 @@ img {
   margin: 36px auto 0;
   padding: 0 25px;
   border-radius: var(--r-pill);
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 12px 38px rgba(10, 10, 10, 0.2);
 }
 .hero-search svg {
@@ -426,7 +437,7 @@ img {
   height: 27px;
   padding: 0 13px;
   border-radius: var(--r-pill);
-  background: rgba(10, 10, 10, 0.1);
+  background: var(--slab-fill);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: -0.005em;
@@ -449,14 +460,14 @@ img {
 .shot-where em {
   font-style: normal;
   font-weight: 600;
-  color: rgba(10, 10, 10, 0.58);
+  color: var(--slab-text);
 }
 
 /* ---------------- promo ---------------- */
 .promo {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
-  background: var(--ink);
+  background: var(--ink-block);
   border-radius: 28px;
   overflow: hidden;
   min-height: 272px;
@@ -530,7 +541,7 @@ img {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--on-bright);
 }
 .pcard-title {
   font-size: 16px;
@@ -591,7 +602,7 @@ img {
   aspect-ratio: 4 / 5;
   border-radius: 22px;
   overflow: hidden;
-  background: var(--ink);
+  background: var(--ink-block);
   padding: 20px;
   transition: transform 0.2s var(--ease);
 }
@@ -711,7 +722,7 @@ img {
 }
 .why a:hover {
   background: var(--lime);
-  color: var(--ink);
+  color: var(--on-bright);
 }
 
 /* ---------------- reviews ---------------- */
@@ -750,7 +761,7 @@ img {
   display: grid;
   place-items: center;
   background: var(--lime-tint);
-  color: #5f8a12;
+  color: var(--lime-ink);
   font-weight: 700;
   font-size: 14.5px;
   letter-spacing: -0.02em;
@@ -845,7 +856,7 @@ img {
   height: 56px;
   border-radius: var(--r-pill);
   border: none;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   padding: 0 22px;
   font-family: inherit;
@@ -862,11 +873,11 @@ img {
 }
 .sub-form .btn {
   height: 56px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--ink-solid);
+  color: var(--on-ink);
 }
 .sub-form .btn:hover {
-  background: var(--ink-soft);
+  background: var(--ink-solid-h);
 }
 .sub-ok {
   margin: 0;
@@ -878,7 +889,7 @@ img {
 /* ---------------- footer ---------------- */
 /* тёмный футер заезжает под скруглённые углы контента — так фон body остаётся белым */
 .lp-footer {
-  background: var(--ink);
+  background: var(--footer-bg);
   margin-top: calc(var(--main-r) * -1);
   padding: calc(74px + var(--main-r)) 0 32px;
 }
@@ -887,20 +898,6 @@ img {
 }
 .lp-footer a:hover {
   color: var(--lime);
-}
-.f-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
-  gap: 40px;
-}
-.f-col h4 {
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.52);
-  margin: 0 0 17px;
-  font-family: var(--font);
 }
 /* align-items: flex-start — иначе ссылки-флексы растягиваются на всю колонку,
    и подсветка при наведении срабатывает далеко в стороне от текста. */
@@ -920,39 +917,10 @@ img {
   background: var(--lime);
 }
 .lp-footer .logo-mark i {
-  background: var(--ink);
+  background: var(--on-bright);
 }
 .lp-footer .logo-word {
   color: #fff;
-}
-.f-about {
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.52);
-  margin: 18px 0 0;
-  max-width: 32ch;
-}
-.f-tel {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: #fff;
-}
-.f-tel:hover {
-  color: var(--lime);
-}
-.f-mail {
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.62);
-  margin-top: 8px;
-}
-.f-mail a {
-  color: inherit;
-}
-.f-mail a:hover {
-  color: var(--lime);
 }
 .f-links a:hover {
   color: var(--lime);
@@ -978,31 +946,7 @@ img {
   background: var(--lime);
 }
 .socials a:hover svg {
-  fill: var(--ink);
-}
-.f-bot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-  margin-top: 52px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.13);
-  font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.46);
-}
-.f-legal {
-  display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
-}
-.f-legal a {
-  font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.46);
-}
-.f-legal a:hover {
-  color: #fff;
+  fill: var(--on-bright);
 }
 
 /* ---------------- rails ---------------- */
@@ -1044,7 +988,7 @@ img {
   color: var(--ink);
 }
 .hero-card:has(.hero-shot.on .slot-empty) .hero-title .glyph {
-  background: #5f8a12;
+  background: var(--lime-ink);
 }
 .hero-card:has(.hero-shot.on .slot-empty) .shot-dots button {
   background: rgba(10, 10, 10, 0.24);
@@ -1076,7 +1020,7 @@ img {
   opacity: 0;
 }
 .dcard:has(.slot-empty) .dcard-kicker {
-  color: #5f8a12;
+  color: var(--lime-ink);
 }
 .dcard:has(.slot-empty) .dcard-name,
 .dcard:has(.slot-empty) .dcard-row b {

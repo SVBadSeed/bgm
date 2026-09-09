@@ -10,7 +10,7 @@
     height="28"
     viewBox="0 0 24 24"
     fill="none"
-    stroke="#0A0A0A"
+    stroke="var(--on-bright)"
     stroke-width="1.7"
     stroke-linecap="round"
     stroke-linejoin="round"

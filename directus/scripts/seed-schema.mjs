@@ -261,6 +261,29 @@ const collections = [
       str('work_hours', 'Режим работы офиса', {
         note: 'Одной строкой: ПН–ПТ с 09:00 до 18:00. СБ-ВС — выходной.',
       }),
+      /* Три строки в карточке цены на странице тура: одинаковые у всех туров */
+      text('tour_individual_note', 'Страница тура: про индивидуальный выезд'),
+      text('tour_cancel_note', 'Страница тура: про отмену брони'),
+      str('tour_prepay_note', 'Страница тура: про предоплату'),
+      /* Футер */
+      str('footer_phone_note', 'Футер: подпись под телефоном', {
+        default: 'Мы всегда на связи и готовы помочь',
+      }),
+      str('footer_email_note', 'Футер: подпись под почтой', {
+        default: 'По любым вопросам пишите на почту',
+      }),
+      str('registry_line', 'Футер: строка реестра туроператоров'),
+      image('registry_image', 'Футер: знак реестра'),
+      str('rating_value', 'Футер: оценка на Яндекс Картах', {
+        width: 'half',
+        note: 'Например 5.0',
+      }),
+      int('rating_count', 'Футер: сколько отзывов'),
+      str('rating_url', 'Футер: ссылка на карточку организации'),
+      image('payments_image', 'Футер: платёжные системы', {
+        note: 'Одна картинка-полоска с логотипами',
+      }),
+      text('legal_note', 'Футер: мелкая приписка внизу'),
       ...dates(),
     ],
   },
@@ -502,9 +525,75 @@ const collections = [
         width: 'half',
         default: 'за человека',
       }),
-      str('url', 'Ссылка', { width: 'half', default: '#' }),
+      int('price_reduced', 'Цена для детей и пенсионеров, ₽', {
+        note: 'Пусто — вторая строка в блоке цены не показывается',
+      }),
+      str('url', 'Ссылка', {
+        width: 'half',
+        note: 'Пусто — ведёт на страницу тура /tury/<слаг>',
+      }),
       image('image', 'Фото'),
       bool('featured', 'Показывать на главной', true),
+      /* Дальше — содержимое страницы тура. В карточках оно не участвует,
+         поэтому и заполняется в последнюю очередь. */
+      text('intro', 'Описание', { note: 'Абзац под заголовком тура' }),
+      str('age_label', 'Ограничение по возрасту', {
+        width: 'half',
+        note: 'от 3 лет',
+      }),
+      text('included', 'Включено в стоимость', {
+        note: 'По пункту на строку',
+      }),
+      text('extra_costs', 'Дополнительные расходы', {
+        note: 'По пункту на строку',
+      }),
+      str('hotel_name', 'Проживание: отель'),
+      text('hotel_text', 'Проживание: описание'),
+      image('hotel_image', 'Проживание: фото'),
+      text('extra_note', 'Дополнительно', {
+        note: 'Предупреждения и памятка перед поездкой. Пусто — блок не показывается',
+      }),
+      str('booklet_url', 'Ссылка на буклет', {
+        note: 'Пусто — кнопки «Скачать буклет» на странице нет',
+      }),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'tour_days',
+    meta: listMeta(
+      'calendar_view_day',
+      'Программа по дням',
+      '{{tour.title}} — {{title}}',
+      'Дни программы тура. Порядок задаётся перетаскиванием.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      m2o('tour', 'Тур', 'tours', '{{title}}'),
+      str('title', 'Заголовок дня', {
+        required: true,
+        note: 'Владикавказ — Кармадонское ущелье',
+      }),
+      text('text', 'Что в этот день'),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'tour_photos',
+    meta: listMeta(
+      'photo_library',
+      'Фото туров',
+      '{{tour.title}}',
+      'Галерея на странице тура. Первым идёт кадр из самого тура.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      m2o('tour', 'Тур', 'tours', '{{title}}'),
+      image('image', 'Фото'),
       ...dates(),
     ],
   },
@@ -556,6 +645,7 @@ const collections = [
       int('price', 'Цена этой даты, ₽', {
         note: 'Пусто — берётся цена тура. Заполняется, когда сезон дороже',
       }),
+      bool('instant', 'Мгновенная покупка', true),
       ...dates(),
     ],
   },
@@ -603,6 +693,29 @@ const collections = [
       int('rating', 'Оценка (1–5)', { default: 5, min: 1 }),
       text('text', 'Текст отзыва'),
       m2o('tour', 'Тур', 'tours', '{{title}}'),
+      str('traveler', 'Опыт путешественника', {
+        width: 'half',
+        note: 'Бывалый путешественник',
+      }),
+      m2o('city', 'Город выезда', 'departure_cities', '{{name}}'),
+      date('date', 'Дата отзыва'),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'review_photos',
+    meta: listMeta(
+      'photo_camera',
+      'Фото к отзывам',
+      '{{review.author}}',
+      'Кадры, которые прислали туристы. Показываются плиткой внутри отзыва.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      m2o('review', 'Отзыв', 'reviews', '{{author}}'),
+      image('image', 'Фото'),
       ...dates(),
     ],
   },
@@ -630,7 +743,9 @@ const collections = [
       text('widget_code', 'Код модуля', {
         note: 'Код партнёрского виджета целиком: разметка и <script>. Вставляется на страницу как есть — проверьте, что он от вашего поставщика.',
       }),
-      text('widget_note', 'Приписка под модулем'),
+      text('hot_code', 'Код модуля «Горящие туры»', {
+        note: 'Пока пусто — на странице показывается витрина из коллекции «Зарубежные предложения»',
+      }),
       str('hot_title', 'Заголовок витрины', {
         width: 'half',
         default: 'Горящие предложения',
@@ -685,6 +800,31 @@ const collections = [
       }),
       str('url', 'Ссылка', { width: 'half', default: '#' }),
       image('image', 'Фото'),
+      ...dates(),
+    ],
+  },
+  {
+    collection: 'documents',
+    meta: listMeta(
+      'gavel',
+      'Документы',
+      '{{title}}',
+      'Оферта, политика и прочие юридические страницы. Адрес страницы — /dokumenty/<слаг>.',
+    ),
+    fields: [
+      id(),
+      status(),
+      sort(),
+      str('title', 'Название', { required: true }),
+      str('slug', 'Слаг', {
+        required: true,
+        options: { slug: true },
+        note: 'Из него собирается адрес: /dokumenty/<слаг>',
+      }),
+      str('note', 'Подпись под заголовком', {
+        note: 'Последнее обновление: 20 февраля 2026 г.',
+      }),
+      text('body', 'Текст документа', { rich: true }),
       ...dates(),
     ],
   },
@@ -766,6 +906,30 @@ const publicPermissions = [
   },
   {
     collection: 'tours',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
+  },
+  {
+    collection: 'tour_days',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
+  },
+  {
+    collection: 'tour_photos',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
+  },
+  {
+    collection: 'review_photos',
+    action: 'read',
+    fields: ['*'],
+    permissions: published,
+  },
+  {
+    collection: 'documents',
     action: 'read',
     fields: ['*'],
     permissions: published,

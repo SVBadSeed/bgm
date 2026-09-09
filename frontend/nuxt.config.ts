@@ -18,6 +18,19 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      script: [
+        {
+          // Тема выставляется до первой отрисовки, иначе страница успевает
+          // моргнуть белым. Порядок: выбор человека из localStorage, а если
+          // его нет — тема системы. Дальше за темой следит плагин theme.client.
+          innerHTML:
+            "try{var t=localStorage.getItem('bt-theme');" +
+            "if(t!=='light'&&t!=='dark')" +
+            "t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';" +
+            "document.documentElement.dataset.theme=t}catch(e){}",
+          tagPosition: 'head',
+        },
+      ],
     },
   },
 

@@ -13,6 +13,7 @@
     <SiteFooter
       :settings="data.settings"
       :menu="data.menu"
+      :destinations="data.destinations"
       :mascot="data.landing.mascot_full_image"
     />
   </div>

@@ -54,11 +54,11 @@
         <ul v-if="facts.length" class="chero-facts">
           <li v-for="f in facts" :key="f">
             <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="11" fill="#b8f24e" />
+              <circle cx="12" cy="12" r="11" fill="var(--lime)" />
               <path
                 d="M7 12.4l3.3 3.2L17 9"
                 fill="none"
-                stroke="#0a0a0a"
+                stroke="var(--on-bright)"
                 stroke-width="2.4"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -81,11 +81,29 @@
          рамка-заглушка на боевой странице выглядела бы недоделкой. -->
     <section v-if="page.widget_code" id="podbor" class="zwidget">
       <div class="wrap">
-        <EmbedSlot :code="page.widget_code" :note="page.widget_note" />
+        <EmbedSlot
+          :code="page.widget_code"
+          label="Поиск и подбор туров — модуль системы бронирования"
+        />
       </div>
     </section>
 
+    <!-- Горящие: если партнёрский модуль подключён, показываем его — цены там
+         живые. Пока кода нет, работает своя витрина из админки, чтобы раздел
+         не стоял пустым. -->
+    <section v-if="page.hot_code" id="hot-offers" class="sec">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-h2">{{ page.hot_title }}</h2>
+        </div>
+        <EmbedSlot
+          :code="page.hot_code"
+          label="Горящие туры — модуль системы бронирования"
+        />
+      </div>
+    </section>
     <OffersRail
+      v-else
       id="hot-offers"
       :title="page.hot_title"
       :all-url="page.hot_all_url"

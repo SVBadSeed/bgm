@@ -42,18 +42,33 @@ const foreignFromMock = (): ForeignData => ({
 export function useForeign() {
   const config = useRuntimeConfig()
 
-  return useAsyncData<ForeignData>(
+  /* Данные могли приехать с сервера уже из моков — значит, CMS не ответила
+     ещё на отрисовке. Запоминаем это сразу, иначе первый же переход по
+     ссылке снова полез бы в недоступный Directus и ждал бы отказа. */
+  const result = useAsyncData<ForeignData>(
     'foreign',
     async () => {
-      if (config.public.useMock) return foreignFromMock()
+      /* Если CMS только что не ответила — не ждём её снова: полминуты
+         отдаём моки сразу, потом пробуем ещё раз. */
+      if (config.public.useMock || directusDown()) return foreignFromMock()
       try {
         return await fetchForeign()
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e)
+        markDirectusDown()
         console.warn(`[foreign] Directus недоступен (${msg}) — рендерю моки`)
         return foreignFromMock()
       }
     },
     { default: foreignFromMock },
   )
+  if (
+    import.meta.client &&
+    !config.public.useMock &&
+    result.data.value?.source === 'mock'
+  ) {
+    markDirectusDown()
+  }
+
+  return result
 }

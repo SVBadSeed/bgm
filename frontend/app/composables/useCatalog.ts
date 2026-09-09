@@ -83,18 +83,33 @@ const catalogFromMock = (): CatalogData => ({
 export function useCatalog() {
   const config = useRuntimeConfig()
 
-  return useAsyncData<CatalogData>(
+  /* Данные могли приехать с сервера уже из моков — значит, CMS не ответила
+     ещё на отрисовке. Запоминаем это сразу, иначе первый же переход по
+     ссылке снова полез бы в недоступный Directus и ждал бы отказа. */
+  const result = useAsyncData<CatalogData>(
     'catalog',
     async () => {
-      if (config.public.useMock) return catalogFromMock()
+      /* Если CMS только что не ответила — не ждём её снова: полминуты
+         отдаём моки сразу, потом пробуем ещё раз. */
+      if (config.public.useMock || directusDown()) return catalogFromMock()
       try {
         return await fetchCatalog()
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e)
+        markDirectusDown()
         console.warn(`[catalog] Directus недоступен (${msg}) — рендерю моки`)
         return catalogFromMock()
       }
     },
     { default: catalogFromMock },
   )
+  if (
+    import.meta.client &&
+    !config.public.useMock &&
+    result.data.value?.source === 'mock'
+  ) {
+    markDirectusDown()
+  }
+
+  return result
 }

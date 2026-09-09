@@ -348,11 +348,11 @@ html {
 }
 .dpill.d1 {
   background: var(--lime-tint);
-  color: #3f6b0a;
+  color: var(--lime-ink);
 }
 .dpill.d2 {
   background: var(--blue-tint);
-  color: #0a5e9c;
+  color: var(--blue);
 }
 
 /* Кнопка «в избранное» на карточке */
@@ -390,7 +390,10 @@ html {
     fill var(--t-ui) var(--e-quart),
     stroke var(--t-ui) var(--e-quart);
   fill: none;
-  stroke: var(--ink);
+  /* Кружок под сердцем белый в любой теме — значит и контур обязан быть
+     тёмным в любой. С обычным цветом текста ночью получалось белое по
+     белому: на карточке висел пустой кружок непонятного назначения. */
+  stroke: var(--on-bright);
 }
 .fav.on svg {
   fill: var(--danger);
@@ -447,10 +450,8 @@ html {
   transform: rotate(-8deg) scale(1.06);
 }
 
-/* Кнопки и пилюли */
-.btn-primary:hover {
-  box-shadow: 0 8px 24px rgba(148, 209, 31, 0.38);
-}
+/* Кнопки и пилюли. Наведение меняет только фон — свечение под лаймовой
+   кнопкой выглядело подсветкой ошибки, а не приглашением нажать. */
 .all-link,
 .arw {
   transition:
@@ -483,12 +484,7 @@ html {
   color: var(--lime);
 }
 .socials a {
-  transition:
-    background var(--t-ui) var(--e-quart),
-    transform var(--t-ui) var(--e-quart);
-}
-.socials a:hover {
-  transform: translateY(-2px);
+  transition: background var(--t-ui) var(--e-quart);
 }
 
 /* ------------------------------------------------------------------
@@ -557,7 +553,7 @@ html {
 }
 .shelf {
   position: relative;
-  background: var(--lime);
+  background: var(--slab);
   border-radius: 34px;
   padding: 30px 0 34px;
 }

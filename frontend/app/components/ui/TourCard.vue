@@ -42,7 +42,7 @@
 </script>
 
 <template>
-  <a class="pcard" :href="tour.url ?? '#'">
+  <NuxtLink class="pcard" :to="tourUrl(tour)">
     <div class="pcard-media">
       <span v-if="tour.tag" class="pcard-tag ticket">{{ tour.tag }}</span>
       <!-- Скидка перебивает обычный бейдж: там, где мы её вообще показываем,
@@ -101,5 +101,5 @@
       <b>{{ price }}</b>
       <small v-if="tour.price_note">{{ tour.price_note }}</small>
     </div>
-  </a>
+  </NuxtLink>
 </template>

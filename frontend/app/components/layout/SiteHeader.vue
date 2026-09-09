@@ -181,6 +181,7 @@
       </nav>
 
       <div class="hd-icons">
+        <ThemeToggle />
         <a
           class="hd-fav"
           :href="settings.favorites_url ?? '#'"

@@ -3,24 +3,63 @@
    ============================================================ */
 
 :root {
+  color-scheme: light;
+
   /* Brand */
   --lime: #b8f24e;
   --lime-600: #a6e536; /* hover */
   --lime-700: #94d11f; /* active */
   --lime-tint: #eefbd2; /* soft fill / selected card */
   --lime-tint-2: #f4fce3;
+  --lime-ink: #3f6b0a; /* зелёный текст на светло-зелёной подложке */
+  /* Широкие фирменные плашки во всю колонку: полка с турами, блок
+     заявки, полоса под кадром — и лента отзывов чуть мягче их. */
+  --slab: #b8f24e;
+  --band: #d8f58f;
+  --band-text: #2a3a10; /* текст на этой полосе */
+  --band-text-2: #40551d;
+  --band-link: #3f6b12;
+  --slab-fill: rgba(10, 10, 10, 0.1); /* бейдж поверх плашки */
+  --slab-text: rgba(10, 10, 10, 0.58);
+  --ring: rgba(184, 242, 78, 0.35); /* подсветка фокуса */
 
-  --ink: #0a0a0a;
+  /* Тёмная краска на ярких заливках (лайм, белая плашка на фото).
+     Она не переворачивается вместе с темой: на салатовой кнопке буквы
+     обязаны остаться тёмными и ночью. */
+  --on-bright: #0a0a0a;
+
+  --ink: #0a0a0a; /* основной текст */
   --ink-soft: #1a1a1e;
+  /* Контрастная заливка: активный чип, тёмная кнопка. В тёмной теме
+     переворачивается в светлую — это тот же приём «наоборот к фону». */
+  --ink-solid: #0a0a0a;
+  --ink-solid-h: #2b2b2b;
+  --on-ink: #ffffff; /* текст на ней */
+  /* Крупные панели: герой, промо, «почему мы». Днём они почти чёрные,
+     ночью — наоборот, приподняты над полотном: тёмное на тёмном не
+     читается как отдельный блок, а тени на тёмном фоне почти не видно. */
+  --ink-block: #0a0a0a;
+  --footer-bg: #0a0a0a;
 
   /* Neutrals */
   --bg: #f5f4f9; /* app background */
+  --canvas: #ffffff; /* полотно страницы под карточками */
   --surface: #ffffff; /* cards */
   --surface-2: #fafafc; /* zebra / subtle */
+  --hover: #ececf0; /* наведение на нейтральный чип */
+  --hot-bg: #fff4e8; /* тёплая подложка «Горящих туров» */
+  --fill: #ededf2; /* вторичная кнопка */
+  --fill-h: #e3e3ea;
   --border: #ececf1;
   --border-2: #e0e0e8;
   --text-2: #6b6b75; /* secondary text */
   --text-3: #9a9aa4; /* tertiary / placeholder */
+  --scroll: #d6d6df;
+  --scroll-h: #c2c2cf;
+  --header-solid: rgba(255, 255, 255, 0.97); /* осевшая шапка */
+  /* Рамка вокруг полей поиска поверх кадра */
+  --photo-panel: rgba(255, 255, 255, 0.2);
+  --photo-panel-line: rgba(255, 255, 255, 0.28);
 
   /* Status */
   --blue: #0c76c2;
@@ -53,6 +92,82 @@
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+/* ============================================================
+   Тёмная тема
+   Цвета взяты из брендбука: фирменный тёмно-синий #0A0F36 («цвет ночного
+   неба в горах»), неоновый салатовый #ADD259, светлый сиреневый #C5AED4
+   как дополнительный акцент и off-white #FCFBFB вместо чистого белого.
+   Светлая тема не тронута — здесь только переопределение переменных.
+   ============================================================ */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --lime: #add259;
+  --lime-600: #bcdd76;
+  --lime-700: #9bc247;
+  /* Полупрозрачный лайм вместо готового цвета: подложка ложится и на
+     карточку, и на страницу, и в обоих случаях остаётся зелёной. */
+  --lime-tint: rgba(173, 210, 89, 0.16);
+  --lime-tint-2: rgba(173, 210, 89, 0.09);
+  --lime-ink: #c6e28c;
+  /* Ночью широкие плашки не салатовые — полотнами лайм слепил бы, — но и
+     не синие: остаются зелёными, только глубоко притушенными. Так днём и
+     ночью у страницы одна и та же структура, просто разной яркости. */
+  --slab: #0c2114;
+  --band: #0e2416;
+  --band-text: #a7aacb;
+  --band-text-2: #7c80a6;
+  --band-link: #add259;
+  --slab-fill: rgba(255, 255, 255, 0.1);
+  --slab-text: #a7aacb;
+  --ring: rgba(173, 210, 89, 0.32);
+
+  --on-bright: #0a0f36;
+
+  --ink: #f1f0f7;
+  --ink-soft: #e0dfec;
+  --ink-solid: #eeedf6;
+  --ink-solid-h: #d7d6e6;
+  --on-ink: #0a0f36;
+  --ink-block: #171e50;
+  --footer-bg: #070c28;
+
+  /* Три уровня темноты: полоса-«колодец» глубже страницы, карточка выше
+     её. Без такой лесенки на синем фоне карточки просто пропадают. */
+  --bg: #080d2c;
+  --canvas: #0a0f36;
+  --surface: #151c4b;
+  --surface-2: #1c2359;
+  --hover: #29316b;
+  --hot-bg: #241733;
+  --fill: #222a5e;
+  --fill-h: #2c3572;
+  --border: #262e66;
+  --border-2: #333c7d;
+  --text-2: #a7aacb;
+  --text-3: #7c80a6;
+  --scroll: #2b3372;
+  --scroll-h: #3a4390;
+  --header-solid: rgba(10, 15, 54, 0.97);
+  --photo-panel: rgba(8, 12, 44, 0.42);
+  --photo-panel-line: rgba(255, 255, 255, 0.14);
+
+  /* Синего в брендбуке нет — его роль забирает фирменный сиреневый */
+  --blue: #c5aed4;
+  --blue-tint: #2b2456;
+  --amber: #efc06a;
+  --amber-tint: #3a2f16;
+  --danger: #ff6f66;
+  --danger-soft: #b8514c;
+  --ok: #6fca80;
+
+  /* Тень на тёмном фоне не видна полутоном — только плотной чернотой */
+  --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sh-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --sh-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --sh-pop: 0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -80,7 +195,7 @@ textarea {
 
 ::selection {
   background: var(--lime);
-  color: var(--ink);
+  color: var(--on-bright);
 }
 
 /* ---------- Buttons ---------- */
@@ -108,7 +223,7 @@ textarea {
 
 .btn-primary {
   background: var(--lime);
-  color: var(--ink);
+  color: var(--on-bright);
 }
 .btn-primary:hover {
   background: var(--lime-600);
@@ -128,11 +243,11 @@ textarea {
 }
 
 .btn-secondary {
-  background: #ededf2;
+  background: var(--fill);
   color: var(--ink);
 }
 .btn-secondary:hover {
-  background: #e3e3ea;
+  background: var(--fill-h);
 }
 
 .btn:disabled {
@@ -206,7 +321,7 @@ h3 {
 }
 .field:focus {
   border-color: var(--ink);
-  box-shadow: 0 0 0 4px rgba(184, 242, 78, 0.35);
+  box-shadow: 0 0 0 4px var(--ring);
 }
 .field.error {
   border-color: var(--danger);
@@ -216,10 +331,16 @@ h3 {
 select.field {
   appearance: none;
   cursor: pointer;
+  /* Стрелка нарисована прямо в адресе картинки и переменных не видит —
+     для тёмной темы ниже подставляется такая же, но светлее. */
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M4 6l4 4 4-4' fill='none' stroke='%236B6B75' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 38px;
+}
+
+[data-theme='dark'] select.field {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><path d='M4 6l4 4 4-4' fill='none' stroke='%23A7AACB' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
 /* scrollbar */
@@ -228,10 +349,10 @@ select.field {
   height: 11px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #d6d6df;
+  background: var(--scroll);
   border-radius: 99px;
   border: 3px solid var(--bg);
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #c2c2cf;
+  background: var(--scroll-h);
 }

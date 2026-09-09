@@ -106,18 +106,33 @@ async function fetchFromDirectus(): Promise<LandingData> {
 export function useLanding() {
   const config = useRuntimeConfig()
 
-  return useAsyncData<LandingData>(
+  /* Данные могли приехать с сервера уже из моков — значит, CMS не ответила
+     ещё на отрисовке. Запоминаем это сразу, иначе первый же переход по
+     ссылке снова полез бы в недоступный Directus и ждал бы отказа. */
+  const result = useAsyncData<LandingData>(
     'landing',
     async () => {
-      if (config.public.useMock) return mockLanding
+      /* Если CMS только что не ответила — не ждём её снова: полминуты
+         отдаём моки сразу, потом пробуем ещё раз. */
+      if (config.public.useMock || directusDown()) return mockLanding
       try {
         return await fetchFromDirectus()
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e)
+        markDirectusDown()
         console.warn(`[landing] Directus недоступен (${msg}) — рендерю моки`)
         return mockLanding
       }
     },
     { default: () => mockLanding },
   )
+  if (
+    import.meta.client &&
+    !config.public.useMock &&
+    result.data.value?.source === 'mock'
+  ) {
+    markDirectusDown()
+  }
+
+  return result
 }

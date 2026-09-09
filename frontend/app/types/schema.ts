@@ -45,6 +45,30 @@ export interface SiteSettings {
   favorites_url: string | null
   /** Режим работы офиса одной строкой */
   work_hours: string | null
+  /* Три строки в карточке цены на странице тура. Общие для всех туров,
+     поэтому живут в настройках сайта, а не у каждого тура. */
+  tour_individual_note: string | null
+  tour_cancel_note: string | null
+  tour_prepay_note: string | null
+
+  /* Футер */
+  /** Подпись под телефоном: «Мы всегда на связи и готовы помочь» */
+  footer_phone_note: string | null
+  /** Подпись под почтой: «По любым вопросам пишите на почту» */
+  footer_email_note: string | null
+  /** Строка реестра: «ООО «АТТ» В031-00161-00/04513871» */
+  registry_line: string | null
+  /** Герб или знак реестра рядом со строкой */
+  registry_image: ImageRef
+  /** Оценка на Яндекс Картах, например «5.0» */
+  rating_value: string | null
+  /** Сколько отзывов учтено в оценке */
+  rating_count: number | null
+  rating_url: string | null
+  /** Полоска логотипов платёжных систем одной картинкой */
+  payments_image: ImageRef
+  /** Мелкая приписка внизу футера */
+  legal_note: string | null
 }
 
 export interface Landing {
@@ -148,9 +172,48 @@ export interface Tour {
   date_created?: string | null
   price_prefix: string | null
   price_note: string | null
+  /** Цена для детей и пенсионеров — вторая строка в блоке цены */
+  price_reduced: number | null
   url: string | null
   image: ImageRef
   featured: boolean
+
+  /* Ниже — только для страницы тура; в карточках не участвует */
+  /** Абзац под заголовком: о чём поездка */
+  intro: string | null
+  /** «от 3 лет» — ограничение по возрасту */
+  age_label: string | null
+  /** Что входит в стоимость, по пункту на строку */
+  included: string | null
+  /** Оплачивается отдельно, по пункту на строку */
+  extra_costs: string | null
+  hotel_name: string | null
+  hotel_text: string | null
+  hotel_image: ImageRef
+  /** Блок «Дополнительно»: предупреждения и памятка перед поездкой */
+  extra_note: string | null
+  /** Ссылка на буклет: пусто — кнопки «Скачать буклет» нет */
+  booklet_url: string | null
+}
+
+/** День программы тура. Отдельной коллекцией: дней от одного до десяти */
+export interface TourDay {
+  id: string
+  status: Status
+  sort: number | null
+  tour: string | Tour | null
+  /** «Владикавказ — Кармадонское ущелье» */
+  title: string
+  text: string | null
+}
+
+/** Кадр в галерее тура */
+export interface TourPhoto {
+  id: string
+  status: Status
+  sort: number | null
+  tour: string | Tour | null
+  image: ImageRef
 }
 
 /** Город, из которого уходит автобус */
@@ -183,6 +246,8 @@ export interface Departure {
   seats_left: number | null
   /** Пусто — берётся price_from тура */
   price: number | null
+  /** Место можно выкупить сразу, без звонка менеджера */
+  instant: boolean
 }
 
 export type AdvantageIcon =
@@ -213,10 +278,26 @@ export interface Review {
   status: Status
   sort: number | null
   author: string
+  /** «Краснодар · август 2026» — короткая подпись для карточки на главной */
   meta: string | null
   rating: number | null
   text: string | null
   tour: string | Tour | null
+  /** «Бывалый путешественник» — сколько раз человек ездил с нами */
+  traveler: string | null
+  /** Город, из которого уезжали: на странице отзывов он отдельной строкой */
+  city: string | DepartureCity | null
+  /** Дата отзыва, ISO без времени */
+  date: string | null
+}
+
+/** Фотография, приложенная к отзыву */
+export interface ReviewPhoto {
+  id: string
+  status: Status
+  sort: number | null
+  review: string | Review | null
+  image: ImageRef
 }
 
 /** План питания в отеле. Словарь повторён в app/utils/facets.ts */
@@ -258,12 +339,30 @@ export interface ForeignPage {
   image: ImageRef
   /** Короткие факты под заголовком, через | */
   facts: string | null
-  /** Код партнёрского модуля целиком: разметка и <script> */
+  /** Код партнёрского модуля подбора: разметка и <script> */
   widget_code: string | null
-  widget_note: string | null
+  /** Код модуля «Горящие туры». Заполнен — показываем его вместо своей витрины */
+  hot_code: string | null
   hot_title: string | null
   hot_all_url: string | null
   perks_title: string | null
+}
+
+/**
+ * Юридическая страница: оферта, политика, соглашение. Одной коллекцией, а не
+ * страницей на каждую: документы добавляют и переписывают юристы, и заводить
+ * под каждый новый свой шаблон — лишняя работа на ровном месте.
+ */
+export interface LegalDoc {
+  id: string
+  status: Status
+  sort: number | null
+  title: string
+  slug: string
+  /** «Последнее обновление: 20 февраля 2026 г.» */
+  note: string | null
+  /** Текст документа разметкой */
+  body: string | null
 }
 
 export interface Subscriber {
@@ -292,10 +391,14 @@ export interface Schema {
   departures: Departure[]
   departure_cities: DepartureCity[]
   tours: Tour[]
+  tour_days: TourDay[]
+  tour_photos: TourPhoto[]
   advantages: Advantage[]
   reviews: Review[]
+  review_photos: ReviewPhoto[]
   foreign_page: ForeignPage
   foreign_offers: ForeignOffer[]
+  documents: LegalDoc[]
   subscribers: Subscriber[]
   leads: Lead[]
 }
