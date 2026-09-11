@@ -4989,8 +4989,54 @@ input.ffield[type='number'] {
   .dhero {
     padding: 132px 0 60px;
   }
+  .dgrid.dall {
+    gap: 12px;
+  }
+
+  /* На телефоне плитка в две колонки — 167px шириной. В ней не помещались
+     ни название в 23px, ни строка «программы + цена» в одну линию: «9» и
+     «программ» разъезжались на две строки, а цену срезало краем. Здесь
+     всё мельче и в столбик, подпись-кикер убрана — на такой плитке она
+     только закрывает фотографию. */
+  .dall .dcard {
+    padding: 14px;
+  }
+  .dall .dcard-kicker {
+    display: none;
+  }
+  .dall .dcard-name {
+    font-size: 17px;
+    line-height: 1.15;
+  }
+  .dall .dcard-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-top: 8px;
+  }
+  .dall .dcard-row small {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .dall .dcard-row b {
+    font-size: 14px;
+  }
+
+  /* Обложки остаются крупными: они во всю ширину, места им хватает */
   .dall .dcard:nth-child(-n + 2) {
     aspect-ratio: 4 / 3;
     padding: 22px;
+  }
+  .dall .dcard:nth-child(-n + 2) .dcard-kicker {
+    display: block;
+  }
+  .dall .dcard:nth-child(-n + 2) .dcard-name {
+    font-size: 26px;
+  }
+  .dall .dcard:nth-child(-n + 2) .dcard-row {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 12px;
   }
 }
