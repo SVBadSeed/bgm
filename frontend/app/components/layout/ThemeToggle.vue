@@ -18,6 +18,7 @@
   <button
     class="hd-theme"
     type="button"
+    data-keep-menu
     title="Светлая или тёмная тема"
     aria-label="Светлая или тёмная тема"
     @click="toggle"

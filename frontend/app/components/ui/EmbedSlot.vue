@@ -16,13 +16,10 @@
    * тему сайта не знает. Днём это незаметно — его белое совпадает с нашим
    * полотном. Ночью белый прямоугольник посреди тёмной страницы выглядит
    * дырой, поэтому в тёмной теме мы не перекрашиваем чужое (сломалось бы на
-   * первом же их обновлении), а оформляем как намеренную светлую вставку:
-   * подложка, поля и подпись сверху. См. раздел 36 в refine.css.
+   * первом же их обновлении), а кладём на светлую подложку с полями.
+   * См. раздел 36 в refine.css.
    */
-  const props = withDefaults(
-    defineProps<{ code?: string | null; label?: string }>(),
-    { code: null, label: 'Модуль системы бронирования' },
-  )
+  const props = defineProps<{ code?: string | null }>()
 
   const host = ref<HTMLElement | null>(null)
 
@@ -57,7 +54,6 @@
 
 <template>
   <div class="embed">
-    <p v-if="label" class="embed-cap">{{ label }}</p>
     <div class="embed-box">
       <div ref="host" class="embed-host"></div>
     </div>

@@ -90,6 +90,10 @@
 
           <h2 class="cdlg-h">Наши контакты</h2>
 
+          <!-- Прокручивается только содержимое: на телефоне окно выше экрана,
+               и раньше вместе с ним уезжали заголовок и крестик — закрыть
+               его можно было, только долистав обратно наверх. -->
+          <div class="cdlg-body">
           <div class="cdlg-grid">
             <section v-if="settings.phone" class="ccard">
               <p v-if="settings.phone_kicker" class="ccard-cap">
@@ -173,6 +177,7 @@
           </div>
 
           <p v-if="settings.about" class="cdlg-legal">{{ settings.about }}</p>
+          </div>
         </div>
       </div>
     </Transition>

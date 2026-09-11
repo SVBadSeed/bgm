@@ -19,12 +19,32 @@
   defineEmits<{ clear: [] }>()
 
   const open = ref(props.open)
+
+  /*
+   * Подрезать содержимое нужно только пока строка сетки едет: иначе оно
+   * вылезает поверх соседних групп. Когда группа раскрыта и стоит на месте,
+   * подрезать нельзя — список городов рисуется абсолютом ниже своей кнопки,
+   * и обрезка резала его по высоте группы. Снаружи это выглядело так, будто
+   * список вообще не раскрывается: под полем показывалась одна полоска.
+   */
+  const moving = ref(false)
+  let timer: ReturnType<typeof setTimeout> | undefined
+
+  function toggle() {
+    open.value = !open.value
+    moving.value = true
+    clearTimeout(timer)
+    /* Чуть дольше, чем сама анимация (--t-move: 420ms) */
+    timer = setTimeout(() => (moving.value = false), 460)
+  }
+
+  onBeforeUnmount(() => clearTimeout(timer))
 </script>
 
 <template>
-  <section class="fgroup" :class="{ closed: !open }">
+  <section class="fgroup" :class="{ closed: !open, moving }">
     <div class="fgroup-h">
-      <button type="button" class="fgroup-t" @click="open = !open">
+      <button type="button" class="fgroup-t" @click="toggle">
         {{ title }}
       </button>
       <button
@@ -40,7 +60,7 @@
         class="fgroup-x"
         :aria-expanded="open"
         :aria-label="open ? 'Свернуть' : 'Развернуть'"
-        @click="open = !open"
+        @click="toggle"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
           <path

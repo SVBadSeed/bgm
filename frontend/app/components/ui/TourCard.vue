@@ -13,14 +13,21 @@
     { departures: () => [], showDiscount: false },
   )
 
-  /* Ближайшая дата и намёк, что есть другие: автобусный тур выбирают по тому,
-     когда он идёт, а не только по названию. */
+  /* Автобусный тур выбирают по тому, когда он идёт. Одна ближайшая дата
+     отвечала только на «когда», но не на «а ещё когда» — а спрашивают
+     обычно именно это. Две даты подряд сразу показывают, что расписание
+     регулярное, а счётчик снимает вопрос, сколько их всего. */
+  const SHOWN_DATES = 2
   const dates = computed(() => departuresOf(props.departures, props.tour))
-  const nextDate = computed(() => {
-    const first = dates.value[0]
-    return first ? formatRange(first.date_start, first.date_end) : null
-  })
-  const hasMore = computed(() => dates.value.length > 1)
+  const nextDates = computed(() =>
+    dates.value.slice(0, SHOWN_DATES).map((d) => ({
+      key: d.id,
+      label: formatRangeShort(d.date_start, d.date_end),
+    })),
+  )
+  const restDates = computed(() =>
+    Math.max(0, dates.value.length - SHOWN_DATES),
+  )
 
   // «3 дня / 2 ночи» → две пилюли; «9 часов» → одна. Так длительность
   // считывается с одного взгляда, а не тонет в серой мета-строке.
@@ -74,7 +81,7 @@
     </div>
     <!-- Длительность и ближайшая дата — один ряд: это ответ на один вопрос
          «сколько и когда», и раздельными строками карточка рассыпалась. -->
-    <div v-if="durationParts.length || nextDate" class="pcard-facts">
+    <div v-if="durationParts.length || nextDates.length" class="pcard-facts">
       <div
         v-if="durationParts.length"
         class="pcard-pills"
@@ -91,11 +98,14 @@
           >{{ part }}</span
         >
       </div>
-      <p v-if="nextDate" class="pcard-dates">
-        <span class="pcard-dates-cap">с</span>
-        <span class="pcard-date">{{ nextDate }}</span>
-        <span v-if="hasMore" class="pcard-alldates">· все даты</span>
-      </p>
+      <div v-if="nextDates.length" class="pcard-when">
+        <span v-for="d in nextDates" :key="d.key" class="pwhen">{{
+          d.label
+        }}</span>
+        <span v-if="restDates" class="pwhen pwhen-more"
+          >+{{ restDates }} {{ plural(restDates, 'дата', 'даты', 'дат') }}</span
+        >
+      </div>
     </div>
     <div v-if="tour.price_from != null" class="pcard-price">
       <b>{{ price }}</b>

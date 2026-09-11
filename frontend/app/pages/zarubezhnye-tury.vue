@@ -81,10 +81,7 @@
          рамка-заглушка на боевой странице выглядела бы недоделкой. -->
     <section v-if="page.widget_code" id="podbor" class="zwidget">
       <div class="wrap">
-        <EmbedSlot
-          :code="page.widget_code"
-          label="Поиск и подбор туров — модуль системы бронирования"
-        />
+        <EmbedSlot :code="page.widget_code" />
       </div>
     </section>
 
@@ -96,10 +93,7 @@
         <div class="sec-head">
           <h2 class="sec-h2">{{ page.hot_title }}</h2>
         </div>
-        <EmbedSlot
-          :code="page.hot_code"
-          label="Горящие туры — модуль системы бронирования"
-        />
+        <EmbedSlot :code="page.hot_code" />
       </div>
     </section>
     <OffersRail

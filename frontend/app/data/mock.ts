@@ -62,7 +62,7 @@ const settings: SiteSettings = {
   map_url:
     'https://yandex.ru/map-widget/v1/?um=constructor%3Acb2c721daadffad793983fa6b28777b92182ab87030e8e7e7ec87b14f63f9a5c&source=constructor&scroll=false',
   lk_url: '#',
-  favorites_url: '#',
+  favorites_url: '/izbrannoe',
 }
 
 const landing: Landing = {
@@ -86,7 +86,7 @@ const landing: Landing = {
   tours_title: 'Популярные туры',
   tours_all_url: '/tury',
   destinations_title: 'Популярные направления',
-  destinations_all_url: '/tury',
+  destinations_all_url: '/napravleniya',
   reviews_title: 'Путешественники о нас',
   reviews_badge: 'Нам доверяют',
   reviews_subtitle:
@@ -212,7 +212,7 @@ const menu: MenuItem[] = [
   /* У «Городов выезда» и «Направлений» своих детей нет: списки берутся из
      коллекций, чтобы не вести одни и те же города и регионы в двух местах. */
   ...menuOf('header', [['Города выезда', '/tury']]),
-  ...menuOf('header', [['Направления', '#dests']]),
+  ...menuOf('header', [['Направления', '/napravleniya']]),
   /* «Контакты» открывают окно поверх страницы: ссылку перехватывает
      ContactsDialog, отдельной страницы под них нет. */
   ...menuOf('header', [['Контакты', '#contacts']]),

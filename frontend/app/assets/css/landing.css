@@ -260,21 +260,30 @@ img {
 }
 .mnav {
   display: none;
-  position: absolute;
-  top: 74px;
-  left: var(--pad);
-  right: var(--pad);
+  /* Во весь экран, а не карточкой поверх страницы: разделов четыре, в них
+     все города и направления — списку нужна вся высота, и карточка с
+     полями и скруглениями только отъедала её и сама просила прокрутки.
+     fixed + inset: низ списка больше не уезжает за край, а страница под
+     меню не листается. */
+  position: fixed;
+  /* От нижней кромки шапки и до низа экрана. Раньше меню лежало во весь
+     экран, а под шапкой — просто отступ, и при прокрутке пункты уезжали
+     под неё насквозь: шапка над кадром прозрачная, ей нечем их закрыть. */
+  inset: 70px 0 0;
   z-index: 60;
-  background: var(--surface);
-  border-radius: 20px;
-  box-shadow: var(--sh-lg);
-  padding: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--canvas);
+  padding: 8px var(--pad) 28px;
   flex-direction: column;
 }
 .mnav.open {
   display: flex;
 }
 .mnav a {
+  /* Панель — колонка с ограниченной высотой, и без этого пункты сжимались
+     по вертикали вместо того, чтобы список прокручивался. */
+  flex: none;
   height: 46px;
   display: flex;
   align-items: center;

@@ -68,6 +68,39 @@ export function formatRange(start: string, end: string | null): string {
   return `${formatDate(start)} — ${formatDate(end)}`
 }
 
+const MONTHS_SHORT = [
+  'янв',
+  'фев',
+  'мар',
+  'апр',
+  'мая',
+  'июн',
+  'июл',
+  'авг',
+  'сен',
+  'окт',
+  'ноя',
+  'дек',
+]
+
+/**
+ * «14–18 сен» — для чипов с датами на карточке. Полное название месяца
+ * туда не влезает: карточка в ленте шириной меньше трёхсот пикселей,
+ * а чипов в ряду три.
+ */
+export function formatRangeShort(start: string, end: string | null): string {
+  const a = new Date(start)
+  if (Number.isNaN(a.getTime())) return ''
+  const m = (d: Date) => MONTHS_SHORT[d.getMonth()]
+  if (!end || end === start) return `${a.getDate()} ${m(a)}`
+  const b = new Date(end)
+  if (Number.isNaN(b.getTime())) return `${a.getDate()} ${m(a)}`
+  if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
+    return `${a.getDate()}–${b.getDate()} ${m(a)}`
+  }
+  return `${a.getDate()} ${m(a)} – ${b.getDate()} ${m(b)}`
+}
+
 /** «ещё 4 даты» / «ещё 1 дата» / «ещё 5 дат» */
 export function moreDatesLabel(count: number): string {
   if (count <= 0) return ''

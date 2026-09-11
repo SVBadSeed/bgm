@@ -115,9 +115,31 @@
   }
   const close = () => (open.value = false)
 
+  /*
+   * Пока меню открыто, вешаем метку на <html>. По ней прячется виджет чата:
+   * он живёт в своих iframe'ах, приклеен к правому нижнему углу и лежит выше
+   * всего остального, поэтому поверх раскрытого меню оказывался и он —
+   * достучаться до него можно только снаружи, из нашей таблицы стилей.
+   */
+  watch(open, (on) => {
+    document.documentElement.classList.toggle('mnav-open', on)
+  })
+  onBeforeUnmount(() => {
+    document.documentElement.classList.remove('mnav-open')
+  })
+
+  /* Клик мимо закрывает меню — кроме кнопок, которые сами живут в шапке:
+     переключатель темы меняет оформление под открытым списком, и закрывать
+     его ради этого незачем. */
   function onDocClick(e: MouseEvent) {
     const t = e.target as HTMLElement
-    if (!t.closest('[data-mnav]') && !t.closest('[data-burger]')) close()
+    if (
+      !t.closest('[data-mnav]') &&
+      !t.closest('[data-burger]') &&
+      !t.closest('[data-keep-menu]')
+    ) {
+      close()
+    }
   }
   function onKey(e: KeyboardEvent) {
     if (e.key === 'Escape') close()
@@ -143,7 +165,7 @@
   <header
     ref="root"
     class="lp-header"
-    :class="{ 'is-float': float, 'is-solid': float && solid }"
+    :class="{ 'is-float': float, 'is-solid': float && solid, 'is-menu': open }"
   >
     <div class="wrap">
       <BrandLogo :name="settings.brand_name" />
@@ -184,7 +206,7 @@
         <ThemeToggle />
         <a
           class="hd-fav"
-          :href="settings.favorites_url ?? '#'"
+          :href="settings.favorites_url || '/izbrannoe'"
           title="Избранное"
         >
           <!-- Форма сердца взята с bogema.ru (Solar Heart Bold) -->
@@ -223,6 +245,22 @@
           >{{ l.label }}</a
         >
       </template>
+
+      <!-- Кабинет и телефон в ряду шапки помещаются только на широком
+           экране. Ниже 900px их прячут, и на телефоне до них было не
+           добраться вообще — поэтому здесь у меню свой подвал. -->
+      <div class="mnav-foot">
+        <a
+          v-if="settings.phone"
+          class="mnav-tel"
+          :href="settings.phone_href ?? `tel:${settings.phone}`"
+          @click="close"
+          >{{ settings.phone }}</a
+        >
+        <a class="mnav-lk" :href="settings.lk_url ?? '#'" @click="close"
+          >Личный кабинет</a
+        >
+      </div>
     </nav>
   </header>
 </template>

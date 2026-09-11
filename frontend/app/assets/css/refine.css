@@ -509,12 +509,14 @@
 @media (max-width: 780px) {
   /* На узком экране карточка занимает всю ширину, поэтому полотну нужен
      хвост под барса: иначе он ложится на текст согласия. */
+    /* На телефоне барс не помещается: он рисуется во всю ширину блока и
+     лезет на текст, а полтораста пикселей отступа под него — это лишний
+     экран пустоты перед футером. */
   .footer-mascot {
-    left: 2%;
-    width: min(240px, 58%);
+    display: none;
   }
   .lead-sec {
-    padding-bottom: 150px;
+    padding-bottom: 72px;
   }
 }
 
@@ -1172,33 +1174,41 @@
   }
   /* Кадр снова на всю ширину: в своей правой зоне он на телефоне выглядел
      обрезком, приклеенным к углу. */
+  /* На телефоне баннер складывается в карточку: кадр сверху своей высотой,
+     под ним тёмная плашка с текстом и кнопкой. Раньше фотография лежала
+     подложкой на всю плашку, а высоту задавал текст — и от кадра оставалась
+     узкая полоска, наполовину закрытая затемнением. */
   .promo .promo-media {
-    inset: 0;
+    position: relative;
+    inset: auto;
     width: 100%;
+    height: 176px;
   }
   .promo .promo-txt {
     width: 100%;
     min-height: 0;
-    padding: 22px 22px 18px;
-    border-radius: var(--r-block) var(--r-block) 0 0;
-    /* Плашка лежит сверху, поэтому кривая не нужна — растворяем её вниз.
-       Размер и позицию маски тоже сбрасываем: от десктопной формы остаётся
-       слой шириной 130px у правого края, и плашка схлопывается в угол. */
-    mask-image: linear-gradient(180deg, #000 0%, #000 74%, transparent 100%);
-    mask-size: 100% 100%;
-    mask-position: center;
+    padding: 20px 22px 0;
+    border-radius: 0;
+    /* Текст лежит на своей плашке под кадром, растворять её не во что */
+    mask-image: none;
   }
   .promo .promo-txt h2 {
     font-size: 23px;
   }
+  /* На телефоне кнопка во всю ширину плашки: узкая пилюля у левого края
+     под двумя строками заголовка висела без опоры. display: flex вместо
+     inline-flex делает её блочной, поля по бокам задают ширину. */
   .promo-cta {
-    /* relative, а не static: кадр лежит абсолютом на всей плашке и без
-       своего слоя кнопка оказывалась под ним. */
     position: relative;
+    /* Сбрасываем десктопные смещения: на широком экране кнопка стоит
+       абсолютом справа по центру кадра, и при переключении в relative
+       right/top остаются и тащат её на 34px влево, за край карточки. */
+    inset: auto;
     z-index: 3;
+    display: flex;
     height: 50px;
     transform: none;
-    margin: 0 22px 22px;
+    margin: 16px 22px 22px;
   }
   .promo-cta:hover,
   .promo-cta:active {
@@ -1581,11 +1591,20 @@
   background: var(--bg);
   color: var(--ink);
 }
-.lp-header.is-solid .hd-fav {
-  background: var(--bg);
+/* На белой шапке кружки под иконками не нужны: серые пятна на белом
+   читаются как грязь, а у бургера кружок был и вовсе тёмный — он остался
+   от шапки над фотографией. Подложку показываем только при наведении. */
+.lp-header.is-solid .hd-fav,
+.lp-header.is-solid .hd-theme,
+.lp-header.is-solid .burger,
+.lp-header.is-menu .hd-fav,
+.lp-header.is-menu .hd-theme,
+.lp-header.is-menu .burger {
+  background: none;
 }
-.lp-header.is-solid .hd-fav:hover {
-  background: var(--hover);
+.lp-header.is-solid .hd-fav:hover,
+.lp-header.is-menu .hd-fav:hover {
+  background: var(--bg);
 }
 .lp-header.is-solid .hd-lk {
   background: var(--ink-solid);
@@ -2265,10 +2284,15 @@
 }
 .fgroup-in {
   min-height: 0;
-  overflow: hidden;
+  /* Подрезаем только пока группа едет — см. комментарий в FilterGroup.vue */
+  overflow: visible;
   padding-bottom: 16px;
   opacity: 1;
   transition: opacity var(--t-ui) var(--e-quart);
+}
+.fgroup.closed .fgroup-in,
+.fgroup.moving .fgroup-in {
+  overflow: hidden;
 }
 .fgroup.closed .fgroup-in {
   opacity: 0;
@@ -2587,18 +2611,34 @@ input.ffield[type='number'] {
   inset: 0;
   z-index: 90;
   display: grid;
-  place-items: start center;
-  padding: 92px 16px 24px;
-  overflow-y: auto;
+  place-items: center;
+  padding: 16px;
+  /* Прокручивается не подложка, а содержимое окна: иначе на телефоне
+     заголовок с крестиком уезжали вверх вместе со всем остальным, и
+     закрыть окно можно было, только долистав обратно наверх. */
+  overflow: hidden;
   background: rgba(10, 10, 12, 0.5);
 }
 .cdlg {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(900px, 100%);
+  /* От экрана, а не в процентах: ячейка сетки тянется по содержимому, и
+     max-height: 100% в ней ничего не ограничивает. */
+  max-height: calc(100dvh - 32px);
   padding: 30px 32px 28px;
   border-radius: var(--r-block);
   background: var(--surface);
   box-shadow: var(--sh-lg);
+}
+.cdlg-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Место под полосу прокрутки, чтобы карточки не прыгали вбок */
+  margin-right: -8px;
+  padding-right: 8px;
 }
 .cdlg-x {
   position: absolute;
@@ -2787,9 +2827,10 @@ input.ffield[type='number'] {
 }
 @media (max-width: 680px) {
   .cdlg-veil {
-    padding: 70px 12px 20px;
+    padding: 12px;
   }
   .cdlg {
+    max-height: calc(100dvh - 24px);
     padding: 24px 18px 22px;
   }
   .cdlg-map {
@@ -4567,12 +4608,13 @@ input.ffield[type='number'] {
 .hd-theme:hover {
   background: rgba(12, 12, 16, 0.7);
 }
-.lp-header.is-solid .hd-theme {
-  background: var(--bg);
+.lp-header.is-solid .hd-theme,
+.lp-header.is-menu .hd-theme {
   color: var(--ink);
 }
-.lp-header.is-solid .hd-theme:hover {
-  background: var(--hover);
+.lp-header.is-solid .hd-theme:hover,
+.lp-header.is-menu .hd-theme:hover {
+  background: var(--bg);
 }
 .th-moon {
   display: none;
@@ -4636,22 +4678,9 @@ input.ffield[type='number'] {
    обновления, поэтому мы этого не делаем.
    Днём разницы и нет: их белое совпадает с нашим полотном. Ночью белый
    прямоугольник посреди тёмной страницы читается как дыра — и тогда мы
-   не прячем чужое, а наоборот, объявляем светлой вставкой: подпись
-   сверху, подложка и поля вокруг. Тогда это выглядит как вложенный
-   документ, а не как непрокрашенный кусок вёрстки.
+   не прячем чужое, а кладём его на светлую подложку с полями. Тогда это
+   выглядит как вложенный документ, а не как непрокрашенный кусок вёрстки.
    ------------------------------------------------------------------ */
-.embed-cap {
-  display: none;
-}
-[data-theme='dark'] .embed-cap {
-  display: block;
-  margin: 0 0 10px;
-  padding-left: 2px;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text-3);
-}
 /* Цвета здесь заданы прямо, а не переменными: внутри капсулы всегда
    светло — какая бы тема ни стояла снаружи, — и наши тёмные токены
    покрасили бы её не в тот цвет. */
@@ -4664,5 +4693,304 @@ input.ffield[type='number'] {
   [data-theme='dark'] .embed-box {
     padding: 8px;
     border-radius: 18px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   37. Даты выезда на карточке
+   Одна ближайшая дата отвечала только на «когда» и молчала про «а ещё
+   когда» — а у автобусного тура спрашивают именно это. Две ближайшие
+   плюс счётчик остальных сразу показывают, что расписание регулярное.
+   Даты чипами, а не строкой: строкой из трёх дат подряд глаз не
+   разбирает, где кончается одна и начинается следующая.
+   ------------------------------------------------------------------ */
+.pcard-when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pwhen {
+  display: inline-flex;
+  align-items: center;
+  height: 27px;
+  padding: 0 10px;
+  border-radius: 9px;
+  /* Контур, а не заливка: рядом стоят билетики длительности, и две
+     заливки подряд читались бы как один блок. */
+  box-shadow: inset 0 0 0 1px var(--border-2);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.pwhen-more {
+  box-shadow: none;
+  background: var(--bg);
+  color: var(--text-2);
+}
+
+/* ------------------------------------------------------------------
+   38. Мобильное меню
+   Панель прокручивается внутри себя (см. .mnav в landing.css), а здесь —
+   её подвал и починка бургера.
+   ------------------------------------------------------------------ */
+.mnav-foot {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.mnav-tel {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+/* Через .mnav: у общего правила .mnav a вес выше, и без этого подпись
+   красилась обычным цветом текста — чёрным по чёрному. */
+.mnav .mnav-lk {
+  justify-content: center;
+  background: var(--ink-solid);
+  color: var(--on-ink);
+  transition: background var(--t-ui) var(--e-quart);
+}
+.mnav .mnav-lk:hover {
+  background: var(--ink-solid-h);
+  color: var(--on-ink);
+}
+
+/* Пока меню открыто, шапка стоит над ним плотной полосой: логотип на
+   месте, бургер превращается в крестик там же, где его и нажали, а пункты
+   не просвечивают сквозь неё при прокрутке. Высоту фиксируем — от неё
+   отмеряется верх меню, а базовые отступы у шапки разные на главной и на
+   внутренних страницах. */
+/* Второй селектор — ради веса: у осевшей шапки над кадром фон задан
+   через .lp-header.is-float.is-solid и он полупрозрачный. */
+.lp-header.is-menu,
+.lp-header.is-float.is-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 0;
+  background: var(--canvas);
+}
+.lp-header.is-menu .logo-word {
+  color: var(--ink);
+}
+.lp-header.is-menu .burger span {
+  background: var(--ink);
+}
+
+/* Виджет чата приклеен к правому нижнему углу и лежит выше всего на
+   странице — поверх раскрытого меню оказывался и он. Внутрь его iframe'ов
+   мы не лезем, но спрятать их целиком, пока меню открыто, можем отсюда. */
+.mnav-open [id^='teletype-widget-component'] {
+  display: none !important;
+}
+
+/* Три полоски лежали в трёх строках сетки, а строки в кнопке 42×42
+   растягивались на всю высоту — полоски расходились на четырнадцать
+   пикселей вместо двенадцати с половиной. Из-за этого при раскрытии меню
+   они не сходились в крестик, а вставали углом. align-content прижимает
+   строки друг к другу и центрирует всю стопку. */
+.burger {
+  align-content: center;
+}
+
+/* ------------------------------------------------------------------
+   39. Избранное и «Все направления»
+   Обе страницы живут на общей раскладке каталога: кадр с заголовком,
+   крошки, сетка карточек. Здесь только то, чего в каталоге нет.
+   ------------------------------------------------------------------ */
+.fav-count,
+.dall-count {
+  margin: 14px 0 0;
+  font-size: 16px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.fav-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+.fav-clear {
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background var(--t-ui) var(--e-quart);
+}
+.fav-clear:hover {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+/* Место под сетку, пока список читается из браузера: без него страница
+   подпрыгивала — сначала пустая, потом с карточками. */
+.fav-wait {
+  min-height: 320px;
+}
+
+/* Пустое избранное. Плашка с текстом читалась как ошибка — тёмный
+   прямоугольник посреди страницы. Здесь вместо неё воздух, крупное
+   сердце и прямое указание, что нажать: страница объясняет себя сама. */
+.fav-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 520px;
+  margin: 40px auto 54px;
+  text-align: center;
+}
+.fav-empty-ico {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 4px;
+  fill: var(--lime-tint);
+  stroke: var(--lime);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+.fav-empty-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.fav-empty p {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.fav-empty .btn {
+  margin-top: 10px;
+}
+
+/* Отбивка от пустого состояния: это уже другой разговор, а не его часть */
+.fav-soon {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.fav-soon .sec-head {
+  margin: 30px 0 20px;
+}
+
+/* Направлений на странице десятки, поэтому плитки мельче витринных:
+   в четыре колонки они лезут на три экрана, в пять — читаются списком. */
+.dgrid.dall {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-bottom: 20px;
+}
+
+@media (max-width: 1080px) {
+  .dgrid.dall {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 780px) {
+  .dgrid.dall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fav-empty {
+    margin: 28px auto 40px;
+  }
+  .fav-empty-ico {
+    width: 64px;
+    height: 64px;
+  }
+  .fav-empty-h {
+    font-size: 22px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   40. Страница направлений
+   Кадр здесь выше, чем в каталоге: под ним не фильтры и не выдача, а
+   витрина, и первый экран должен читаться как обложка раздела.
+
+   Плитки идут с ритмом: две первые — во всю половину ряда, широкие, с
+   крупным названием, остальные обычными. Четырнадцать одинаковых квадратов
+   подряд читаются складом, а не витриной, и глазу не за что зацепиться.
+   ------------------------------------------------------------------ */
+.dhero {
+  padding: 176px 0 88px;
+}
+
+.dgrid.dall {
+  gap: 20px;
+}
+.dall .dcard {
+  /* Выше квадрата: на витрине направления продаёт фотография, и лишние
+     полтораста пикселей кадра работают лучше, чем воздух вокруг. */
+  aspect-ratio: 4 / 5;
+  padding: 22px;
+}
+.dall .dcard::after {
+  background: linear-gradient(
+    180deg,
+    rgba(6, 8, 20, 0) 28%,
+    rgba(6, 8, 20, 0.52) 64%,
+    rgba(6, 8, 20, 0.9) 100%
+  );
+}
+.dall .dcard-name {
+  font-size: 23px;
+}
+
+/* Две первые — обложки раздела */
+.dall .dcard:nth-child(-n + 2) {
+  grid-column: span 2;
+  aspect-ratio: 16 / 9;
+  padding: 28px;
+}
+.dall .dcard:nth-child(-n + 2) .dcard-kicker {
+  font-size: 14px;
+}
+.dall .dcard:nth-child(-n + 2) .dcard-name {
+  font-size: clamp(26px, 2.4vw, 34px);
+}
+.dall .dcard:nth-child(-n + 2) .dcard-row {
+  margin-top: 14px;
+}
+.dall .dcard:nth-child(-n + 2) .dcard-row small {
+  font-size: 14px;
+}
+.dall .dcard:nth-child(-n + 2) .dcard-row b {
+  font-size: 17px;
+}
+
+@media (max-width: 1080px) {
+  /* В три колонки широкая плитка в две оставляла дыру справа — тянем её
+     на всю ширину ряда. */
+  .dall .dcard:nth-child(-n + 2) {
+    grid-column: 1 / -1;
+    aspect-ratio: 21 / 9;
+  }
+}
+@media (max-width: 780px) {
+  .dhero {
+    padding: 132px 0 60px;
+  }
+  .dall .dcard:nth-child(-n + 2) {
+    aspect-ratio: 4 / 3;
+    padding: 22px;
   }
 }
